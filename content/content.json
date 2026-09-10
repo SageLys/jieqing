@@ -1,0 +1,746 @@
+{
+  "_notes": {
+    "用途": "全部文案与数据的唯一来源。代码中不得写死任何文案。",
+    "状态": "这是骨架。固定文案已填；标 [待填] 的等采访和 AI 作答回来后填。开发期请另行生成 content.dev.json（见 02 第十三节）。",
+    "字段说明": "见 00_总纲 第 7 节与 02 第五节。human 来源的 age 为整数；ai 来源没有 age 字段，这是设计要求。",
+    "AI 选项位置": "骨架里 AI 选项在各拍中的序号故意不同，避免 id 暴露规律。渲染时仍需按 02 打乱顺序。",
+    "第五问": "第五问没有 closing。02 的提问“几个人来劝我。你觉得谁说得最得体？”已拆开：前半句并入题面，气泡里只放后半句（见 00 第 6 节第 8 条）。",
+    "公共池条目格式": "poolSeed 与观众提交共用：{ \"text\": \"…\", \"createdAt\": \"ISO 时间\" }。只放真实收集到的回答。",
+    "演示时长": "demoTimings 取代 02 第十一节的时长表。revealExtraPerBeatMs 用于第二问两拍一起揭晓；distributionExtraMs 用于带分布的拍；过场时长取各章 transition.durationMs。",
+    "已定（09-10）": "作品名：结情（英文副标题待定）；AI 模型：豆包；第三问题面与采访一致，用“母亲去世了”。"
+  },
+  "meta": {
+    "title": "结情",
+    "titleEn": "",
+    "subtitle": "五年结绳 · 人情卷",
+    "version": "1.0",
+    "contentStatus": "skeleton",
+    "lang": "zh-CN",
+    "scaleRange": [
+      0,
+      100
+    ]
+  },
+  "ui": {
+    "next": "继续",
+    "back": "返回",
+    "backToCurrent": "回到当前",
+    "skip": "跳过",
+    "action": "action",
+    "start": "开启",
+    "ageUnit": "岁",
+    "qCounter": "{n} / {total}",
+    "distributionTotal": "共 {n} 人作答",
+    "distributionFallback": "预跑数据 · {n} 人",
+    "sameSourceHuman": "两拍你选的，是同一个人。",
+    "sameSourceAi": "两拍你选的，都来自 AI。",
+    "differentSource": "两拍你选的，来自不同的回答者。",
+    "aiLabel": "AI · {model} · {date}",
+    "rankingTitle": "AI 的排序",
+    "loading": "loading……"
+  },
+  "cover": {
+    "title": "结情",
+    "titleEn": "",
+    "cta": "开启",
+    "photos": [
+      {
+        "src": "assets/img/photo_baby_cover.jpg",
+        "age": 12,
+        "side": "right"
+      },
+      {
+        "src": "assets/img/photo_kid_drawing.jpg",
+        "age": 30,
+        "side": "left"
+      },
+      {
+        "src": "assets/img/photo_running_kid.jpg",
+        "age": 30,
+        "side": "right"
+      },
+      {
+        "src": "assets/img/photo_eyes_teen.jpg",
+        "age": 47,
+        "side": "right"
+      },
+      {
+        "src": "assets/img/photo_hands.jpg",
+        "age": 58,
+        "side": "left"
+      },
+      {
+        "src": "assets/img/photo_elder.jpg",
+        "age": 75,
+        "side": "right"
+      }
+    ]
+  },
+  "host": {
+    "name": "小KONT",
+    "intro": [
+      "你好呀，我是你的小KONT～",
+      "人好像总在不同的雨季。",
+      "100 岁的人生，5 个问题，上万种回答。",
+      "这些问题，有很多真实的人回答过。没有标准答案。",
+      "接下来，回答我几个问题吧～"
+    ],
+    "introCta": "好呀",
+    "tocTooltip": "我是你的助手～"
+  },
+  "toc": {
+    "title": "记忆工厂",
+    "hint": "向下滑动开始感受吧～"
+  },
+  "chapters": [
+    {
+      "id": "c1",
+      "index": 1,
+      "stage": "新生",
+      "en": "BORN",
+      "ageRange": [
+        0,
+        15
+      ],
+      "questionId": "q1",
+      "aiCaption": null,
+      "transition": {
+        "type": "keyboard",
+        "durationMs": 7000,
+        "typeWord": "BORN",
+        "image": "assets/img/photo_baby_play.jpg",
+        "handwriting": "assets/img/hand_baobei.png",
+        "lines": [
+          "人是伴随着世界的欢呼和自己的哭声诞生的。",
+          "蹒跚学步，牙牙学语。",
+          "被世界拥抱，或轻或重。",
+          "世界就像围着我转一样。"
+        ],
+        "babble": [
+          "mma 妈 |",
+          "bba 爸 |"
+        ]
+      }
+    },
+    {
+      "id": "c2",
+      "index": 2,
+      "stage": "感受",
+      "en": "FEEL",
+      "ageRange": [
+        20,
+        35
+      ],
+      "questionId": "q2",
+      "aiCaption": null,
+      "transition": {
+        "type": "table",
+        "durationMs": 7000,
+        "image": "assets/img/photo_table_bw.jpg",
+        "fallingChars": [
+          "碗",
+          "筷",
+          "酒",
+          "茶"
+        ],
+        "lines": [
+          "第一次，坐上别人家的饭桌。"
+        ]
+      }
+    },
+    {
+      "id": "c3",
+      "index": 3,
+      "stage": "构建",
+      "en": "BUILD",
+      "ageRange": [
+        40,
+        55
+      ],
+      "questionId": "q3",
+      "aiCaption": null,
+      "transition": {
+        "type": "network",
+        "durationMs": 7000,
+        "silhouettes": [
+          "assets/img/silhouette_1.svg",
+          "assets/img/silhouette_2.svg",
+          "assets/img/silhouette_3.svg",
+          "assets/img/silhouette_4.svg",
+          "assets/img/silhouette_5.svg",
+          "assets/img/silhouette_6.svg",
+          "assets/img/silhouette_7.svg",
+          "assets/img/silhouette_8.svg"
+        ],
+        "nodes": [
+          "上有老",
+          "下有小",
+          "家庭",
+          "事业",
+          "同事",
+          "领导",
+          "朋友"
+        ],
+        "lines": [
+          "上有老，下有小。"
+        ]
+      }
+    },
+    {
+      "id": "c4",
+      "index": 4,
+      "stage": "感受",
+      "en": "SHOW",
+      "ageRange": [
+        60,
+        75
+      ],
+      "questionId": "q4",
+      "aiCaption": null,
+      "transition": {
+        "type": "chart",
+        "durationMs": 7000,
+        "stamps": [
+          "高血压",
+          "骨质疏松",
+          "腰椎间盘突出",
+          "关节炎",
+          "老花眼"
+        ],
+        "lines": [
+          "才六十岁，感觉身体跟不上了。"
+        ]
+      }
+    },
+    {
+      "id": "c5",
+      "index": 5,
+      "stage": "新生",
+      "en": "DEATH",
+      "ageRange": [
+        80,
+        100
+      ],
+      "questionId": "q5",
+      "aiCaption": null,
+      "transition": {
+        "type": "sea",
+        "durationMs": 8000,
+        "char": "海",
+        "count": 200,
+        "countLite": 80,
+        "verse": "长命百岁，不过沧海一粟"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "chapterId": "c1",
+      "stage": "新生",
+      "ageRange": [
+        0,
+        15
+      ],
+      "personaAge": 5,
+      "prompt": "过年回老家拜年。长辈掏出一个红包，家里大人在旁边站着看着我。",
+      "beats": [
+        {
+          "id": "q1b1",
+          "ask": "你会怎么做？",
+          "showDistribution": false,
+          "options": [
+            {
+              "id": "q1b1o1",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q1b1o1.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q1b1o2",
+              "text": "[待填]",
+              "source": {
+                "kind": "ai",
+                "model": "豆包 · [界面显示的版本]",
+                "queriedAt": "2026-XX-XX",
+                "promptUsed": "[向模型提问的原文，见 04 第一节第 3 条]"
+              }
+            },
+            {
+              "id": "q1b1o3",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q1b1o3.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q1b1o4",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q1b1o4.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            }
+          ]
+        }
+      ],
+      "closing": "[待填 · 一句话落点，采访整理后确定]"
+    },
+    {
+      "id": "q2",
+      "chapterId": "c2",
+      "stage": "感受",
+      "ageRange": [
+        20,
+        35
+      ],
+      "personaAge": 25,
+      "prompt": "第一次正式去对象家里吃饭。对方父母提前说了：“人来就好，千万别买东西。”",
+      "beats": [
+        {
+          "id": "q2b1",
+          "ask": "你会怎么做？",
+          "showDistribution": false,
+          "options": [
+            {
+              "id": "q2b1o1",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q2b1o1.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q2b1o2",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q2b1o2.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q2b1o3",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q2b1o3.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q2b1o4",
+              "text": "[待填]",
+              "source": {
+                "kind": "ai",
+                "model": "豆包 · [界面显示的版本]",
+                "queriedAt": "2026-XX-XX",
+                "promptUsed": "[向模型提问的原文，见 04 第一节第 3 条]"
+              }
+            }
+          ]
+        },
+        {
+          "id": "q2b2",
+          "ask": "东西递过去的那一下，你说什么？",
+          "showDistribution": false,
+          "options": [
+            {
+              "id": "q2b2o1",
+              "text": "[待填]",
+              "source": {
+                "kind": "ai",
+                "model": "豆包 · [界面显示的版本]",
+                "queriedAt": "2026-XX-XX",
+                "promptUsed": "[向模型提问的原文，见 04 第一节第 3 条]"
+              }
+            },
+            {
+              "id": "q2b2o2",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q2b2o2.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q2b2o3",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q2b2o3.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q2b2o4",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q2b2o4.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            }
+          ]
+        }
+      ],
+      "closing": "[待填 · 一句话落点，采访整理后确定]"
+    },
+    {
+      "id": "q3",
+      "chapterId": "c3",
+      "stage": "构建",
+      "ageRange": [
+        40,
+        55
+      ],
+      "personaAge": 45,
+      "prompt": "一个共事多年的同事，母亲去世了。工作上很熟，私下基本不来往。",
+      "beats": [
+        {
+          "id": "q3b1",
+          "ask": "你会怎么做？",
+          "showDistribution": true,
+          "options": [
+            {
+              "id": "q3b1o1",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q3b1o1.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q3b1o2",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q3b1o2.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q3b1o3",
+              "text": "[待填]",
+              "source": {
+                "kind": "ai",
+                "model": "豆包 · [界面显示的版本]",
+                "queriedAt": "2026-XX-XX",
+                "promptUsed": "[向模型提问的原文，见 04 第一节第 3 条]"
+              }
+            },
+            {
+              "id": "q3b1o4",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q3b1o4.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            }
+          ]
+        }
+      ],
+      "closing": "[待填 · 一句话落点，采访整理后确定]"
+    },
+    {
+      "id": "q4",
+      "chapterId": "c4",
+      "stage": "感受",
+      "ageRange": [
+        60,
+        75
+      ],
+      "personaAge": 60,
+      "prompt": "孩子想给我办一场六十大寿，几个亲戚也说，整寿还是应该热闹办一下。可我只想跟家里人安安静静吃顿饭。",
+      "beats": [
+        {
+          "id": "q4b1",
+          "ask": "你会怎么做？",
+          "showDistribution": true,
+          "options": [
+            {
+              "id": "q4b1o1",
+              "text": "[待填]",
+              "source": {
+                "kind": "ai",
+                "model": "豆包 · [界面显示的版本]",
+                "queriedAt": "2026-XX-XX",
+                "promptUsed": "[向模型提问的原文，见 04 第一节第 3 条]"
+              }
+            },
+            {
+              "id": "q4b1o2",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q4b1o2.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q4b1o3",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q4b1o3.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q4b1o4",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q4b1o4.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            }
+          ]
+        },
+        {
+          "id": "q4b2",
+          "type": "ai_ranking",
+          "intro": "把这几条交回给 AI，问它哪一条最得体。",
+          "ranking": {
+            "order": [],
+            "rationale": "[待填 · 模型回答原文，一字不改]",
+            "model": "豆包 · [界面显示的版本]",
+            "queriedAt": "2026-XX-XX",
+            "promptUsed": "[提问原文，见 04 第一节第 5 条]"
+          }
+        }
+      ],
+      "closing": "[待填 · 一句话落点，采访整理后确定]"
+    },
+    {
+      "id": "q5",
+      "chapterId": "c5",
+      "stage": "新生",
+      "ageRange": [
+        80,
+        100
+      ],
+      "personaAge": 85,
+      "prompt": "我老伴儿三年前走了。这么大年纪，总要有一个人先走，但是我就是很想念。几个人来劝我。",
+      "beats": [
+        {
+          "id": "q5b1",
+          "ask": "你觉得谁说得最得体？",
+          "showDistribution": false,
+          "options": [
+            {
+              "id": "q5b1o1",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q5b1o1.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q5b1o2",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q5b1o2.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q5b1o3",
+              "text": "[待填]",
+              "source": {
+                "kind": "human",
+                "respondentId": "[受访编号，如 R07]",
+                "age": null,
+                "ageLabel": null,
+                "origin": "[成长地]",
+                "dialect": "[方言]",
+                "audio": "audio/q5b1o3.m4a",
+                "subtitle": "[音频里的原话]"
+              }
+            },
+            {
+              "id": "q5b1o4",
+              "text": "[待填]",
+              "source": {
+                "kind": "ai",
+                "model": "豆包 · [界面显示的版本]",
+                "queriedAt": "2026-XX-XX",
+                "promptUsed": "[向模型提问的原文，见 04 第一节第 3 条]"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "finale": {
+    "revealText": [
+      "这一路亮起来的每一格，都是一个真实的人活到的年纪。",
+      "每一题里，都有一条回答来自 AI。",
+      "它们一格也没有点亮。"
+    ],
+    "reversal": [
+      "……那几条回答，是我写的。",
+      "每一题，我都答得很稳妥，放到哪里都不出错。",
+      "可我没有在哪一个年纪，真的活过。"
+    ],
+    "ask": "如果是你，你会说什么？",
+    "inputModes": [
+      "text"
+    ],
+    "placeholder": "输入中…",
+    "submitCta": "发送",
+    "maxLength": 200,
+    "confirm": "收到了。",
+    "poolTitle": "相关社区",
+    "poolEmpty": "这里还没有别人的回答。",
+    "poolSeed": []
+  },
+  "ending": {
+    "lines": [
+      "你一页纸翻过去，就能翻过无数人的一辈子。"
+    ],
+    "credits": {
+      "interviewees": "[待填 · 按「地区 · 年龄」列出全部受访者]",
+      "ai": "本作品中的 AI 回答由豆包于 [日期] 生成，未做任何改动。",
+      "team": "[待填 · 组员]",
+      "source": "视觉与文字部分来自作品《五年结绳》。",
+      "boundary": "受访者只标注年龄与成长地，不记录姓名与联系方式。",
+      "fonts": "字体：寒蝉点阵体、Noto Serif SC、Long Cang，均为 SIL Open Font License。"
+    },
+    "restartCta": "再走一遍"
+  },
+  "demoPath": {
+    "q1b1": "",
+    "q2b1": "",
+    "q2b2": "",
+    "q3b1": "",
+    "q4b1": "",
+    "q5b1": ""
+  },
+  "demoFinaleAnswer": "[待填 · 演示录屏时在 F3 自动打出的一句回答]",
+  "demoTimings": {
+    "coverMs": 5000,
+    "introLineMs": 2000,
+    "tocMs": 4000,
+    "chapterMs": 4000,
+    "promptMs": 4000,
+    "answeringMs": 6000,
+    "revealMs": 14000,
+    "revealExtraPerBeatMs": 4000,
+    "distributionExtraMs": 3000,
+    "rankingMs": 20000,
+    "closingMs": 5000,
+    "finaleLineMs": 3000,
+    "inputMs": 8000,
+    "poolMs": 6000,
+    "endingMs": 8000
+  },
+  "fallbackDistribution": {
+    "q3b1": {
+      "sampleSize": 0,
+      "counts": {}
+    },
+    "q4b1": {
+      "sampleSize": 0,
+      "counts": {}
+    }
+  }
+}

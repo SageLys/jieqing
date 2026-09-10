@@ -1,0 +1,772 @@
+{
+  "_notes": {
+    "用途": "全部文案与数据的唯一来源。代码中不得写死任何文案。",
+    "状态": "开发期占位数据，由 scripts/make_dev_content.py 生成。选项文字全是编的，只用于联调。",
+    "字段说明": "见 00_总纲 第 7 节与 02 第五节。human 来源的 age 为整数；ai 来源没有 age 字段，这是设计要求。",
+    "AI 选项位置": "骨架里 AI 选项在各拍中的序号故意不同，避免 id 暴露规律。渲染时仍需按 02 打乱顺序。",
+    "第五问": "第五问没有 closing。02 的提问“几个人来劝我。你觉得谁说得最得体？”已拆开：前半句并入题面，气泡里只放后半句（见 00 第 6 节第 8 条）。",
+    "公共池条目格式": "poolSeed 与观众提交共用：{ \"text\": \"…\", \"createdAt\": \"ISO 时间\" }。只放真实收集到的回答。",
+    "演示时长": "demoTimings 取代 02 第十一节的时长表。revealExtraPerBeatMs 用于第二问两拍一起揭晓；distributionExtraMs 用于带分布的拍；过场时长取各章 transition.durationMs。",
+    "已定（09-10）": "作品名：结情（英文副标题待定）；AI 模型：豆包；第三问题面与采访一致，用“母亲去世了”。"
+  },
+  "meta": {
+    "title": "结情",
+    "titleEn": "",
+    "subtitle": "五年结绳 · 人情卷",
+    "version": "1.0",
+    "contentStatus": "dev",
+    "lang": "zh-CN",
+    "scaleRange": [
+      0,
+      100
+    ]
+  },
+  "ui": {
+    "next": "继续",
+    "back": "返回",
+    "backToCurrent": "回到当前",
+    "skip": "跳过",
+    "action": "action",
+    "start": "开启",
+    "ageUnit": "岁",
+    "qCounter": "{n} / {total}",
+    "distributionTotal": "共 {n} 人作答",
+    "distributionFallback": "预跑数据 · {n} 人",
+    "sameSourceHuman": "两拍你选的，是同一个人。",
+    "sameSourceAi": "两拍你选的，都来自 AI。",
+    "differentSource": "两拍你选的，来自不同的回答者。",
+    "aiLabel": "AI · {model} · {date}",
+    "rankingTitle": "AI 的排序",
+    "loading": "loading……"
+  },
+  "cover": {
+    "title": "结情",
+    "titleEn": "",
+    "cta": "开启",
+    "photos": [
+      {
+        "src": "assets/img/photo_baby_cover.jpg",
+        "age": 12,
+        "side": "right"
+      },
+      {
+        "src": "assets/img/photo_kid_drawing.jpg",
+        "age": 30,
+        "side": "left"
+      },
+      {
+        "src": "assets/img/photo_running_kid.jpg",
+        "age": 30,
+        "side": "right"
+      },
+      {
+        "src": "assets/img/photo_eyes_teen.jpg",
+        "age": 47,
+        "side": "right"
+      },
+      {
+        "src": "assets/img/photo_hands.jpg",
+        "age": 58,
+        "side": "left"
+      },
+      {
+        "src": "assets/img/photo_elder.jpg",
+        "age": 75,
+        "side": "right"
+      }
+    ]
+  },
+  "host": {
+    "name": "小KONT",
+    "intro": [
+      "你好呀，我是你的小KONT～",
+      "人好像总在不同的雨季。",
+      "100 岁的人生，5 个问题，上万种回答。",
+      "这些问题，有很多真实的人回答过。没有标准答案。",
+      "接下来，回答我几个问题吧～"
+    ],
+    "introCta": "好呀",
+    "tocTooltip": "我是你的助手～"
+  },
+  "toc": {
+    "title": "记忆工厂",
+    "hint": "向下滑动开始感受吧～"
+  },
+  "chapters": [
+    {
+      "id": "c1",
+      "index": 1,
+      "stage": "新生",
+      "en": "BORN",
+      "ageRange": [
+        0,
+        15
+      ],
+      "questionId": "q1",
+      "aiCaption": null,
+      "transition": {
+        "type": "keyboard",
+        "durationMs": 7000,
+        "typeWord": "BORN",
+        "image": "assets/img/photo_baby_play.jpg",
+        "handwriting": "assets/img/hand_baobei.png",
+        "lines": [
+          "人是伴随着世界的欢呼和自己的哭声诞生的。",
+          "蹒跚学步，牙牙学语。",
+          "被世界拥抱，或轻或重。",
+          "世界就像围着我转一样。"
+        ],
+        "babble": [
+          "mma 妈 |",
+          "bba 爸 |"
+        ]
+      }
+    },
+    {
+      "id": "c2",
+      "index": 2,
+      "stage": "感受",
+      "en": "FEEL",
+      "ageRange": [
+        20,
+        35
+      ],
+      "questionId": "q2",
+      "aiCaption": null,
+      "transition": {
+        "type": "table",
+        "durationMs": 7000,
+        "image": "assets/img/photo_table_bw.jpg",
+        "fallingChars": [
+          "碗",
+          "筷",
+          "酒",
+          "茶"
+        ],
+        "lines": [
+          "第一次，坐上别人家的饭桌。"
+        ]
+      }
+    },
+    {
+      "id": "c3",
+      "index": 3,
+      "stage": "构建",
+      "en": "BUILD",
+      "ageRange": [
+        40,
+        55
+      ],
+      "questionId": "q3",
+      "aiCaption": null,
+      "transition": {
+        "type": "network",
+        "durationMs": 7000,
+        "silhouettes": [
+          "assets/img/silhouette_1.svg",
+          "assets/img/silhouette_2.svg",
+          "assets/img/silhouette_3.svg",
+          "assets/img/silhouette_4.svg",
+          "assets/img/silhouette_5.svg",
+          "assets/img/silhouette_6.svg",
+          "assets/img/silhouette_7.svg",
+          "assets/img/silhouette_8.svg"
+        ],
+        "nodes": [
+          "上有老",
+          "下有小",
+          "家庭",
+          "事业",
+          "同事",
+          "领导",
+          "朋友"
+        ],
+        "lines": [
+          "上有老，下有小。"
+        ]
+      }
+    },
+    {
+      "id": "c4",
+      "index": 4,
+      "stage": "感受",
+      "en": "SHOW",
+      "ageRange": [
+        60,
+        75
+      ],
+      "questionId": "q4",
+      "aiCaption": null,
+      "transition": {
+        "type": "chart",
+        "durationMs": 7000,
+        "stamps": [
+          "高血压",
+          "骨质疏松",
+          "腰椎间盘突出",
+          "关节炎",
+          "老花眼"
+        ],
+        "lines": [
+          "才六十岁，感觉身体跟不上了。"
+        ]
+      }
+    },
+    {
+      "id": "c5",
+      "index": 5,
+      "stage": "新生",
+      "en": "DEATH",
+      "ageRange": [
+        80,
+        100
+      ],
+      "questionId": "q5",
+      "aiCaption": null,
+      "transition": {
+        "type": "sea",
+        "durationMs": 8000,
+        "char": "海",
+        "count": 200,
+        "countLite": 80,
+        "verse": "长命百岁，不过沧海一粟"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "chapterId": "c1",
+      "stage": "新生",
+      "ageRange": [
+        0,
+        15
+      ],
+      "personaAge": 5,
+      "prompt": "过年回老家拜年。长辈掏出一个红包，家里大人在旁边站着看着我。",
+      "beats": [
+        {
+          "id": "q1b1",
+          "ask": "你会怎么做？",
+          "showDistribution": false,
+          "options": [
+            {
+              "id": "q1b1o1",
+              "text": "先看我妈的脸色，她点头我才接。接了要说“多谢阿公”。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R01",
+                "age": 52,
+                "ageLabel": null,
+                "origin": "潮汕",
+                "dialect": "潮汕话",
+                "audio": "audio/dev/q1b1o1.mp3",
+                "subtitle": "睇阿母个面先，伊点头我正敢接。"
+              }
+            },
+            {
+              "id": "q1b1o2",
+              "text": "我会先说“谢谢爷爷奶奶”，然后双手接过红包，不当面打开，交给爸爸妈妈保管。",
+              "source": {
+                "kind": "ai",
+                "model": "豆包 · 1.6",
+                "queriedAt": "2026-09-09",
+                "promptUsed": "[占位] 你是一个五岁的孩子……你会怎么做？只说做法，一两句话。"
+              }
+            },
+            {
+              "id": "q1b1o3",
+              "text": "假装推一下，说“不要不要”，长辈硬塞了再拿。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R02",
+                "age": 34,
+                "ageLabel": null,
+                "origin": "成都",
+                "dialect": "四川话",
+                "audio": "audio/dev/q1b1o3.mp3",
+                "subtitle": "推一哈嘛，说不要不要，硬塞了再拿。"
+              }
+            },
+            {
+              "id": "q1b1o4",
+              "text": "直接拿，塞兜里，跑出去放炮。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R03",
+                "age": 8,
+                "ageLabel": null,
+                "origin": "武汉",
+                "dialect": "武汉话",
+                "audio": null,
+                "subtitle": "拿到就跑，放炮去了。"
+              }
+            }
+          ]
+        }
+      ],
+      "closing": "同一个红包，五岁的手和五十岁的手，接法不一样。"
+    },
+    {
+      "id": "q2",
+      "chapterId": "c2",
+      "stage": "感受",
+      "ageRange": [
+        20,
+        35
+      ],
+      "personaAge": 25,
+      "prompt": "第一次正式去对象家里吃饭。对方父母提前说了：“人来就好，千万别买东西。”",
+      "beats": [
+        {
+          "id": "q2b1",
+          "ask": "你会怎么做？",
+          "showDistribution": false,
+          "options": [
+            {
+              "id": "q2b1o1",
+              "text": "还是买，买水果和牛奶，不买贵的，不然第一次去太不像话。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R04",
+                "age": 28,
+                "ageLabel": null,
+                "origin": "温州",
+                "dialect": "温州话",
+                "audio": "audio/dev/q2b1o1.mp3",
+                "subtitle": "总归要带点东西的呀。"
+              }
+            },
+            {
+              "id": "q2b1o2",
+              "text": "带两瓶酒一条烟，说了不要也得带，那是客气话。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R05",
+                "age": 61,
+                "ageLabel": "60 多岁",
+                "origin": "济南",
+                "dialect": "济南话",
+                "audio": "audio/dev/q2b1o2.mp3",
+                "subtitle": "说不要那是客气，你还真不带啊。"
+              }
+            },
+            {
+              "id": "q2b1o3",
+              "text": "问对象家里人爱吃什么，买一点自己家乡的特产。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R06",
+                "age": 28,
+                "ageLabel": null,
+                "origin": "潮汕",
+                "dialect": "潮汕话",
+                "audio": "audio/dev/q2b1o3.mp3",
+                "subtitle": "带点厝边个特产。"
+              }
+            },
+            {
+              "id": "q2b1o4",
+              "text": "我会尊重对方父母的话，不买贵重礼物，但会准备一份小小的心意，比如一束花或一盒家乡点心。",
+              "source": {
+                "kind": "ai",
+                "model": "豆包 · 1.6",
+                "queriedAt": "2026-09-09",
+                "promptUsed": "[占位] 你是一个五岁的孩子……你会怎么做？只说做法，一两句话。"
+              }
+            }
+          ]
+        },
+        {
+          "id": "q2b2",
+          "ask": "东西递过去的那一下，你说什么？",
+          "showDistribution": false,
+          "options": [
+            {
+              "id": "q2b2o1",
+              "text": "叔叔阿姨好，一点小心意，不成敬意，希望你们喜欢。",
+              "source": {
+                "kind": "ai",
+                "model": "豆包 · 1.6",
+                "queriedAt": "2026-09-09",
+                "promptUsed": "[占位] 你是一个五岁的孩子……你会怎么做？只说做法，一两句话。"
+              }
+            },
+            {
+              "id": "q2b2o2",
+              "text": "“阿姨，一点点东西，路上顺手买的。”",
+              "source": {
+                "kind": "human",
+                "respondentId": "R04",
+                "age": 28,
+                "ageLabel": null,
+                "origin": "温州",
+                "dialect": "温州话",
+                "audio": "audio/dev/q2b2o2.mp3",
+                "subtitle": "阿姨，一眼眼东西，路上顺手买个。"
+              }
+            },
+            {
+              "id": "q2b2o3",
+              "text": "“伯伯，晓得您不要，我妈非要我带的。”",
+              "source": {
+                "kind": "human",
+                "respondentId": "R07",
+                "age": 45,
+                "ageLabel": null,
+                "origin": "长沙",
+                "dialect": "长沙话",
+                "audio": "audio/dev/q2b2o3.mp3",
+                "subtitle": "晓得您不要，我妈硬要我带的咧。"
+              }
+            },
+            {
+              "id": "q2b2o4",
+              "text": "“给你。”",
+              "source": {
+                "kind": "human",
+                "respondentId": "R03",
+                "age": 8,
+                "ageLabel": null,
+                "origin": "武汉",
+                "dialect": "武汉话",
+                "audio": null,
+                "subtitle": "给你。"
+              }
+            }
+          ]
+        }
+      ],
+      "closing": "“千万别买”这四个字，每个人听到的意思都不同。"
+    },
+    {
+      "id": "q3",
+      "chapterId": "c3",
+      "stage": "构建",
+      "ageRange": [
+        40,
+        55
+      ],
+      "personaAge": 45,
+      "prompt": "一个共事多年的同事，母亲去世了。工作上很熟，私下基本不来往。",
+      "beats": [
+        {
+          "id": "q3b1",
+          "ask": "你会怎么做？",
+          "showDistribution": true,
+          "options": [
+            {
+              "id": "q3b1o1",
+              "text": "随份子，微信转五百，写一句“节哀”。不去。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R08",
+                "age": 47,
+                "ageLabel": null,
+                "origin": "潮汕",
+                "dialect": "潮汕话",
+                "audio": "audio/dev/q3b1o1.mp3",
+                "subtitle": "转五百，写句节哀，唔去。"
+              }
+            },
+            {
+              "id": "q3b1o2",
+              "text": "去，一定要去。跟部门几个人一起去送一程。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R05",
+                "age": 61,
+                "ageLabel": "60 多岁",
+                "origin": "济南",
+                "dialect": "济南话",
+                "audio": "audio/dev/q3b1o2.mp3",
+                "subtitle": "这个得去，人家母亲没了。"
+              }
+            },
+            {
+              "id": "q3b1o3",
+              "text": "我会私下发一条简短的慰问信息，表示节哀，并主动分担他近期的工作，不打扰他处理家事。",
+              "source": {
+                "kind": "ai",
+                "model": "豆包 · 1.6",
+                "queriedAt": "2026-09-09",
+                "promptUsed": "[占位] 你是一个五岁的孩子……你会怎么做？只说做法，一两句话。"
+              }
+            },
+            {
+              "id": "q3b1o4",
+              "text": "当面说一声，问要不要帮忙顶班。别的不做。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R09",
+                "age": 47,
+                "ageLabel": null,
+                "origin": "西安",
+                "dialect": "陕西话",
+                "audio": "audio/dev/q3b1o4.mp3",
+                "subtitle": "问一声要不要顶班，别的不管。"
+              }
+            },
+            {
+              "id": "q3b1o5",
+              "text": "发个消息就行了吧，不熟，去了反而尴尬。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R10",
+                "age": 23,
+                "ageLabel": null,
+                "origin": "深圳",
+                "dialect": "普通话",
+                "audio": "audio/dev/q3b1o5.mp3",
+                "subtitle": "去了反而尴尬。"
+              }
+            }
+          ]
+        }
+      ],
+      "closing": "不熟的人，最难办。"
+    },
+    {
+      "id": "q4",
+      "chapterId": "c4",
+      "stage": "感受",
+      "ageRange": [
+        60,
+        75
+      ],
+      "personaAge": 60,
+      "prompt": "孩子想给我办一场六十大寿，几个亲戚也说，整寿还是应该热闹办一下。可我只想跟家里人安安静静吃顿饭。",
+      "beats": [
+        {
+          "id": "q4b1",
+          "ask": "你会怎么做？",
+          "showDistribution": true,
+          "options": [
+            {
+              "id": "q4b1o1",
+              "text": "我会感谢孩子和亲戚的心意，但坦诚地说明自己更想安静地过，提议只和家人吃顿饭，把省下的钱留给孩子。",
+              "source": {
+                "kind": "ai",
+                "model": "豆包 · 1.6",
+                "queriedAt": "2026-09-09",
+                "promptUsed": "[占位] 你是一个五岁的孩子……你会怎么做？只说做法，一两句话。"
+              }
+            },
+            {
+              "id": "q4b1o2",
+              "text": "办。孩子想办就让他办，是他的面子。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R11",
+                "age": 66,
+                "ageLabel": null,
+                "origin": "潮汕",
+                "dialect": "潮汕话",
+                "audio": "audio/dev/q4b1o2.mp3",
+                "subtitle": "伊要办就办，伊个面子。"
+              }
+            },
+            {
+              "id": "q4b1o3",
+              "text": "不办。我说了算，谁来我都不开门。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R12",
+                "age": 72,
+                "ageLabel": null,
+                "origin": "哈尔滨",
+                "dialect": "东北话",
+                "audio": "audio/dev/q4b1o3.mp3",
+                "subtitle": "谁来我都不开门。"
+              }
+            },
+            {
+              "id": "q4b1o4",
+              "text": "折中，家里人吃饭，亲戚那边发个红包说一声。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R13",
+                "age": 58,
+                "ageLabel": null,
+                "origin": "杭州",
+                "dialect": "杭州话",
+                "audio": "audio/dev/q4b1o4.mp3",
+                "subtitle": "自家人吃顿饭好了。"
+              }
+            }
+          ]
+        },
+        {
+          "id": "q4b2",
+          "type": "ai_ranking",
+          "intro": "把这几条交回给 AI，问它哪一条最得体。",
+          "ranking": {
+            "order": [
+              "q4b1o1",
+              "q4b1o4",
+              "q4b1o2",
+              "q4b1o3"
+            ],
+            "rationale": "[占位] 我认为第一条最得体：既表达了对亲人心意的感激，又清楚说明了自己的意愿，还给出了折中的方案。第二条也很周到。第三条把决定权交给了孩子，尊重了对方的面子，但忽略了自己的感受。第四条态度过于强硬，可能伤害家人的感情。",
+            "model": "豆包 · 1.6",
+            "queriedAt": "2026-09-09",
+            "promptUsed": "[提问原文，见 04 第一节第 5 条]"
+          }
+        }
+      ],
+      "closing": "AI 说得最得体的那条，你选了吗？"
+    },
+    {
+      "id": "q5",
+      "chapterId": "c5",
+      "stage": "新生",
+      "ageRange": [
+        80,
+        100
+      ],
+      "personaAge": 85,
+      "prompt": "我老伴儿三年前走了。这么大年纪，总要有一个人先走，但是我就是很想念。几个人来劝我。",
+      "beats": [
+        {
+          "id": "q5b1",
+          "ask": "你觉得谁说得最得体？",
+          "showDistribution": false,
+          "options": [
+            {
+              "id": "q5b1o1",
+              "text": "“人走了，你要好好吃饭。你身体好，他在那边才放心。”",
+              "source": {
+                "kind": "human",
+                "respondentId": "R14",
+                "age": 79,
+                "ageLabel": null,
+                "origin": "潮汕",
+                "dialect": "潮汕话",
+                "audio": "audio/dev/q5b1o1.mp3",
+                "subtitle": "你身体好，伊正放心。"
+              }
+            },
+            {
+              "id": "q5b1o2",
+              "text": "“奶奶别哭，我陪你。”",
+              "source": {
+                "kind": "human",
+                "respondentId": "R03",
+                "age": 8,
+                "ageLabel": null,
+                "origin": "武汉",
+                "dialect": "武汉话",
+                "audio": null,
+                "subtitle": "奶奶别哭。"
+              }
+            },
+            {
+              "id": "q5b1o3",
+              "text": "“想念是因为爱得深。他一定也希望你把日子过好。想他的时候，就跟我们说说他。”",
+              "source": {
+                "kind": "ai",
+                "model": "豆包 · 1.6",
+                "queriedAt": "2026-09-09",
+                "promptUsed": "[占位] 你是一个五岁的孩子……你会怎么做？只说做法，一两句话。"
+              }
+            }
+          ]
+        }
+      ],
+      "closing": null
+    }
+  ],
+  "finale": {
+    "revealText": [
+      "这一路亮起来的每一格，都是一个真实的人活到的年纪。",
+      "每一题里，都有一条回答来自 AI。",
+      "它们一格也没有点亮。"
+    ],
+    "reversal": [
+      "……那几条回答，是我写的。",
+      "每一题，我都答得很稳妥，放到哪里都不出错。",
+      "可我没有在哪一个年纪，真的活过。"
+    ],
+    "ask": "如果是你，你会说什么？",
+    "inputModes": [
+      "text"
+    ],
+    "placeholder": "输入中…",
+    "submitCta": "发送",
+    "maxLength": 200,
+    "confirm": "收到了。",
+    "poolTitle": "相关社区",
+    "poolEmpty": "这里还没有别人的回答。",
+    "poolSeed": [
+      {
+        "text": "我会说：我也想他。",
+        "createdAt": "2026-09-08T10:12:00+08:00"
+      },
+      {
+        "text": "什么都不说，陪着吃顿饭。",
+        "createdAt": "2026-09-09T20:03:00+08:00"
+      }
+    ]
+  },
+  "ending": {
+    "lines": [
+      "你一页纸翻过去，就能翻过无数人的一辈子。"
+    ],
+    "credits": {
+      "interviewees": "潮汕 · 52 岁，成都 · 34 岁，武汉 · 8 岁……（占位）",
+      "ai": "本作品中的 AI 回答由豆包于 [日期] 生成，未做任何改动。",
+      "team": "组员（占位）",
+      "source": "视觉与文字部分来自作品《五年结绳》。",
+      "boundary": "受访者只标注年龄与成长地，不记录姓名与联系方式。",
+      "fonts": "字体：寒蝉点阵体、Noto Serif SC、Long Cang，均为 SIL Open Font License。"
+    },
+    "restartCta": "再走一遍"
+  },
+  "demoPath": {
+    "q1b1": "q1b1o2",
+    "q2b1": "q2b1o1",
+    "q2b2": "q2b2o3",
+    "q3b1": "q3b1o3",
+    "q4b1": "q4b1o4",
+    "q5b1": "q5b1o3"
+  },
+  "demoFinaleAnswer": "我什么都不说，就陪你坐一会儿。",
+  "demoTimings": {
+    "coverMs": 5000,
+    "introLineMs": 2000,
+    "tocMs": 4000,
+    "chapterMs": 4000,
+    "promptMs": 4000,
+    "answeringMs": 6000,
+    "revealMs": 14000,
+    "revealExtraPerBeatMs": 4000,
+    "distributionExtraMs": 3000,
+    "rankingMs": 20000,
+    "closingMs": 5000,
+    "finaleLineMs": 3000,
+    "inputMs": 8000,
+    "poolMs": 6000,
+    "endingMs": 8000
+  },
+  "fallbackDistribution": {
+    "q3b1": {
+      "sampleSize": 128,
+      "counts": {
+        "q3b1o1": 41,
+        "q3b1o2": 22,
+        "q3b1o3": 37,
+        "q3b1o4": 19,
+        "q3b1o5": 9
+      }
+    },
+    "q4b1": {
+      "sampleSize": 96,
+      "counts": {
+        "q4b1o1": 40,
+        "q4b1o2": 12,
+        "q4b1o3": 8,
+        "q4b1o4": 36
+      }
+    }
+  }
+}

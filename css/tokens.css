@@ -1,0 +1,27 @@
+/* 03 第 2、3 节：色板与字体。不要引入其他颜色。 */
+:root {
+  --pink:        #FF4680;
+  --pink-soft:   #FFE3EC;
+  --kont-top:    #FF81B4;
+  --kont-bottom: #FFE4EF;
+  --mint:        #96FFD0;
+  --mint-deep:   #97E5C2;
+  --ink:         #000000;
+  --text-2:      #353535;
+  --line:        #919191;
+  --grey:        #999999;
+  --paper:       #FFFFFF;
+  --grid:        rgba(150, 255, 208, 0.18);
+
+  --font-pixel: "ChillBitmap", monospace;
+  --font-serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-sans:  "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-hand:  "Long Cang", "KaiTi", "STKaiti", cursive;
+
+  --app-w: 430px;
+  --topbar-h: 56px;
+  --dots-h: 56px;
+  --ruler-w: 36px;
+  --pad: 16px;
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
