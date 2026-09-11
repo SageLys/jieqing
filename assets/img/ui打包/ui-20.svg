@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 221.1 462.05">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #999;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+        stroke-width: 0px;
+      }
+
+      .cls-6 {
+        font-size: 21.32px;
+      }
+
+      .cls-6, .cls-7 {
+        font-family: ChillBitmap7x, 'Chill Bitmap';
+      }
+
+      .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-8, .cls-11 {
+        fill: none;
+      }
+
+      .cls-8, .cls-13 {
+        stroke: #000;
+      }
+
+      .cls-9 {
+        fill: #ff4680;
+        stroke-width: .25px;
+      }
+
+      .cls-9, .cls-11 {
+        stroke: #fff;
+      }
+
+      .cls-14 {
+        font-size: 16.48px;
+      }
+
+      .cls-14, .cls-15, .cls-5, .cls-16, .cls-17 {
+        fill: aqua;
+      }
+
+      .cls-14, .cls-15, .cls-16, .cls-17 {
+        font-family: SourceHanSansCN-Normal-GBpc-EUC-H, 'Source Han Sans CN';
+        glyph-orientation-vertical: 0deg;
+        text-orientation: upright;
+        writing-mode: tb;
+      }
+
+      .cls-10 {
+        fill: url(#_未命名的渐变_11);
+        stroke: #797979;
+      }
+
+      .cls-11 {
+        stroke-linecap: round;
+      }
+
+      .cls-12 {
+        stroke: #e4e4e4;
+      }
+
+      .cls-3, .cls-13 {
+        fill: #fff;
+      }
+
+      .cls-15 {
+        font-size: 16.48px;
+      }
+
+      .cls-4 {
+        fill: url(#_未命名的渐变_51);
+      }
+
+      .cls-7 {
+        font-size: 58.27px;
+      }
+
+      .cls-16 {
+        font-size: 16.48px;
+      }
+
+      .cls-17 {
+        font-size: 16.48px;
+      }
+    </style>
+    <linearGradient id="_未命名的渐变_11" data-name="未命名的渐变 11" x1="60.55" y1="239.87" x2="60.55" y2="205.13" gradientTransform="translate(9.12 80.96)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#ababab"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_51" data-name="未命名的渐变 51" x1="152.85" y1="444.62" x2="26.85" y2="444.62" gradientUnits="userSpaceOnUse">
+      <stop offset=".01" stop-color="#999"/>
+      <stop offset=".04" stop-color="#8e9f9f"/>
+      <stop offset=".08" stop-color="#72b2b2"/>
+      <stop offset=".13" stop-color="#45d0d0"/>
+      <stop offset=".19" stop-color="#07f9f9"/>
+      <stop offset=".2" stop-color="aqua"/>
+      <stop offset=".22" stop-color="#00ffef"/>
+      <stop offset=".26" stop-color="#00ffc6"/>
+      <stop offset=".31" stop-color="#00ff83"/>
+      <stop offset=".37" stop-color="#00ff29"/>
+      <stop offset=".4" stop-color="lime"/>
+      <stop offset=".43" stop-color="#1dff00"/>
+      <stop offset=".51" stop-color="#67ff00"/>
+      <stop offset=".61" stop-color="#df0"/>
+      <stop offset=".64" stop-color="#ff0"/>
+      <stop offset=".75" stop-color="#ffaf00"/>
+      <stop offset=".96" stop-color="red"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <line class="cls-5" x1="1.02" y1="212.8" x2="221.02" y2="212.8"/>
+    <line class="cls-5" x1="1.02" y1="201.58" x2="221.02" y2="201.58"/>
+    <line class="cls-5" x1="1.02" y1="190.35" x2="221.02" y2="190.35"/>
+    <line class="cls-5" x1="1.02" y1="179.13" x2="221.02" y2="179.13"/>
+    <line class="cls-5" x1="1.02" y1="167.91" x2="221.02" y2="167.91"/>
+    <line class="cls-5" x1="1.02" y1="156.69" x2="221.02" y2="156.69"/>
+    <line class="cls-5" x1="1.02" y1="145.47" x2="221.02" y2="145.47"/>
+    <line class="cls-5" x1="1.02" y1="134.25" x2="221.02" y2="134.25"/>
+    <line class="cls-5" x1="1.02" y1="123.03" x2="221.02" y2="123.03"/>
+    <line class="cls-5" x1="1.02" y1="111.81" x2="221.02" y2="111.81"/>
+    <line class="cls-5" x1="1.02" y1="100.59" x2="221.02" y2="100.59"/>
+    <line class="cls-5" x1="1.02" y1="89.37" x2="221.02" y2="89.37"/>
+    <line class="cls-5" x1="1.02" y1="78.15" x2="221.02" y2="78.15"/>
+    <line class="cls-5" x1="1.02" y1="66.92" x2="221.02" y2="66.92"/>
+    <line class="cls-5" x1="1.02" y1="55.7" x2="221.02" y2="55.7"/>
+    <line class="cls-5" x1="1.02" y1="44.48" x2="221.02" y2="44.48"/>
+    <line class="cls-5" x1="1.02" y1="33.26" x2="221.02" y2="33.26"/>
+    <line class="cls-5" x1="1.02" y1="402.26" x2="221.02" y2="402.26"/>
+    <line class="cls-5" x1="1.02" y1="391.04" x2="221.02" y2="391.04"/>
+    <line class="cls-5" x1="1.02" y1="379.82" x2="221.02" y2="379.82"/>
+    <line class="cls-5" x1="1.02" y1="368.59" x2="221.02" y2="368.59"/>
+    <line class="cls-5" x1="1.02" y1="357.37" x2="221.02" y2="357.37"/>
+    <line class="cls-5" x1="1.02" y1="346.15" x2="221.02" y2="346.15"/>
+    <line class="cls-5" x1="1.02" y1="334.93" x2="221.02" y2="334.93"/>
+    <line class="cls-5" x1="1.02" y1="323.71" x2="221.02" y2="323.71"/>
+    <line class="cls-5" x1="1.02" y1="312.49" x2="221.02" y2="312.49"/>
+    <line class="cls-5" x1="1.02" y1="301.27" x2="221.02" y2="301.27"/>
+    <line class="cls-5" x1="1.02" y1="290.05" x2="221.02" y2="290.05"/>
+    <line class="cls-5" x1="1.02" y1="278.83" x2="221.02" y2="278.83"/>
+    <line class="cls-5" x1="1.02" y1="267.61" x2="221.02" y2="267.61"/>
+    <line class="cls-5" x1="1.02" y1="256.38" x2="221.02" y2="256.39"/>
+    <line class="cls-5" x1="1.02" y1="245.16" x2="221.02" y2="245.16"/>
+    <line class="cls-5" x1="1.02" y1="233.94" x2="221.02" y2="233.94"/>
+    <line class="cls-5" x1="1.02" y1="222.72" x2="221.02" y2="222.72"/>
+    <g>
+      <line class="cls-5" x1="1.02" y1="434.62" x2="221.02" y2="434.63"/>
+      <line class="cls-5" x1="1.02" y1="423.4" x2="221.02" y2="423.4"/>
+      <line class="cls-5" x1="1.02" y1="412.18" x2="221.02" y2="412.18"/>
+    </g>
+  </g>
+  <text class="cls-17" transform="translate(54.92 228.83) rotate(-41.16)"><tspan x="0" y="0">F</tspan></text>
+  <text class="cls-16" transform="translate(162.87 230.25) rotate(15.31)"><tspan x="0" y="0">L</tspan></text>
+  <text class="cls-14" transform="translate(124.51 228.38)"><tspan x="0" y="0">E</tspan></text>
+  <text class="cls-15" transform="translate(88.03 229.25) rotate(-26.23)"><tspan x="0" y="0">E</tspan></text>
+  <text class="cls-7" transform="translate(57.48 173.93)"><tspan x="0" y="0">感受</tspan></text>
+  <rect class="cls-8" x="-.24" y="-.12" width="221" height="463" rx="29.26" ry="29.26"/>
+  <rect class="cls-2" x="60.76" y="3.88" width="99" height="10" rx="5" ry="5"/>
+  <line class="cls-8" x1="2.26" y1="17.38" x2="218.26" y2="17.38"/>
+  <g>
+    <rect class="cls-9" x="10.81" y="31.83" width="36.23" height="18.11" transform="translate(57.84 81.78) rotate(180)"/>
+    <g>
+      <polyline class="cls-11" points="23.35 36.23 43.62 36.23 43.62 45.55 23.35 45.55 15.37 45.55"/>
+      <polygon class="cls-3" points="17.36 43.85 15.66 45.55 17.36 47.24 15.92 47.24 14.22 45.55 15.92 43.85 17.36 43.85"/>
+    </g>
+  </g>
+  <g>
+    <path class="cls-10" d="m52.65,286.09h21.29c7.04,0,12.76,5.72,12.76,12.76v21.98h-34.06v-34.74h0Z"/>
+    <rect class="cls-12" x="48.45" y="298.22" width="8.85" height="8.84"/>
+    <rect class="cls-13" x="77.29" y="293.28" width="4.16" height="21.49" rx="1.68" ry="1.68"/>
+    <rect class="cls-13" x="69.22" y="293.28" width="4.16" height="21.49" rx="1.68" ry="1.68"/>
+    <rect class="cls-13" x="50.7" y="319.64" width="7.8" height="8.54"/>
+    <rect class="cls-12" x="51.45" y="317.84" width="7.8" height="8.54"/>
+    <rect class="cls-12" x="82.35" y="319.64" width="12.45" height="8.54"/>
+    <rect class="cls-13" x="83.25" y="316.49" width="12.45" height="8.54"/>
+  </g>
+  <g>
+    <rect class="cls-13" x="107.83" y="283.63" width="73.75" height="45.82" rx="22.91" ry="22.91"/>
+    <text class="cls-6" transform="translate(116.72 311.74)"><tspan x="0" y="0">action</tspan></text>
+  </g>
+  <circle class="cls-1" cx="179.85" cy="444.63" r="9"/>
+  <path class="cls-4" d="m143.85,435.63c-2.31,0-4.42.87-6.02,2.31-1.39,1.25-2.91,2.35-4.64,3.06-1.52.62-3.31,1.25-5.34,1.63-3.69.69-8.44-1.15-12.17-2.43-1.55-2.73-4.47-4.57-7.83-4.57-3.97,0-7.34,2.58-8.53,6.15-3.79,1.23-8.35,2.83-11.47,2.85-2,.01-3.45-.47-4.62-1.11-1.58-.86-2.83-2.2-3.79-3.72-1.65-2.59-4.59-4.29-7.92-4.17-3.77.14-7.01,2.7-8.19,6.14-3.79,1.23-8.36,2.83-11.48,2.85-2,.01-3.45-.47-4.62-1.11-1.58-.86-2.83-2.2-3.79-3.72-1.65-2.59-4.59-4.29-7.92-4.17-4.66.17-8.53,4.06-8.66,8.73-.15,5.09,3.94,9.27,9,9.27,2.31,0,4.42-.87,6.02-2.31,1.39-1.25,2.91-2.35,4.64-3.06,1.52-.62,3.31-1.25,5.34-1.63,3.7-.69,8.45,1.15,12.18,2.43,1.55,2.73,4.47,4.57,7.82,4.57,2.31,0,4.42-.87,6.02-2.31,1.39-1.25,2.91-2.35,4.64-3.06,1.52-.62,3.31-1.25,5.34-1.63,3.69-.69,8.44,1.15,12.17,2.43,1.55,2.73,4.47,4.57,7.83,4.57,3.97,0,7.34-2.58,8.53-6.15,3.79-1.23,8.35-2.83,11.47-2.85,2-.01,3.45.47,4.62,1.11,1.58.86,2.83,2.2,3.79,3.72,1.65,2.59,4.59,4.29,7.92,4.17,4.66-.17,8.53-4.06,8.66-8.73.15-5.09-3.94-9.27-9-9.27Z"/>
+</svg>

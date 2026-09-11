@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 221.1 462.05">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #000;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-1, .cls-3 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #ff4680;
+        stroke-width: .25px;
+      }
+
+      .cls-2, .cls-3 {
+        stroke: #fff;
+      }
+
+      .cls-4, .cls-5, .cls-6 {
+        stroke-width: 0px;
+      }
+
+      .cls-3 {
+        stroke-linecap: round;
+      }
+
+      .cls-5 {
+        fill: #fff;
+      }
+
+      .cls-7 {
+        font-family: ChillBitmap7x, 'Chill Bitmap';
+        font-size: 29.66px;
+      }
+
+      .cls-6 {
+        fill: #96ffd0;
+      }
+    </style>
+    <image id="image" width="1281" height="831" xlink:href="C:\Users\Lenovo\OneDrive\图片\屏幕快照\屏幕截图 2026-04-22 165633.png"/>
+  </defs>
+  <text class="cls-7" transform="translate(77.38 59.74)"><tspan x="0" y="0">video</tspan></text>
+  <rect class="cls-1" x="-.24" y="-.12" width="221" height="463" rx="29.26" ry="29.26"/>
+  <rect class="cls-4" x="60.76" y="3.88" width="99" height="10" rx="5" ry="5"/>
+  <line class="cls-1" x1="2.26" y1="17.37" x2="218.26" y2="17.37"/>
+  <g>
+    <rect class="cls-2" x="9.81" y="36.83" width="36.23" height="18.11" transform="translate(55.84 91.78) rotate(180)"/>
+    <g>
+      <polyline class="cls-3" points="22.35 41.23 42.62 41.23 42.62 50.55 22.35 50.55 14.37 50.55"/>
+      <polygon class="cls-5" points="16.36 48.85 14.66 50.55 16.36 52.24 14.92 52.24 13.22 50.55 14.92 48.85 16.36 48.85"/>
+    </g>
+  </g>
+  <g>
+    <use transform="translate(18.03 78.09) scale(.14)" xlink:href="#image"/>
+    <rect class="cls-6" x="32.88" y="162.85" width="8.56" height="15.41"/>
+    <rect class="cls-6" x="27.74" y="173.13" width="8.56" height="10.27"/>
+    <rect class="cls-6" x="32.88" y="188.54" width="11.99" height="8.56"/>
+    <rect class="cls-6" x="50" y="193.68" width="11.99" height="8.56"/>
+    <rect class="cls-6" x="67.13" y="195.39" width="6.85" height="6.85"/>
+    <rect class="cls-6" x="26.03" y="191.96" width="10.28" height="10.28"/>
+    <rect class="cls-6" x="31.17" y="198.81" width="10.28" height="10.27"/>
+    <polygon class="cls-2" points="100.94 171.89 101.5 147.94 102.06 123.99 122.52 136.45 142.99 148.91 121.96 160.4 100.94 171.89"/>
+  </g>
+  <g>
+    <use transform="translate(18.03 227.09) scale(.14)" xlink:href="#image"/>
+    <rect class="cls-6" x="32.88" y="311.85" width="8.56" height="15.41"/>
+    <rect class="cls-6" x="27.74" y="322.13" width="8.56" height="10.27"/>
+    <rect class="cls-6" x="32.88" y="337.54" width="11.99" height="8.56"/>
+    <rect class="cls-6" x="50" y="342.68" width="11.99" height="8.56"/>
+    <rect class="cls-6" x="67.13" y="344.39" width="6.85" height="6.85"/>
+    <rect class="cls-6" x="26.03" y="340.96" width="10.28" height="10.27"/>
+    <rect class="cls-6" x="31.17" y="347.81" width="10.28" height="10.27"/>
+    <polygon class="cls-2" points="100.94 320.89 101.5 296.94 102.06 272.99 122.52 285.45 142.99 297.91 121.96 309.4 100.94 320.89"/>
+  </g>
+  <g>
+    <use transform="translate(21.03 383.09) scale(.14 .1)" xlink:href="#image"/>
+    <rect class="cls-6" x="35.88" y="442.96" width="8.56" height="10.89"/>
+    <rect class="cls-6" x="30.74" y="450.22" width="8.56" height="7.26"/>
+    <rect class="cls-6" x="35.88" y="461.11" width="11.99" height="6.05"/>
+    <polygon class="cls-2" points="103.94 449.35 104.5 432.43 105.06 415.51 125.52 424.31 145.99 433.11 124.96 441.23 103.94 449.35"/>
+  </g>
+</svg>

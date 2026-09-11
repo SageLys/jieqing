@@ -18,6 +18,21 @@
   --font-sans:  "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --font-hand:  "Long Cang", "KaiTi", "STKaiti", cursive;
 
+  /* 字号阶梯（设计同学 2026-09-11 补充）：大标题 32 / 页面标题 24 / 正文标题 18 / 正文 16 / 辅助 14 / 注释 12
+     像素字只能用 8 的倍数（assets/fonts/README），所以像素字取 32 / 24 / 16 */
+  --fs-h1: 32px;
+  --fs-h2: 24px;
+  --fs-h3: 18px;
+  --fs-body: 16px;
+  --fs-small: 14px;
+  --fs-note: 12px;
+  --lh-title: 1.25;
+  --lh-body: 1.55;
+
+  /* iPhone 13/14：状态栏 44、底部安全区 34；实际取系统给的 env() */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
   --app-w: 430px;
   --topbar-h: 56px;
   --dots-h: 56px;
