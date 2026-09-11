@@ -2,18 +2,21 @@
   "_notes": {
     "用途": "全部文案与数据的唯一来源。代码中不得写死任何文案。",
     "状态": "开发期占位数据，由 scripts/make_dev_content.py 生成。选项文字全是编的，只用于联调。",
-    "字段说明": "见 00_总纲 第 7 节与 02 第五节。human 来源的 age 为整数；ai 来源没有 age 字段，这是设计要求。",
+    "字段说明": "见 00_总纲 第 6 节、07 第 6 节与 02 第五节。human 来源的 age 为整数；ai 来源没有 age 字段，这是设计要求。",
+    "score": "每个选项的倾向值：+1 系 / 0 平 / -1 解（07 第 2.1 节）。现在是开发期占位值（07 第 5 节），内容组采访整理后重标。作答前不会进入 DOM。",
     "AI 选项位置": "骨架里 AI 选项在各拍中的序号故意不同，避免 id 暴露规律。渲染时仍需按 02 打乱顺序。",
-    "第五问": "第五问没有 closing。02 的提问“几个人来劝我。你觉得谁说得最得体？”已拆开：前半句并入题面，气泡里只放后半句（见 00 第 6 节第 8 条）。",
-    "公共池条目格式": "poolSeed 与观众提交共用：{ \"text\": \"…\", \"createdAt\": \"ISO 时间\" }。只放真实收集到的回答。",
-    "演示时长": "demoTimings 取代 02 第十一节的时长表。revealExtraPerBeatMs 用于第二问两拍一起揭晓；distributionExtraMs 用于带分布的拍；过场时长取各章 transition.durationMs。",
-    "已定（09-10）": "作品名：结情（英文副标题待定）；AI 模型：豆包；第三问题面与采访一致，用“母亲去世了”。"
+    "第五问": "第五问没有 closing。02 的提问“几个人来劝我。你觉得谁说得最得体？”已拆开：前半句并入题面，气泡里只放后半句。",
+    "过场": "chapters[n].transition.screens 每章两屏，type 见 03 第 7 节；文案照设计稿原文。图片缺失时页面用灰色占位块。",
+    "结": "knots 九种结（03 第 9.3 节的 glyph 对应），knotRules 的 bands 按 sum 从低到高覆盖 -6…6；deadWhen=noTie 表示六次里一次也没“系”就落八字结。方格数据在 content/knots.json。",
+    "公共池条目格式": "poolSeed 与观众存档共用：{ knotId, colors: { all: 色id, \"格子索引\": 色id }, text, createdAt }。",
+    "演示时长": "demoTimings：过场每屏 transitionScreenMs；kontRunMs 是章扉页小KONT 跑出的时长；demoColors 是演示模式的上色方案。",
+    "已定（09-11）": "主题改为“你在人情里打的结”，AI 与真人一视同仁；英文名 EMOKONT；蓝 = #0000FF；小KONT 灰；结束页黑底。"
   },
   "meta": {
     "title": "结情",
-    "titleEn": "",
-    "subtitle": "五年结绳 · 人情卷",
-    "version": "1.0",
+    "titleEn": "EMOKONT",
+    "subtitle": "你在人情里打的结",
+    "version": "2.0",
     "contentStatus": "dev",
     "lang": "zh-CN",
     "scaleRange": [
@@ -36,12 +39,24 @@
     "sameSourceAi": "两拍你选的，都来自 AI。",
     "differentSource": "两拍你选的，来自不同的回答者。",
     "aiLabel": "AI · {model} · {date}",
-    "rankingTitle": "AI 的排序",
-    "loading": "loading……"
+    "rankingTitle": "AI 的一票",
+    "loading": "loading……",
+    "tieLine": "这一下，你把绳子系紧了。",
+    "evenLine": "这一下，你没动绳子。",
+    "looseLine": "这一下，你把绳子松开了。",
+    "tendencyTie": "系",
+    "tendencyEven": "平",
+    "tendencyLoose": "解",
+    "typeHint": "在键盘上敲出这四个字母",
+    "tapToContinue": "点一下继续",
+    "archive": "历史档案",
+    "community": "相关社区",
+    "what": "what",
+    "inputPlaceholder": "输入中…"
   },
   "cover": {
     "title": "结情",
-    "titleEn": "",
+    "titleEn": "EMOKONT",
     "cta": "开启",
     "photos": [
       {
@@ -81,9 +96,9 @@
     "intro": [
       "你好呀，我是你的小KONT～",
       "人好像总在不同的雨季。",
-      "100 岁的人生，5 个问题，上万种回答。",
-      "这些问题，有很多真实的人回答过。没有标准答案。",
-      "接下来，回答我几个问题吧～"
+      "100 岁的人生，5 个问题。每一问，都有几个人先答过了——有真人，也有 AI。",
+      "没有标准答案。你选的每一条，都会在你的绳上打一个结。",
+      "走到最后，你会拿到一个属于你自己的结。开始吧～"
     ],
     "introCta": "好呀",
     "tocTooltip": "我是你的助手～"
@@ -103,24 +118,36 @@
         15
       ],
       "questionId": "q1",
-      "aiCaption": null,
       "transition": {
-        "type": "keyboard",
-        "durationMs": 7000,
-        "typeWord": "BORN",
-        "image": "assets/img/photo_baby_play.jpg",
-        "handwriting": "assets/img/hand_baobei.png",
-        "lines": [
-          "人是伴随着世界的欢呼和自己的哭声诞生的。",
-          "蹒跚学步，牙牙学语。",
-          "被世界拥抱，或轻或重。",
-          "世界就像围着我转一样。"
-        ],
-        "babble": [
-          "mma 妈 |",
-          "bba 爸 |"
+        "type": "chapter",
+        "screens": [
+          {
+            "type": "keyboard",
+            "bubbles": [
+              "人好像总在不同的雨季 /",
+              "100岁的人生 · 5 个问题 · 上万种回答"
+            ],
+            "word": "BORN"
+          },
+          {
+            "type": "baby",
+            "image": "assets/img/photo_baby_play.jpg",
+            "handwriting": "assets/img/hand_baobei.png",
+            "lines": [
+              "人是伴随着世界的欢呼和自己的哭声诞生的。",
+              "蹒跚学步，牙牙学语。",
+              "被世界拥抱，或轻或重。",
+              "世界就像围着我转一样。"
+            ],
+            "babble": [
+              "mma 妈 |",
+              "bba 爸 |"
+            ]
+          }
         ]
-      }
+      },
+      "color": "red",
+      "bookImages": []
     },
     {
       "id": "c2",
@@ -132,21 +159,116 @@
         35
       ],
       "questionId": "q2",
-      "aiCaption": null,
       "transition": {
-        "type": "table",
-        "durationMs": 7000,
-        "image": "assets/img/photo_table_bw.jpg",
-        "fallingChars": [
-          "碗",
-          "筷",
-          "酒",
-          "茶"
-        ],
-        "lines": [
-          "第一次，坐上别人家的饭桌。"
+        "type": "chapter",
+        "screens": [
+          {
+            "type": "balloon",
+            "words": [
+              "家",
+              "工作",
+              "孩子",
+              "交际",
+              "晋升"
+            ],
+            "tags": [
+              "漂亮",
+              "帅气",
+              "有趣",
+              "勇敢",
+              "稳重",
+              "聪明"
+            ],
+            "caption": [
+              "和我爱人教孩子学习",
+              "教的 头 大"
+            ],
+            "yellowBox": [
+              "想买房买车有存款，那些三十多岁的钱怎么赚的",
+              "三十岁也不知道"
+            ]
+          },
+          {
+            "type": "video-face",
+            "title": "记挂的是什么",
+            "image": "assets/img/photo_subway.jpg",
+            "boxes": [
+              {
+                "x": 28,
+                "y": 44,
+                "w": 7,
+                "h": 5,
+                "color": "yellow"
+              },
+              {
+                "x": 44,
+                "y": 47,
+                "w": 7,
+                "h": 5,
+                "color": "mint"
+              },
+              {
+                "x": 56,
+                "y": 43,
+                "w": 8,
+                "h": 6,
+                "color": "yellow"
+              },
+              {
+                "x": 70,
+                "y": 40,
+                "w": 7,
+                "h": 5,
+                "color": "mint"
+              },
+              {
+                "x": 36,
+                "y": 54,
+                "w": 6,
+                "h": 5,
+                "color": "mint"
+              },
+              {
+                "x": 50,
+                "y": 56,
+                "w": 8,
+                "h": 6,
+                "color": "yellow"
+              },
+              {
+                "x": 64,
+                "y": 53,
+                "w": 7,
+                "h": 5,
+                "color": "yellow"
+              },
+              {
+                "x": 78,
+                "y": 50,
+                "w": 9,
+                "h": 7,
+                "color": "mint"
+              },
+              {
+                "x": 42,
+                "y": 64,
+                "w": 10,
+                "h": 8,
+                "color": "mint"
+              },
+              {
+                "x": 60,
+                "y": 66,
+                "w": 6,
+                "h": 5,
+                "color": "yellow"
+              }
+            ]
+          }
         ]
-      }
+      },
+      "color": "yellow",
+      "bookImages": []
     },
     {
       "id": "c3",
@@ -158,33 +280,57 @@
         55
       ],
       "questionId": "q3",
-      "aiCaption": null,
       "transition": {
-        "type": "network",
-        "durationMs": 7000,
-        "silhouettes": [
-          "assets/img/silhouette_1.svg",
-          "assets/img/silhouette_2.svg",
-          "assets/img/silhouette_3.svg",
-          "assets/img/silhouette_4.svg",
-          "assets/img/silhouette_5.svg",
-          "assets/img/silhouette_6.svg",
-          "assets/img/silhouette_7.svg",
-          "assets/img/silhouette_8.svg"
-        ],
-        "nodes": [
-          "上有老",
-          "下有小",
-          "家庭",
-          "事业",
-          "同事",
-          "领导",
-          "朋友"
-        ],
-        "lines": [
-          "上有老，下有小。"
+        "type": "chapter",
+        "screens": [
+          {
+            "type": "walk",
+            "chips": [
+              "走",
+              "走",
+              "走",
+              "走",
+              "走",
+              "远"
+            ],
+            "images": [
+              "assets/img/photo_hands_1.jpg",
+              "assets/img/photo_hands_2.jpg",
+              "assets/img/photo_hands_3.jpg",
+              "assets/img/photo_hands_4.jpg"
+            ],
+            "bigChar": "走",
+            "caption": "有点力不从心"
+          },
+          {
+            "type": "scribble",
+            "left": [
+              "少吃点外卖",
+              "我都说了别熬夜",
+              "你在干什么",
+              "你得这样…"
+            ],
+            "right": [
+              "我希望你…",
+              "我想你了",
+              "吃的好不好",
+              "睡的好不好"
+            ],
+            "box": [
+              "五十岁的我",
+              "孩子在外北漂",
+              "没什么大愿望，就想让他回来"
+            ],
+            "chips": [
+              "已取消",
+              "已拒绝"
+            ],
+            "question": "?"
+          }
         ]
-      }
+      },
+      "color": "green",
+      "bookImages": []
     },
     {
       "id": "c4",
@@ -196,21 +342,40 @@
         75
       ],
       "questionId": "q4",
-      "aiCaption": null,
       "transition": {
-        "type": "chart",
-        "durationMs": 7000,
-        "stamps": [
-          "高血压",
-          "骨质疏松",
-          "腰椎间盘突出",
-          "关节炎",
-          "老花眼"
-        ],
-        "lines": [
-          "才六十岁，感觉身体跟不上了。"
+        "type": "chapter",
+        "screens": [
+          {
+            "type": "typewriter",
+            "lines": [
+              "才60岁，感觉身体跟不上了，",
+              "大毛病小毛病就跟做客一样",
+              "来来来来来来来来来来来来了"
+            ],
+            "image": "assets/img/photo_papers.jpg",
+            "stamps": [
+              "高血压",
+              "肩周炎",
+              "冠心病",
+              "骨质疏松症",
+              "慢性支气管炎",
+              "心力衰竭",
+              "阿尔茨海默病",
+              "骨关节炎",
+              "腰肌劳损"
+            ],
+            "footer": "25人正在看，已填满4563条弹幕"
+          },
+          {
+            "type": "forget",
+            "title": "我开始忘事儿了",
+            "image": "assets/img/photo_notebook.jpg",
+            "frame": true
+          }
         ]
-      }
+      },
+      "color": "cyan",
+      "bookImages": []
     },
     {
       "id": "c5",
@@ -222,15 +387,34 @@
         100
       ],
       "questionId": "q5",
-      "aiCaption": null,
       "transition": {
-        "type": "sea",
-        "durationMs": 8000,
-        "char": "海",
-        "count": 200,
-        "countLite": 80,
-        "verse": "长命百岁，不过沧海一粟"
-      }
+        "type": "chapter",
+        "screens": [
+          {
+            "type": "tears",
+            "image": "assets/img/photo_elder_eyes.jpg",
+            "char": "海",
+            "count": 120,
+            "verse": [
+              "长命百岁",
+              "不过沧海一粟"
+            ]
+          },
+          {
+            "type": "whoami",
+            "big": "我",
+            "small": "是谁",
+            "blurLines": [
+              "空落落的",
+              "身边人来了又走",
+              "我已经记不清东西了",
+              "85岁"
+            ]
+          }
+        ]
+      },
+      "color": "black",
+      "bookImages": []
     }
   ],
   "questions": [
@@ -262,7 +446,8 @@
                 "dialect": "潮汕话",
                 "audio": "audio/dev/q1b1o1.mp3",
                 "subtitle": "睇阿母个面先，伊点头我正敢接。"
-              }
+              },
+              "score": 1
             },
             {
               "id": "q1b1o2",
@@ -272,7 +457,8 @@
                 "model": "豆包 · 1.6",
                 "queriedAt": "2026-09-09",
                 "promptUsed": "[占位] 你是一个五岁的孩子……你会怎么做？只说做法，一两句话。"
-              }
+              },
+              "score": 1
             },
             {
               "id": "q1b1o3",
@@ -286,7 +472,8 @@
                 "dialect": "四川话",
                 "audio": "audio/dev/q1b1o3.mp3",
                 "subtitle": "推一哈嘛，说不要不要，硬塞了再拿。"
-              }
+              },
+              "score": 0
             },
             {
               "id": "q1b1o4",
@@ -300,7 +487,8 @@
                 "dialect": "武汉话",
                 "audio": null,
                 "subtitle": "拿到就跑，放炮去了。"
-              }
+              },
+              "score": -1
             }
           ]
         }
@@ -335,7 +523,8 @@
                 "dialect": "温州话",
                 "audio": "audio/dev/q2b1o1.mp3",
                 "subtitle": "总归要带点东西的呀。"
-              }
+              },
+              "score": 1
             },
             {
               "id": "q2b1o2",
@@ -349,7 +538,8 @@
                 "dialect": "济南话",
                 "audio": "audio/dev/q2b1o2.mp3",
                 "subtitle": "说不要那是客气，你还真不带啊。"
-              }
+              },
+              "score": 0
             },
             {
               "id": "q2b1o3",
@@ -363,7 +553,8 @@
                 "dialect": "潮汕话",
                 "audio": "audio/dev/q2b1o3.mp3",
                 "subtitle": "带点厝边个特产。"
-              }
+              },
+              "score": 1
             },
             {
               "id": "q2b1o4",
@@ -373,7 +564,8 @@
                 "model": "豆包 · 1.6",
                 "queriedAt": "2026-09-09",
                 "promptUsed": "[占位] 你是一个五岁的孩子……你会怎么做？只说做法，一两句话。"
-              }
+              },
+              "score": 1
             }
           ]
         },
@@ -390,7 +582,8 @@
                 "model": "豆包 · 1.6",
                 "queriedAt": "2026-09-09",
                 "promptUsed": "[占位] 你是一个五岁的孩子……你会怎么做？只说做法，一两句话。"
-              }
+              },
+              "score": 0
             },
             {
               "id": "q2b2o2",
@@ -404,7 +597,8 @@
                 "dialect": "温州话",
                 "audio": "audio/dev/q2b2o2.mp3",
                 "subtitle": "阿姨，一眼眼东西，路上顺手买个。"
-              }
+              },
+              "score": 1
             },
             {
               "id": "q2b2o3",
@@ -418,7 +612,8 @@
                 "dialect": "长沙话",
                 "audio": "audio/dev/q2b2o3.mp3",
                 "subtitle": "晓得您不要，我妈硬要我带的咧。"
-              }
+              },
+              "score": 0
             },
             {
               "id": "q2b2o4",
@@ -432,7 +627,8 @@
                 "dialect": "武汉话",
                 "audio": null,
                 "subtitle": "给你。"
-              }
+              },
+              "score": -1
             }
           ]
         }
@@ -467,7 +663,8 @@
                 "dialect": "潮汕话",
                 "audio": "audio/dev/q3b1o1.mp3",
                 "subtitle": "转五百，写句节哀，唔去。"
-              }
+              },
+              "score": 0
             },
             {
               "id": "q3b1o2",
@@ -481,7 +678,8 @@
                 "dialect": "济南话",
                 "audio": "audio/dev/q3b1o2.mp3",
                 "subtitle": "这个得去，人家母亲没了。"
-              }
+              },
+              "score": 1
             },
             {
               "id": "q3b1o3",
@@ -491,7 +689,8 @@
                 "model": "豆包 · 1.6",
                 "queriedAt": "2026-09-09",
                 "promptUsed": "[占位] 你是一个五岁的孩子……你会怎么做？只说做法，一两句话。"
-              }
+              },
+              "score": 1
             },
             {
               "id": "q3b1o4",
@@ -505,7 +704,8 @@
                 "dialect": "陕西话",
                 "audio": "audio/dev/q3b1o4.mp3",
                 "subtitle": "问一声要不要顶班，别的不管。"
-              }
+              },
+              "score": 1
             },
             {
               "id": "q3b1o5",
@@ -519,12 +719,13 @@
                 "dialect": "普通话",
                 "audio": "audio/dev/q3b1o5.mp3",
                 "subtitle": "去了反而尴尬。"
-              }
+              },
+              "score": -1
             }
           ]
         }
       ],
-      "closing": "不熟的人，最难办。"
+      "closing": "不熟的人，最难办。你把绳子递过去了吗？"
     },
     {
       "id": "q4",
@@ -550,7 +751,8 @@
                 "model": "豆包 · 1.6",
                 "queriedAt": "2026-09-09",
                 "promptUsed": "[占位] 你是一个五岁的孩子……你会怎么做？只说做法，一两句话。"
-              }
+              },
+              "score": 1
             },
             {
               "id": "q4b1o2",
@@ -564,7 +766,8 @@
                 "dialect": "潮汕话",
                 "audio": "audio/dev/q4b1o2.mp3",
                 "subtitle": "伊要办就办，伊个面子。"
-              }
+              },
+              "score": 1
             },
             {
               "id": "q4b1o3",
@@ -578,7 +781,8 @@
                 "dialect": "东北话",
                 "audio": "audio/dev/q4b1o3.mp3",
                 "subtitle": "谁来我都不开门。"
-              }
+              },
+              "score": -1
             },
             {
               "id": "q4b1o4",
@@ -592,14 +796,15 @@
                 "dialect": "杭州话",
                 "audio": "audio/dev/q4b1o4.mp3",
                 "subtitle": "自家人吃顿饭好了。"
-              }
+              },
+              "score": 0
             }
           ]
         },
         {
           "id": "q4b2",
           "type": "ai_ranking",
-          "intro": "把这几条交回给 AI，问它哪一条最得体。",
+          "intro": "把这几条也交给 AI，请它投一票：它觉得哪一条最合适。",
           "ranking": {
             "order": [
               "q4b1o1",
@@ -614,7 +819,7 @@
           }
         }
       ],
-      "closing": "AI 说得最得体的那条，你选了吗？"
+      "closing": "你的六十岁，是谁说了算？"
     },
     {
       "id": "q5",
@@ -644,7 +849,8 @@
                 "dialect": "潮汕话",
                 "audio": "audio/dev/q5b1o1.mp3",
                 "subtitle": "你身体好，伊正放心。"
-              }
+              },
+              "score": 0
             },
             {
               "id": "q5b1o2",
@@ -658,7 +864,8 @@
                 "dialect": "武汉话",
                 "audio": null,
                 "subtitle": "奶奶别哭。"
-              }
+              },
+              "score": 1
             },
             {
               "id": "q5b1o3",
@@ -668,57 +875,253 @@
                 "model": "豆包 · 1.6",
                 "queriedAt": "2026-09-09",
                 "promptUsed": "[占位] 你是一个五岁的孩子……你会怎么做？只说做法，一两句话。"
-              }
+              },
+              "score": 1
             }
           ]
         }
-      ],
-      "closing": null
+      ]
     }
   ],
+  "knots": [
+    {
+      "id": "panyuan",
+      "name": "攀缘结",
+      "short": "相依攀附，步步高升",
+      "detail": "名字取自攀缘相依之意，象征人与人相互扶持；也寓意事业向上、稳步高升，情谊绵长稳固。",
+      "glyph": "knot_01"
+    },
+    {
+      "id": "cujiangcao",
+      "name": "酢浆草结",
+      "short": "幸运相伴，喜乐常临",
+      "detail": "形似幸运草，代表好运与希望，寓意福禄齐聚，平凡坚韧，是传递美好祝福的经典结。",
+      "glyph": "knot_04"
+    },
+    {
+      "id": "tuanjin",
+      "name": "团锦结",
+      "short": "花团锦簇，团圆锦绣",
+      "detail": "结形饱满如盛放繁花，寓意团圆美满、前程似锦，象征生活兴旺、喜事齐聚。",
+      "glyph": "knot_09"
+    },
+    {
+      "id": "panchang",
+      "name": "盘长结",
+      "short": "生生不息，福寿绵长",
+      "detail": "中国结经典代表，绳线回环无始无终，寓意福禄绵延、万事长久，代表生生不息的生命力。",
+      "glyph": "knot_10"
+    },
+    {
+      "id": "jixiang",
+      "name": "吉祥结",
+      "short": "吉庆安康，万事顺遂",
+      "detail": "古老的吉祥纹样，源自八宝纹样，寓意吉祥平安、福运圆满，驱散烦忧，事事称心。",
+      "glyph": "knot_08"
+    },
+    {
+      "id": "shuanglian",
+      "name": "双联结",
+      "short": "两两相联，佳偶同心",
+      "detail": "两结紧扣相连，“联”通“连”，寓意连年有余、连中三元，象征伴侣、亲友之间牢不可破的联结。",
+      "glyph": "knot_05"
+    },
+    {
+      "id": "bazi",
+      "name": "八字结",
+      "short": "循环流转，兴旺发达",
+      "detail": "外形如数字 8，谐音“发”，寓意发达转运；双环相连，象征真挚不变的情谊，生命循环不息。",
+      "glyph": "knot_06",
+      "dead": true
+    },
+    {
+      "id": "zaojing",
+      "name": "藻井结",
+      "short": "秩序井然，尊贵平安",
+      "detail": "造型取自宫殿穹顶藻井，层层嵌套方正对称，寓意稳定和谐、前程辉煌，护佑平安。",
+      "glyph": "knot_07"
+    },
+    {
+      "id": "jingang",
+      "name": "金刚结",
+      "short": "稳固护身，平安守护",
+      "detail": "绳体紧实牢固不易散开，寓意坚韧不破，护佑平安，阻隔阻碍，带来安稳顺遂。",
+      "glyph": "knot_02"
+    }
+  ],
+  "knotRules": {
+    "deadWhen": "noTie",
+    "bands": [
+      {
+        "maxSum": 1,
+        "knots": [
+          "shuanglian",
+          "cujiangcao"
+        ]
+      },
+      {
+        "maxSum": 3,
+        "knots": [
+          "jixiang",
+          "panyuan"
+        ]
+      },
+      {
+        "maxSum": 5,
+        "knots": [
+          "tuanjin",
+          "jingang"
+        ]
+      },
+      {
+        "maxSum": 6,
+        "knots": [
+          "zaojing",
+          "panchang"
+        ]
+      }
+    ],
+    "scoredBeats": [
+      "q1b1",
+      "q2b1",
+      "q2b2",
+      "q3b1",
+      "q4b1",
+      "q5b1"
+    ]
+  },
   "finale": {
-    "revealText": [
-      "这一路亮起来的每一格，都是一个真实的人活到的年纪。",
-      "每一题里，都有一条回答来自 AI。",
-      "它们一格也没有点亮。"
+    "knotIntro": [
+      "五个年纪，六次出手。",
+      "你的绳子，打成了这样一个结。"
     ],
-    "reversal": [
-      "……那几条回答，是我写的。",
-      "每一题，我都答得很稳妥，放到哪里都不出错。",
-      "可我没有在哪一个年纪，真的活过。"
+    "knotIntroDead": [
+      "五个年纪，六次出手。",
+      "你一次也没把绳子系上。",
+      "这是一个死结。"
     ],
-    "ask": "如果是你，你会说什么？",
+    "explain": [
+      "这是{knotName}。{knotShort}。",
+      "{knotDetail}",
+      "一路上，你系了 {tie} 次，没动 {even} 次，松开 {loose} 次。",
+      "AI 的回答，你选过 {aiPicks} 次。它和那些真人一样，只是先答过的人。",
+      "给它上个色吧，这个结是你的。"
+    ],
+    "explainDead": [
+      "这是八字结。{knotShort}。",
+      "{knotDetail}",
+      "一路上，你没动 {even} 次，松开 {loose} 次。",
+      "AI 的回答，你选过 {aiPicks} 次。它和那些真人一样，只是先答过的人。",
+      "死结也是结。给它上个色吧。"
+    ],
+    "colorTitle": "调一调它的颜色",
+    "colorHint": "点一个颜色，再点结上的方块；点「一键上色」整体上色。",
+    "fillAllCta": "一键上色",
+    "colorDoneCta": "好了",
+    "palette": [
+      {
+        "id": "red",
+        "name": "红",
+        "hex": "#FF0000"
+      },
+      {
+        "id": "yellow",
+        "name": "黄",
+        "hex": "#FFFF00"
+      },
+      {
+        "id": "blue",
+        "name": "蓝",
+        "hex": "#0000FF"
+      },
+      {
+        "id": "green",
+        "name": "绿",
+        "hex": "#00FF00"
+      },
+      {
+        "id": "black",
+        "name": "黑",
+        "hex": "#000000"
+      }
+    ],
+    "ask": "最后，你想对谁说一句什么？",
     "inputModes": [
       "text"
     ],
     "placeholder": "输入中…",
-    "submitCta": "发送",
+    "saveCta": "存档",
     "maxLength": 200,
-    "confirm": "收到了。",
+    "confirm": "存好了。这个结是你的。",
     "poolTitle": "相关社区",
-    "poolEmpty": "这里还没有别人的回答。",
+    "poolEmpty": "这里还没有别人的结。",
     "poolSeed": [
       {
-        "text": "我会说：我也想他。",
-        "createdAt": "2026-09-08T10:12:00+08:00"
+        "knotId": "panyuan",
+        "colors": {
+          "all": "red"
+        },
+        "text": "妈，我下周回去。",
+        "createdAt": "2026-09-10T10:12:00+08:00"
       },
       {
-        "text": "什么都不说，陪着吃顿饭。",
-        "createdAt": "2026-09-09T20:03:00+08:00"
+        "knotId": "tuanjin",
+        "colors": {
+          "all": "yellow",
+          "5": "black"
+        },
+        "text": "对不起，那年没去。",
+        "createdAt": "2026-09-10T11:40:00+08:00"
+      },
+      {
+        "knotId": "shuanglian",
+        "colors": {
+          "all": "green"
+        },
+        "text": "你说别买，我还是买了。",
+        "createdAt": "2026-09-10T13:05:00+08:00"
+      },
+      {
+        "knotId": "bazi",
+        "colors": {
+          "all": "black"
+        },
+        "text": "我也不知道该说什么。",
+        "createdAt": "2026-09-10T14:20:00+08:00"
+      },
+      {
+        "knotId": "jixiang",
+        "colors": {
+          "all": "blue",
+          "12": "red"
+        },
+        "text": "六十岁那天，我们自己吃的饭。",
+        "createdAt": "2026-09-10T16:33:00+08:00"
+      },
+      {
+        "knotId": "panchang",
+        "colors": {
+          "all": "red",
+          "0": "yellow",
+          "3": "yellow"
+        },
+        "text": "想他的时候就跟孩子说说他。",
+        "createdAt": "2026-09-10T18:01:00+08:00"
       }
     ]
   },
   "ending": {
     "lines": [
-      "你一页纸翻过去，就能翻过无数人的一辈子。"
+      "你一页纸翻过去，就能翻过无数人的一辈子。",
+      "结是紧是松，都是自己的手打的。"
     ],
     "credits": {
-      "interviewees": "潮汕 · 52 岁，成都 · 34 岁，武汉 · 8 岁……（占位）",
-      "ai": "本作品中的 AI 回答由豆包于 [日期] 生成，未做任何改动。",
-      "team": "组员（占位）",
-      "source": "视觉与文字部分来自作品《五年结绳》。",
-      "boundary": "受访者只标注年龄与成长地，不记录姓名与联系方式。",
-      "fonts": "字体：寒蝉点阵体、Noto Serif SC、Long Cang，均为 SIL Open Font License。"
+      "interviewees": "[待填 · 按「地区 · 年龄」列出全部受访者]",
+      "ai": "本作品中的 AI 回答由豆包于 [日期] 生成，与真人回答一起进入选项，未做改动。",
+      "team": "[待填 · 组员]",
+      "source": "视觉与文字部分来自作品《五年结绳》。九种结的释义由设计同学整理。",
+      "boundary": "受访者只标注年龄与成长地，不记录姓名与联系方式。观众的结与留言只存文本与时间。",
+      "fonts": "字体：寒蝉点阵体（作者自由许可）、Noto Serif SC、Long Cang（SIL OFL）。"
     },
     "restartCta": "再走一遍"
   },
@@ -731,11 +1134,18 @@
     "q5b1": "q5b1o3"
   },
   "demoFinaleAnswer": "我什么都不说，就陪你坐一会儿。",
+  "demoColors": [
+    "red",
+    "black"
+  ],
   "demoTimings": {
     "coverMs": 5000,
+    "loadingMs": 3600,
     "introLineMs": 2000,
     "tocMs": 4000,
-    "chapterMs": 4000,
+    "chapterMs": 3000,
+    "kontRunMs": 1200,
+    "transitionScreenMs": 5000,
     "promptMs": 4000,
     "answeringMs": 6000,
     "revealMs": 14000,
@@ -743,7 +1153,9 @@
     "distributionExtraMs": 3000,
     "rankingMs": 20000,
     "closingMs": 5000,
-    "finaleLineMs": 3000,
+    "knotDropMs": 5000,
+    "explainLineMs": 2500,
+    "colorMs": 6000,
     "inputMs": 8000,
     "poolMs": 6000,
     "endingMs": 8000

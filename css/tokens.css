@@ -1,42 +1,60 @@
-/* 03 第 2、3 节：色板与字体。不要引入其他颜色。 */
+/* 03 第 2、3 节（v2）：五章五色 + 辅助色。不要引入其他颜色。 */
 :root {
-  --pink:        #FF4680;
-  --pink-soft:   #FFE3EC;
-  --kont-top:    #FF81B4;
-  --kont-bottom: #FFE4EF;
-  --mint:        #96FFD0;
+  /* 五章五色（从 SVG 取样，都是纯色） */
+  --c-red:    #FF0000;  /* 第一章 新生 */
+  --c-yellow: #FFFF00;  /* 第二章 感受 */
+  --c-green:  #00FF00;  /* 第三章 构建 */
+  --c-cyan:   #00FFFF;  /* 第四章 感受 */
+  --c-black:  #000000;  /* 第五章 新生 */
+  --c-blue:   #0000FF;  /* 只用于结的调色板"蓝" */
+
+  --mint:        #96FFD0;  /* 目录轨道、第五章英文、第二章标签、第五章泪字 */
   --mint-deep:   #97E5C2;
-  --ink:         #000000;
+  --pink:        #FF4680;  /* 返回键、第四章 ×× 行、第五章竖排框描边 */
+  --kont-top:    #ABABAB;  /* 小KONT 身体渐变起点（v2 改灰） */
+  --kont-bottom: #FFFFFF;
+  --ink:         #231815;  /* 大字与深色文字；线框用 #000 */
+  --line-ink:    #000000;
   --text-2:      #353535;
   --line:        #919191;
-  --grey:        #999999;
+  --grey:        #999999;  /* 进度点未完成、"我"字底块 */
+  --grey-light:  #DADADA;  /* 第五章承接泪字的灰方块 */
   --paper:       #FFFFFF;
-  --grid:        rgba(150, 255, 208, 0.18);
+
+  /* 当前章色（由 <body data-chapter-color> 切换；默认灰） */
+  --chapter: var(--grey);
+  --chapter-soft: rgba(153, 153, 153, .08);
 
   --font-pixel: "ChillBitmap", monospace;
   --font-serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
   --font-sans:  "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --font-hand:  "Long Cang", "KaiTi", "STKaiti", cursive;
 
-  /* 字号阶梯（设计同学 2026-09-11 补充）：大标题 32 / 页面标题 24 / 正文标题 18 / 正文 16 / 辅助 14 / 注释 12
-     像素字只能用 8 的倍数（assets/fonts/README），所以像素字取 32 / 24 / 16 */
+  /* 字号阶梯：大标题 32 / 页面标题 24 / 正文标题 18 / 正文 16 / 辅助 14 / 注释 12；像素字只用 8 的倍数 */
   --fs-h1: 32px;
   --fs-h2: 24px;
   --fs-h3: 18px;
   --fs-body: 16px;
   --fs-small: 14px;
   --fs-note: 12px;
+  --fs-display: 64px;     /* 过场里的宋体大字（03 第 3 节） */
+  --fs-display-lg: 96px;
   --lh-title: 1.25;
   --lh-body: 1.55;
 
-  /* iPhone 13/14：状态栏 44、底部安全区 34；实际取系统给的 env() */
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 
   --app-w: 430px;
   --topbar-h: 56px;
+  --chat-top-h: 72px;
   --dots-h: 56px;
-  --ruler-w: 36px;
   --pad: 16px;
   --ease: cubic-bezier(.2,.7,.2,1);
 }
+/* 章色切换（03 第 2 节）：只在这里映射，JS 不拼色值 */
+body[data-chapter-color="red"]    { --chapter: var(--c-red);    --chapter-soft: rgba(255, 0, 0, .08); }
+body[data-chapter-color="yellow"] { --chapter: var(--c-yellow); --chapter-soft: rgba(255, 255, 0, .16); }
+body[data-chapter-color="green"]  { --chapter: var(--c-green);  --chapter-soft: rgba(0, 255, 0, .10); }
+body[data-chapter-color="cyan"]   { --chapter: var(--c-cyan);   --chapter-soft: rgba(0, 255, 255, .12); }
+body[data-chapter-color="black"]  { --chapter: var(--c-black);  --chapter-soft: rgba(0, 0, 0, .08); }

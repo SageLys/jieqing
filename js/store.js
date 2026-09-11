@@ -1,5 +1,5 @@
-// 存储适配层（00 第 8 节）。接口：getDistribution / addVote / getPool / submitToPool
-// P0 只有 LocalStore；RemoteStore 留接口，P1 接后端。
+// 存储适配层（00 第 7 节）。接口：getDistribution / addVote / getPool / submitToPool
+// 只实现 LocalStore；RemoteStore 不做（00 第 2 节第 10 条：路演只放视频 + 本机演示），接口形状留着。
 
 const KEY_POOL = 'pool';
 const distKey = (beatId) => `dist:${beatId}`;
@@ -38,7 +38,13 @@ export class LocalStore {
       .sort((a, b) => Date.parse(b.createdAt || 0) - Date.parse(a.createdAt || 0));
   }
   async submitToPool(entry) {
-    const e = { text: String(entry.text).slice(0, this.content.finale?.maxLength || 200), createdAt: entry.createdAt || new Date().toISOString() };
+    // 07 2.5：{ knotId, colors, text, createdAt }
+    const e = {
+      knotId: entry.knotId || null,
+      colors: entry.colors && typeof entry.colors === 'object' ? { ...entry.colors } : {},
+      text: String(entry.text).slice(0, this.content.finale?.maxLength || 200),
+      createdAt: entry.createdAt || new Date().toISOString(),
+    };
     if (!this.readOnly) {
       const pool = safeGet(KEY_POOL, []);
       pool.unshift(e);

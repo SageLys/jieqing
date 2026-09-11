@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="49.18 27.37 78.00 78.00" shape-rendering="crispEdges">
+  <rect x="52.18" y="61.12" width="11" height="4" fill="currentColor"/>
+  <rect x="61.18" y="63.12" width="4" height="4" fill="currentColor"/>
+  <rect x="66.18" y="61.12" width="4" height="4" fill="currentColor"/>
+  <rect x="68.18" y="63.12" width="4" height="4" fill="currentColor"/>
+  <rect x="73.18" y="64.12" width="3" height="3" fill="currentColor"/>
+  <rect x="77.18" y="63.12" width="3" height="3" fill="currentColor"/>
+  <rect x="81.18" y="64.12" width="2" height="2" fill="currentColor"/>
+  <rect x="113.18" y="62.13" width="11" height="4" transform="translate(237.36 128.25) rotate(-180)" fill="currentColor"/>
+  <rect x="111.18" y="64.13" width="4" height="4" transform="translate(226.36 132.25) rotate(-180)" fill="currentColor"/>
+  <rect x="106.18" y="62.12" width="4" height="4" transform="translate(216.36 128.25) rotate(-180)" fill="currentColor"/>
+  <rect x="104.18" y="64.12" width="4" height="4" transform="translate(212.36 132.25) rotate(-180)" fill="currentColor"/>
+  <rect x="100.18" y="65.12" width="3" height="3" transform="translate(203.36 133.25) rotate(-180)" fill="currentColor"/>
+  <rect x="96.18" y="64.12" width="3" height="3" transform="translate(195.36 131.25) rotate(-180)" fill="currentColor"/>
+  <rect x="93.18" y="65.12" width="2" height="2" transform="translate(188.36 132.25) rotate(-180)" fill="currentColor"/>
+  <rect x="74.18" y="68.13" width="3" height="3" fill="currentColor"/>
+  <rect x="75.18" y="69.13" width="5" height="4" fill="currentColor"/>
+  <rect x="79.18" y="68.13" width="4" height="2" fill="currentColor"/>
+  <rect x="83.18" y="67.13" width="2" height="2" fill="currentColor"/>
+  <rect x="84.18" y="65.13" width="3" height="2" fill="currentColor"/>
+  <rect x="85.34" y="69.77" width="3" height="3" transform="translate(-23.62 91.72) rotate(-49.86)" fill="currentColor"/>
+  <rect x="86.78" y="68.71" width="5" height="4" transform="translate(-22.33 93.38) rotate(-49.86)" fill="currentColor"/>
+  <rect x="88" y="65.74" width="4" height="2" transform="translate(-19.04 92.53) rotate(-49.86)" fill="currentColor"/>
+  <rect x="90.17" y="62.8" width="2" height="2" transform="translate(-16.38 92.38) rotate(-49.86)" fill="currentColor"/>
+  <rect x="89.11" y="60.37" width="3" height="2" transform="translate(-14.71 91.09) rotate(-49.86)" fill="currentColor"/>
+  <rect x="84.47" y="61.24" width="3" height="3" transform="translate(116.73 164.63) rotate(-142.92)" fill="currentColor"/>
+  <rect x="82.78" y="58.34" width="5" height="4" transform="translate(116.94 159.89) rotate(-142.92)" fill="currentColor"/>
+  <rect x="79.28" y="58.82" width="4" height="2" transform="translate(110.06 156.56) rotate(-142.92)" fill="currentColor"/>
+  <rect x="77.29" y="57.81" width="2" height="2" transform="translate(105.28 152.93) rotate(-142.92)" fill="currentColor"/>
+  <rect x="74.38" y="58.5" width="3" height="2" transform="translate(100.55 152.73) rotate(-142.92)" fill="currentColor"/>
+  <rect x="80.68" y="47.62" width="6" height="6" fill="currentColor"/>
+  <rect x="84.68" y="50.62" width="4" height="9" fill="currentColor"/>
+  <rect x="76.68" y="48.62" width="6" height="3" fill="currentColor"/>
+  <rect x="77.68" y="50.62" width="1" height="9" fill="currentColor"/>
+  <rect x="67.37" y="75.56" width="6" height="6" transform="translate(65.43 183.91) rotate(-135.47)" fill="currentColor"/>
+  <rect x="69.38" y="68.75" width="4" height="9" transform="translate(70.9 175.53) rotate(-135.47)" fill="currentColor"/>
+  <rect x="69.87" y="80.22" width="6" height="3" transform="translate(67.5 191.08) rotate(-135.47)" fill="currentColor"/>
+  <rect x="76.94" y="74.71" width="1" height="9" transform="translate(77.1 189.99) rotate(-135.47)" fill="currentColor"/>
+  <rect x="88.2" y="79.12" width="6" height="6" transform="translate(213.47 92.57) rotate(142.88)" fill="currentColor"/>
+  <rect x="84.09" y="75.84" width="4" height="9" transform="translate(203.22 92.45) rotate(142.88)" fill="currentColor"/>
+  <rect x="91.69" y="78.61" width="6" height="3" transform="translate(218.53 86.84) rotate(142.88)" fill="currentColor"/>
+  <rect x="92.37" y="70.71" width="1" height="9" transform="translate(212.3 79.14) rotate(142.88)" fill="currentColor"/>
+</svg>

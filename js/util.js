@@ -21,7 +21,7 @@ export function h(tag, attrs, ...children) {
   if (attrs) {
     for (const [k, v] of Object.entries(attrs)) {
       if (v == null || v === false) continue;
-      if (k === 'style' && typeof v === 'object') Object.assign(el.style, v);
+      if (k === 'style' && typeof v === 'object') { for (const [sk, sv] of Object.entries(v)) { if (sv == null) continue; if (sk.startsWith('--')) el.style.setProperty(sk, String(sv)); else el.style[sk] = sv; } }
       else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2), v);
       else if (k === 'dataset') Object.assign(el.dataset, v);
       else if (k === 'html') el.innerHTML = v;
@@ -134,7 +134,7 @@ export async function loadKont(src = 'assets/img/kont.svg') {
     const svg = doc.documentElement;
     if (svg.nodeName !== 'svg') return;
     svg.querySelectorAll('metadata, title, desc').forEach((n) => n.remove());
-    svg.querySelectorAll('[id]').forEach((n) => { n.setAttribute('class', `${n.getAttribute('class') || ''} part-${n.id}`.trim()); n.removeAttribute('id'); });
+    svg.querySelectorAll('[id]').forEach((n) => { if (n.closest('defs')) return; n.setAttribute('class', `${n.getAttribute('class') || ''} part-${n.id}`.trim()); n.removeAttribute('id'); }); // defs 里的渐变 id 要保留
     svg.removeAttribute('width'); svg.removeAttribute('height');
     svg.setAttribute('class', 'kont-svg');
     svg.setAttribute('aria-hidden', 'true');
@@ -148,4 +148,14 @@ export function mountKont(root) {
     el.classList.add('inline');
     el.append(document.importNode(kontTemplate, true));
   });
+}
+
+/** 图片：加载失败时换成灰色占位块（03 第 7 节通用规则：缺图用灰色占位块，不阻塞） */
+export function photo(src, cls = '') {
+  const wrap = h('.ph', { class: `ph ${cls}`.trim() });
+  if (!src) { wrap.classList.add('missing'); return wrap; }
+  const img = h('img', { src, alt: '', draggable: 'false' });
+  img.addEventListener('error', () => { img.remove(); wrap.classList.add('missing'); });
+  wrap.append(img);
+  return wrap;
 }

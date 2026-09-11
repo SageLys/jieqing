@@ -25,10 +25,21 @@ export function validateContent(c) {
   if (chapters.length !== 5) err(`chapters 应为 5 章，现在 ${chapters.length}`);
   if (questions.length !== 5) err(`questions 应为 5 问，现在 ${questions.length}`);
   const qById = Object.fromEntries(questions.map((q) => [q.id, q]));
+  const COLORS = new Set(['red', 'yellow', 'green', 'cyan', 'black']);
+  const SCREEN_TYPES = new Set(['keyboard', 'baby', 'balloon', 'video-face', 'walk', 'scribble', 'typewriter', 'forget', 'tears', 'whoami']);
+  const imageRefs = [];
   chapters.forEach((ch) => {
     if (!qById[ch.questionId]) err(`章 ${ch.id} 引用的 questionId=${ch.questionId} 不存在`);
-    if (!ch.transition) warn(`章 ${ch.id} 没有 transition`);
+    if (!COLORS.has(ch.color)) err(`章 ${ch.id} 的 color=${ch.color} 不合法（red / yellow / green / cyan / black）`);
+    const screens = ch.transition?.screens;
+    if (!Array.isArray(screens) || screens.length !== 2) err(`章 ${ch.id} 的 transition.screens 应为两屏，现在 ${screens?.length ?? 0}`);
+    (screens || []).forEach((sc, k) => {
+      if (!SCREEN_TYPES.has(sc.type)) err(`章 ${ch.id} 过场第 ${k + 1} 屏 type=${sc.type} 未知`);
+      [sc.image, sc.handwriting, ...(sc.images || [])].filter(Boolean).forEach((src) => imageRefs.push({ src, where: `${ch.id} 过场 ${k + 1}` }));
+    });
+    (ch.bookImages || []).forEach((src) => imageRefs.push({ src, where: `${ch.id} bookImages` }));
   });
+  c.__imageRefs = imageRefs;
 
   const allBeatIds = new Set();
   const optById = {};
@@ -59,12 +70,13 @@ export function validateContent(c) {
       opts.forEach((o) => {
         optById[o.id] = o;
         const s = o.source || {};
+        if (![1, 0, -1].includes(o.score)) err(`${o.id} 的 score=${o.score} 不合法（应为 1 / 0 / -1）`);
         if (isPlaceholder(o.text)) warn(`${o.id} text 待填`);
         if (s.kind === 'ai') {
           if ('age' in s) err(`${o.id} 是 ai，不应有 age 字段`);
           if (isPlaceholder(s.model) || isPlaceholder(s.queriedAt)) warn(`${o.id} ai 的 model/queriedAt 待填`);
         } else if (s.kind === 'human') {
-          if (!Number.isInteger(s.age)) err(`${o.id} human 的 age 不是整数（不会点亮刻度尺）`);
+          if (!Number.isInteger(s.age)) err(`${o.id} human 的 age 不是整数`);
           if (!s.respondentId || isPlaceholder(s.respondentId)) err(`${o.id} human 缺 respondentId`);
           if (s.audio && s.audio !== null && !/\.m4a$|\.mp3$|\.aac$|\.wav$/.test(s.audio)) warn(`${o.id} audio 扩展名可疑：${s.audio}`);
         } else err(`${o.id} source.kind=${s.kind} 非法`);
@@ -80,14 +92,53 @@ export function validateContent(c) {
   Object.keys(c.fallbackDistribution || {}).forEach((beatId) => {
     if (!allBeatIds.has(beatId)) err(`fallbackDistribution 的拍 ${beatId} 不存在`);
   });
-  if (!Array.isArray(c.finale?.revealText)) err('finale.revealText 应为字符串数组');
   if (!Array.isArray(c.host?.intro)) err('host.intro 应为字符串数组');
+
+  // 结绳系统（07 第 2、6 节）
+  const knots = c.knots || [];
+  const knotIds = new Set(knots.map((k) => k.id));
+  if (!knots.length) err('knots 缺失');
+  const dead = knots.filter((k) => k.dead === true);
+  if (dead.length !== 1) err(`knots 里应恰有一个 dead: true，现在 ${dead.length}`);
+  knots.forEach((k) => { ['id', 'name', 'short', 'detail', 'glyph'].forEach((f) => { if (!k[f]) err(`knots.${k.id || '?'} 缺 ${f}`); }); });
+  const rules = c.knotRules || {};
+  const bands = rules.bands || [];
+  if (!bands.length) err('knotRules.bands 缺失');
+  else {
+    const sorted = bands.slice().sort((a, b) => a.maxSum - b.maxSum);
+    if (sorted[sorted.length - 1].maxSum < 6) err(`knotRules.bands 最高档 maxSum=${sorted[sorted.length - 1].maxSum}，没覆盖到 6`);
+    for (let i = 1; i < sorted.length; i++) if (sorted[i].maxSum <= sorted[i - 1].maxSum) err('knotRules.bands 的 maxSum 有重复');
+    sorted.forEach((b) => {
+      if (!Array.isArray(b.knots) || !b.knots.length) err(`knotRules 档 maxSum=${b.maxSum} 没有结`);
+      (b.knots || []).forEach((id) => { if (!knotIds.has(id)) err(`knotRules 引用的结 ${id} 不存在`); });
+    });
+  }
+  (rules.scoredBeats || []).forEach((id) => { if (!allBeatIds.has(id)) err(`knotRules.scoredBeats 的拍 ${id} 不存在`); });
+  if (!Array.isArray(rules.scoredBeats) || rules.scoredBeats.length !== 6) warn(`knotRules.scoredBeats 应为 6 拍，现在 ${rules.scoredBeats?.length ?? 0}`);
+  const fin = c.finale || {};
+  ['knotIntro', 'knotIntroDead', 'explain', 'explainDead'].forEach((k) => { if (!Array.isArray(fin[k])) err(`finale.${k} 应为字符串数组`); });
+  const paletteIds = new Set((fin.palette || []).map((p) => p.id));
+  if (!paletteIds.size) err('finale.palette 缺失');
+  (fin.poolSeed || []).forEach((e, i) => {
+    if (!knotIds.has(e.knotId)) err(`finale.poolSeed[${i}] 的 knotId=${e.knotId} 不存在`);
+    Object.values(e.colors || {}).forEach((cid) => { if (!paletteIds.has(cid)) err(`finale.poolSeed[${i}] 的颜色 ${cid} 不在 palette 里`); });
+  });
+  (c.demoColors || []).forEach((cid) => { if (!paletteIds.has(cid)) err(`demoColors 的 ${cid} 不在 palette 里`); });
   return out;
 }
 
-/** 异步检查音频是否缺失，结果追加进 issues 并回调 */
+/** 异步检查音频、图片是否缺失（缺失只警告），结果追加进 issues 并回调 */
 export async function checkAudio(c, onIssue) {
   const tasks = [];
+  for (const { src, where } of c.__imageRefs || []) {
+    tasks.push(fetch(src, { method: 'HEAD', cache: 'no-cache' }).then((r) => {
+      if (!r.ok) onIssue({ level: 'warn', msg: `图片缺失：${src}（${where}，将显示灰色占位块）` });
+    }).catch(() => onIssue({ level: 'warn', msg: `图片不可达：${src}（${where}）` })));
+  }
+  for (const k of c.knots || []) {
+    const src = `assets/img/knots/${k.glyph}.svg`;
+    tasks.push(fetch(src, { method: 'HEAD', cache: 'no-cache' }).then((r) => { if (!r.ok) onIssue({ level: 'warn', msg: `结的图形缺失：${src}（${k.id}）` }); }).catch(() => {}));
+  }
   for (const q of c.questions || []) for (const b of q.beats || []) for (const o of b.options || []) {
     const a = o.source?.audio;
     if (o.source?.kind !== 'human' || !a) continue;
