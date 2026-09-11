@@ -51,10 +51,18 @@
   --dots-h: 56px;
   --pad: 16px;
   --ease: cubic-bezier(.2,.7,.2,1);
+
+  /* 像素鼠标指针（scripts/make_cursors.py 生成 assets/img/cursor/*.svg；路径相对 css/）
+     箭头的小方块、小手的袖口跟随章色；后面的关键字是图片没加载出来时的退路 */
+  --cur-arrow:    url("../assets/img/cursor/arrow.svg") 1 1, default;
+  --cur-hand:     url("../assets/img/cursor/hand.svg") 10 1, pointer;
+  --cur-grab:     url("../assets/img/cursor/grab.svg") 16 16, grab;
+  --cur-grabbing: url("../assets/img/cursor/grabbing.svg") 16 16, grabbing;
+  --cur-text:     url("../assets/img/cursor/text.svg") 8 13, text;
 }
 /* 章色切换（03 第 2 节）：只在这里映射，JS 不拼色值 */
-body[data-chapter-color="red"]    { --chapter: var(--c-red);    --chapter-soft: rgba(255, 0, 0, .08); }
-body[data-chapter-color="yellow"] { --chapter: var(--c-yellow); --chapter-soft: rgba(255, 255, 0, .16); }
-body[data-chapter-color="green"]  { --chapter: var(--c-green);  --chapter-soft: rgba(0, 255, 0, .10); }
-body[data-chapter-color="cyan"]   { --chapter: var(--c-cyan);   --chapter-soft: rgba(0, 255, 255, .12); }
+body[data-chapter-color="red"]    { --chapter: var(--c-red);    --chapter-soft: rgba(255, 0, 0, .08); --cur-arrow: url("../assets/img/cursor/arrow-red.svg") 1 1, default; --cur-hand: url("../assets/img/cursor/hand-red.svg") 10 1, pointer; }
+body[data-chapter-color="yellow"] { --chapter: var(--c-yellow); --chapter-soft: rgba(255, 255, 0, .16); --cur-arrow: url("../assets/img/cursor/arrow-yellow.svg") 1 1, default; --cur-hand: url("../assets/img/cursor/hand-yellow.svg") 10 1, pointer; }
+body[data-chapter-color="green"]  { --chapter: var(--c-green);  --chapter-soft: rgba(0, 255, 0, .10); --cur-arrow: url("../assets/img/cursor/arrow-green.svg") 1 1, default; --cur-hand: url("../assets/img/cursor/hand-green.svg") 10 1, pointer; }
+body[data-chapter-color="cyan"]   { --chapter: var(--c-cyan);   --chapter-soft: rgba(0, 255, 255, .12); --cur-arrow: url("../assets/img/cursor/arrow-cyan.svg") 1 1, default; --cur-hand: url("../assets/img/cursor/hand-cyan.svg") 10 1, pointer; }
 body[data-chapter-color="black"]  { --chapter: var(--c-black);  --chapter-soft: rgba(0, 0, 0, .08); }

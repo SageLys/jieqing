@@ -9,6 +9,7 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
+  cursor: var(--cur-arrow);
 }
 #app {
   position: relative;
@@ -24,7 +25,11 @@ body {
 @media (min-width: 431px) {
   #app { box-shadow: 0 0 0 1px var(--line); }
 }
-button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: var(--cur-hand); }
+button:disabled { cursor: var(--cur-arrow); }
+a[href], [role="button"] { cursor: var(--cur-hand); }
+textarea, input { cursor: var(--cur-text); }
+textarea:disabled, input:disabled { cursor: var(--cur-arrow); }
 img { display: block; max-width: 100%; }
 [hidden] { display: none !important; }
 
@@ -217,7 +222,7 @@ img { display: block; max-width: 100%; }
 .opt.selected { border: 2px solid var(--chapter); background: var(--chapter-soft); padding: 13.5px 15.5px; }
 .options.locked .opt:not(.selected) { opacity: .55; }
 .options.revealed .opt { opacity: 1; }
-.opt[disabled] { cursor: default; }
+.opt[disabled] { cursor: var(--cur-arrow); }
 .opt-text { display: block; }
 .reveal-human { margin-top: 10px; animation: pop 240ms var(--ease); }
 .reveal-tag { font-family: var(--font-hand); font-size: var(--fs-h3); line-height: var(--lh-title); color: var(--ink); }
@@ -250,7 +255,7 @@ img { display: block; max-width: 100%; }
 /* ---------- 像素结（03 5.10） ---------- */
 .knot { --size: 240px; --grid: 24; width: var(--size); height: var(--size); display: grid; grid-template-columns: repeat(var(--grid), 1fr); grid-template-rows: repeat(var(--grid), 1fr); image-rendering: pixelated; flex: 0 0 auto; }
 .knot .cell { display: block; background: var(--line-ink); }
-.knot.paintable .cell { cursor: pointer; }
+.knot.paintable .cell { cursor: var(--cur-hand); }
 .knot.placeholder { display: block; background: var(--grey-light); }
 .knot.placeholder .knot-missing { width: 100%; height: 100%; }
 

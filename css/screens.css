@@ -65,10 +65,10 @@
 .toc-item .zh { display: flex; align-items: center; gap: 10px; font-family: var(--font-pixel); font-size: 24px; -webkit-font-smoothing: none; }
 .toc-item .zh::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--dot, var(--grey)); }
 .toc-item .en { font-family: var(--font-serif); font-size: var(--fs-h3); letter-spacing: 1px; color: var(--grey); margin-left: 20px; }
-.toc-item[disabled] { cursor: default; }
+.toc-item[disabled] { cursor: var(--cur-arrow); }
 .toc-track { position: absolute; right: 16px; top: 88px; bottom: 120px; z-index: 2; width: 56px; border-radius: 28px; background: var(--mint); display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
-.toc-track { touch-action: none; cursor: grab; user-select: none; }
-.toc-track.dragging { cursor: grabbing; }
+.toc-track { touch-action: none; cursor: var(--cur-grab); user-select: none; }
+.toc-track.dragging { cursor: var(--cur-grabbing); }
 .toc-track .knob { width: 48px; height: 48px; border-radius: 50%; background: var(--paper); flex: 0 0 auto; transition: transform 300ms var(--ease); box-shadow: 0 1px 0 rgba(0,0,0,.15); }
 .toc-track.dragging .knob { transition: none; }
 .toc-track .hint { flex: 1; display: flex; align-items: center; writing-mode: vertical-rl; font-family: var(--font-sans); font-size: var(--fs-h3); letter-spacing: 2px; color: var(--ink); }
@@ -107,7 +107,7 @@ body[data-chapter-color="black"] .chapter-en span { color: var(--mint); }
 }
 
 /* ================= 过场通用 ================= */
-.screen.trans { cursor: pointer; }
+.screen.trans { cursor: var(--cur-hand); }
 .trans-stage { position: relative; flex: 1; overflow: hidden; z-index: 1; }
 .trans-stage > * { position: absolute; inset: 0; }
 /* 出现 / 落下 / 跳跃 / 盖章 / 升起（03 第 12 节）：加 .on 才开始 */
@@ -218,7 +218,7 @@ body[data-chapter-color="black"] .chapter-en span { color: var(--mint); }
 .yb-scatter { position: absolute; inset: 0 0 50px; }
 .yb-scatter span { position: absolute; font-family: var(--font-serif); color: var(--ink); transform: rotate(var(--rot, 0deg)); }
 .yb-last { position: absolute; left: 0; right: 0; bottom: 20px; margin: 0; text-align: center; font-family: var(--font-serif); font-size: var(--fs-body); color: var(--ink); }
-.play-tri { position: absolute; width: 0; height: 0; border-top: 14px solid transparent; border-bottom: 14px solid transparent; border-left: 24px solid var(--pink); cursor: pointer; }
+.play-tri { position: absolute; width: 0; height: 0; border-top: 14px solid transparent; border-bottom: 14px solid transparent; border-left: 24px solid var(--pink); cursor: var(--cur-hand); }
 .play-tri.pink { left: 50%; top: 50%; transform: translate(-50%, -50%); }
 .play-tri.done { pointer-events: none; }
 .play-tri.yellow { position: static; border-left-color: var(--c-yellow); border-top-width: 24px; border-bottom-width: 24px; border-left-width: 40px; }
@@ -392,7 +392,7 @@ body[data-chapter-color="black"] .chapter-en span { color: var(--mint); }
 .s-ending { background: var(--c-black); color: var(--paper); }
 .s-ending .screen-body { display: flex; flex-direction: column; padding: 0; }
 .ending-title { display: flex; justify-content: space-between; padding: 24px 24px 0; color: var(--mint); }
-.ending-main { position: relative; flex: 1; display: flex; justify-content: center; align-items: center; gap: 24px; padding: 24px 16px 40px; cursor: pointer; }
+.ending-main { position: relative; flex: 1; display: flex; justify-content: center; align-items: center; gap: 24px; padding: 24px 16px 40px; cursor: var(--cur-hand); }
 .ending-knot .cell { background: var(--paper); }
 .ending-hint { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); font-family: var(--font-pixel); font-size: 16px; color: var(--paper); animation: blink 1.2s steps(1) infinite; -webkit-font-smoothing: none; }
 .ending-text { writing-mode: vertical-rl; font-family: var(--font-serif); font-size: var(--fs-h2); line-height: 2; letter-spacing: 2px; max-height: 60vh; min-height: 40vh; }
