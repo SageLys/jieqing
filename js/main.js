@@ -1,5 +1,5 @@
 // 入口：加载内容 → 校验 → 状态机（00 第 4 节的线性流程）
-import { h, DEMO, DEBUG, mulberry32, shuffle, wait } from './util.js';
+import { h, DEMO, DEBUG, mulberry32, shuffle, wait, loadKont, mountKont } from './util.js';
 import { loadContent, validateContent, checkAudio } from './content.js';
 import { createStore } from './store.js';
 import { Ruler } from './ruler.js';
@@ -97,6 +97,7 @@ class App {
     if (ctx.review && !this.demo) {
       el.append(h('button.btn-action.small.back-to-current', { type: 'button', onclick: () => this.go(this.maxIdx) }, this.ui.backToCurrent || '回到当前'));
     }
+    mountKont(el);
     el.id = 'screen';
     this.screenEl.replaceWith(el);
     this.screenEl = el;
@@ -135,6 +136,7 @@ class App {
       const ov = document.getElementById('overlay');
       ov.hidden = false;
       ov.replaceChildren(h('div.kont.lg'), h('div', this.ui.start || '开启'));
+      mountKont(ov);
       ov.addEventListener('click', () => { unlockAudio(); ov.hidden = true; this.go(0); }, { once: true });
     } else {
       this.go(0);
@@ -154,6 +156,7 @@ class App {
   const log = (it) => (it.level === 'error' ? console.error : console.warn)(`[content] ${it.msg}`);
   issues.forEach(log);
   console.info(`[content] ${content.__file} 校验完成：${issues.filter((i) => i.level === 'error').length} 个错误，${issues.filter((i) => i.level === 'warn').length} 个提示`);
+  await loadKont();
   const app = new App(content, issues);
   window.__app = app;
   checkAudio(content, (it) => { issues.push(it); log(it); if (DEBUG) app.renderDebug(); });

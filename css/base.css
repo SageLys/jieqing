@@ -79,7 +79,7 @@ img { display: block; max-width: 100%; }
 .topbar-age { font-family: var(--font-pixel); font-size: 16px; text-align: right; color: var(--text-2); }
 .btn-back {
   width: 56px; height: 30px;
-  background: url("../assets/img/btn_back.png") center / contain no-repeat;
+  background: url("../assets/img/btn_back.svg") center / contain no-repeat;
   justify-self: start;
 }
 .btn-back:disabled { opacity: 0; pointer-events: none; }
@@ -102,7 +102,7 @@ img { display: block; max-width: 100%; }
 /* ---------- 小KONT（03 5.3） ---------- */
 .kont {
   width: 48px; height: 48px; flex: 0 0 auto;
-  background: url("../assets/img/kont.png") center / contain no-repeat;
+  background: url("../assets/img/kont.svg") center / contain no-repeat;
   animation: kont-idle 2s steps(1, end) infinite;
 }
 .kont.lg { width: 64px; height: 64px; }
@@ -111,6 +111,21 @@ img { display: block; max-width: 100%; }
 @keyframes kont-idle {
   0%, 49% { transform: translate(0, 0); }
   50%, 100% { transform: translate(1px, -1px); }
+}
+/* 内联 SVG 版：整体不动，三个小方块各自错位 1px（03 5.3） */
+.kont.inline { background: none; animation: none; }
+.kont-svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.kont-svg .part-sq-left, .kont-svg .part-sq-bottom-left, .kont-svg .part-sq-bottom-right { animation: kont-sq 2s steps(1, end) infinite; }
+.kont-svg .part-sq-bottom-left { animation-delay: .3s; }
+.kont-svg .part-sq-bottom-right { animation-delay: .6s; }
+@keyframes kont-sq {
+  0%, 49% { transform: translate(0, 0); }
+  50%, 100% { transform: translate(-1px, 1px); }
+}
+.kont-svg .part-sq-bottom-right { animation-name: kont-sq-r; }
+@keyframes kont-sq-r {
+  0%, 49% { transform: translate(0, 0); }
+  50%, 100% { transform: translate(1px, 1px); }
 }
 
 /* ---------- 气泡（03 5.4） ---------- */

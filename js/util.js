@@ -124,3 +124,28 @@ export function onceTap(el) {
 }
 
 export function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
+
+/** 小KONT：把 assets/img/kont.svg 内联进页面，去掉元数据、id 改成 class，方便按部件做动画 */
+let kontTemplate = null;
+export async function loadKont(src = 'assets/img/kont.svg') {
+  try {
+    const txt = await (await fetch(src)).text();
+    const doc = new DOMParser().parseFromString(txt, 'image/svg+xml');
+    const svg = doc.documentElement;
+    if (svg.nodeName !== 'svg') return;
+    svg.querySelectorAll('metadata, title, desc').forEach((n) => n.remove());
+    svg.querySelectorAll('[id]').forEach((n) => { n.setAttribute('class', `${n.getAttribute('class') || ''} part-${n.id}`.trim()); n.removeAttribute('id'); });
+    svg.removeAttribute('width'); svg.removeAttribute('height');
+    svg.setAttribute('class', 'kont-svg');
+    svg.setAttribute('aria-hidden', 'true');
+    kontTemplate = svg;
+  } catch { /* 没加载到就用 CSS 背景图兜底 */ }
+}
+export function mountKont(root) {
+  if (!kontTemplate) return;
+  root.querySelectorAll('.kont').forEach((el) => {
+    if (el.firstElementChild) return;
+    el.classList.add('inline');
+    el.append(document.importNode(kontTemplate, true));
+  });
+}

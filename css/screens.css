@@ -7,12 +7,10 @@
 .cover-title { position: absolute; right: 44px; top: 2%; text-align: right; z-index: 2; }
 .cover-title .zh { font-family: var(--font-pixel); font-size: 40px; line-height: 1; -webkit-font-smoothing: none; }
 .cover-title .en { font-family: var(--font-pixel); font-size: 24px; line-height: 1; margin-top: 8px; -webkit-font-smoothing: none; }
-.cover-photo { position: absolute; width: 32%; height: 10%; transform: translateY(-50%); }
+.cover-photo { position: absolute; width: 30%; max-height: 16%; transform: translateY(-50%); overflow: hidden; }
 .cover-photo.left { left: 12%; } .cover-photo.right { right: 12%; }
-.cover-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
-.cover-photo.mint::after { content: ""; position: absolute; right: -6px; top: 10%; width: 40%; height: 45%; background: var(--mint); opacity: .7; mix-blend-mode: multiply; }
-.cover-photo.mint.left::after { right: auto; left: -6px; }
-.cover-photo.frame img { outline: 2px solid var(--mint); outline-offset: 2px; }
+/* 正式版照片已自带黑白处理和薄荷色块/边框（设计原稿），这里不再叠加灰度、色块和描边 */
+.cover-photo img { width: 100%; height: auto; }
 .cover-blocks { position: absolute; left: 12%; top: 6%; width: 120px; height: 200px; }
 .cover-blocks .blk { position: absolute; width: 32px; height: 32px; background: var(--ink); }
 .cover-blocks .blur { position: absolute; width: 40px; height: 40px; background: var(--pink); opacity: .55; filter: blur(8px); }
@@ -24,7 +22,9 @@
 
 /* ================= S1 小KONT 开场（03 5.16，参考 ui-04） ================= */
 .intro-top { flex: 0 0 auto; display: grid; grid-template-columns: 72px 1fr 72px; align-items: start; gap: 8px; padding: 12px 16px 4px; }
-.intro-top .icon { width: 64px; }
+.intro-top .icon { width: 64px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.intro-top .icon img { width: 56px; }
+.intro-top .icon span { font-family: var(--font-pixel); font-size: 16px; -webkit-font-smoothing: none; }
 .intro-what { justify-self: center; border: 1.5px solid var(--line); border-radius: 48px; padding: 20px 28px; font-family: var(--font-pixel); font-size: 40px; line-height: 1; -webkit-font-smoothing: none; }
 .intro-frame { position: relative; flex: 1; margin: 12px 16px 64px; border: 1.5px solid var(--ink); background: var(--paper); min-height: 0; display: flex; flex-direction: column; }
 .intro-scroll { flex: 1; overflow-y: auto; padding: 24px 24px 16px; }
@@ -34,10 +34,8 @@
 /* ================= S2 目录（03 5.17，参考 ui-09） ================= */
 .toc-top { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 0; }
 .toc-brand { display: flex; align-items: center; gap: 8px; font-family: var(--font-pixel); font-size: 24px; -webkit-font-smoothing: none; }
-.toc-brand img { width: 32px; }
-.toc-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--ink); position: relative; }
-.toc-avatar::before { content: ""; position: absolute; left: 50%; top: 5px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: var(--ink); }
-.toc-avatar::after { content: ""; position: absolute; left: 4px; right: 4px; bottom: 3px; height: 8px; border-radius: 8px 8px 0 0; background: var(--ink); }
+.toc-brand img { width: 40px; }
+.toc-avatar { width: 36px; height: 36px; }
 .toc-body { position: relative; flex: 1; overflow-y: auto; padding: 24px 80px 120px 24px; }
 .toc-item { display: block; text-align: left; margin-bottom: 64px; opacity: 1; }
 .toc-item .zh { display: flex; align-items: center; gap: 10px; font-family: var(--font-pixel); font-size: 24px; -webkit-font-smoothing: none; }
@@ -82,8 +80,9 @@
 
 /* T2 饭桌（参考 book-p28） */
 .t2 { padding: 40px 24px 0 calc(var(--ruler-w) + 16px); }
-.t2 .photo { position: relative; filter: grayscale(1) contrast(1.1); }
-.t2 .photo img { width: 100%; }
+.t2 .photo { position: relative; }
+/* 灰度只作用在照片上，否则会把上面的薄荷色方块也变成灰白 */
+.t2 .photo img { width: 100%; display: block; filter: grayscale(1) contrast(1.1); }
 .t2 .photo::after { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(0,0,0,.18) 1px, transparent 1px); background-size: 3px 3px; mix-blend-mode: multiply; }
 .t2 .sq { position: absolute; z-index: 1; background: var(--mint); mix-blend-mode: screen; opacity: 0; animation: fade 300ms var(--ease) forwards; }
 .t2 .chars { position: relative; height: 250px; margin-top: 12px; }

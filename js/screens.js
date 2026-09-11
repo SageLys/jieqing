@@ -92,7 +92,7 @@ function cover(step, ctx) {
     stage.append(h('div', { class: cls, style: { top: `${p.age}%` } }, h('img', { src: p.src, alt: '' })));
   });
   const cta = h('button.cover-cta', { type: 'button', onclick: () => app.next() },
-    h('img', { src: 'assets/img/folder_open.png', alt: '' }), h('span.txt', cv.cta || app.ui.start || '开启'));
+    h('img', { src: 'assets/img/folder_open.svg', alt: '' }), h('span.txt', cv.cta || app.ui.start || '开启'));
   stage.append(cta);
   if (app.demo) ctx.after(app.timing('coverMs', 5000), () => app.next());
   return h('.screen.full', stage);
@@ -107,9 +107,9 @@ function intro(step, ctx) {
   const frame = h('.intro-frame', scroll, ctaRow, h('.kont.intro-kont'));
   const el = h('.screen.full',
     h('.intro-top',
-      h('img.icon', { src: 'assets/img/icon_archive.png', alt: '' }),
+      h('.icon', h('img', { src: 'assets/img/icon_archive.svg', alt: '' }), app.ui.archiveLabel ? h('span', app.ui.archiveLabel) : null),
       h('.intro-what', 'what'),
-      h('img.icon', { src: 'assets/img/icon_community.png', alt: '', style: { justifySelf: 'end' } })),
+      h('.icon', { style: { justifySelf: 'end' } }, h('img', { src: 'assets/img/icon_community.png', alt: '' }), app.ui.communityLabel ? h('span', app.ui.communityLabel) : null)),
     frame);
   const lines = host.intro || [];
   (async () => {
@@ -136,7 +136,7 @@ function toc(step, ctx) {
   const track = h('button.toc-track', { type: 'button', onclick: () => app.next() }, h('span.knob'), h('span.hint', c.toc?.hint || ''));
   body.append(track);
   const el = h('.screen.full',
-    h('.toc-top', h('.toc-brand', h('img', { src: 'assets/img/folder_open.png', alt: '' }), c.toc?.title || ''), h('.toc-avatar')),
+    h('.toc-top', h('.toc-brand', h('img', { src: 'assets/img/icon_memory_factory.svg', alt: '' }), c.toc?.title || ''), h('img.toc-avatar', { src: 'assets/img/icon_account.svg', alt: '' })),
     body,
     h('.toc-kont', h('.toc-tip', c.host?.tocTooltip || ''), h('.kont')));
   if (app.demo) ctx.after(app.timing('tocMs', 4000), () => app.next());
