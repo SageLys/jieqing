@@ -1,5 +1,5 @@
 // 第一章过场：T1a 键盘（ui-02）、T1b 宝贝（ui-05）。03 第 7 节。
-import { h, photo, media, REDUCED } from '../util.js';
+import { h, photo, media, playOnFirstTap, REDUCED } from '../util.js';
 
 const KB_ROWS = [
   ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
@@ -103,6 +103,7 @@ export function baby(sc, rt) {
     ph.video.addEventListener('pause', () => playTri.classList.remove('playing'));
     kb.append(playTri);
     ph.addEventListener('mediafallback', () => { kb.classList.remove('has-video'); playTri.remove(); if (kb.classList.contains('armed')) kb.classList.add('play'); });
+    playOnFirstTap(rt.stage, ph, { skip: '.video-toggle' }); // autoplay 被拒（iOS 低电量）时，第一次按下补播；按在三角上交给三角
   }
   const redBig = [
     h('.red-blk.soft.a-pop', { style: { left: '6%', top: '-4%', width: '40%', height: '30%' } }),

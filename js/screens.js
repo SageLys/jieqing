@@ -1,6 +1,6 @@
 // 各屏渲染（v2）。每个函数接收 (step, ctx)，返回一个 .screen 元素。
 // ctx.app 是 App；ctx.review 表示回看（只读）；ctx.after / ctx.wait 是会随屏幕销毁而作废的定时器。
-import { h, fmt, typewriter, relTime, REDUCED, setPatrol, fitOnResize, media } from './util.js';
+import { h, fmt, typewriter, relTime, REDUCED, setPatrol, fitOnResize, media, playOnFirstTap } from './util.js';
 import { buildTransition, makeRuntime } from './transitions.js';
 import { createPlaybar } from './audio.js';
 import { renderKnot, paintKnot, miniKnot, tendencyOf, rectsOf } from './knots.js';
@@ -367,7 +367,11 @@ function prompt(step, ctx) {
   const app = ctx.app, q = step.q;
   const { el, body } = chatFrame(ctx);
   // v3 F14：questions[n].video 有值 → 题面上方 16:9 静音循环短片（黑线框）；无值不插
-  if (q.video) body.append(h('.prompt-video.fade-in', media(q.image || null, q.video, 'video-16x9')));
+  if (q.video) {
+    const ph = media(q.image || null, q.video, 'video-16x9');
+    body.append(h('.prompt-video.fade-in', ph));
+    playOnFirstTap(el, ph); // autoplay 被拒（iOS 低电量）时，第一次按下补播
+  }
   body.append(h('p.prompt-text.fade-in', q.prompt));
   if (!ctx.review) {
     body.addEventListener('click', () => app.next());

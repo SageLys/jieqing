@@ -12,7 +12,8 @@
     "演示时长": "demoTimings：过场每屏 transitionScreenMs；kontRunMs 是章扉页点 action 后小KONT 原地加速跳的时长（v3 改 600）；demoColors 是演示模式的上色方案。",
     "已定（09-11）": "主题改为“你在人情里打的结”，AI 与真人一视同仁；英文名 EMOKONT；蓝 = #0000FF；小KONT 灰；结束页黑底。",
     "v3 变更（09-11）": "按 08_v3设计反馈修改说明：cover.photos[] 改为 { src, x, y, w }（%），删 age/side；host.kontLines[] 小KONT 点击台词；过场 baby / video-face 与 questions[] 新增可选 video（{ mp4, webm, poster } 或字符串路径，无值退回照片）；walk 新增可选 floatImages（默认 true）。",
-    "待设计同学补充": "① 末页提示词（ending.lines 现用 v2 两句，是否竖排待定）；② 最终字体家族（现用 等线 / 苹方 / 微软雅黑 无衬线栈）；③ 泪海（T5a）灰块留不留；④ 黄框竖排短语的断句是否合意（现按标点自动切）；⑤ video 字段：video/ 目录已有 09 号任务产出的 q1–q5 与 baby，待确认后再填入。"
+    "待设计同学补充": "① 末页提示词（ending.lines 现用 v2 两句，是否竖排待定）；② 最终字体家族（现用 等线 / 苹方 / 微软雅黑 无衬线栈）；③ 泪海（T5a）灰块留不留；④ 黄框竖排短语的断句是否合意（现按标点自动切）；⑤ video 字段：video/ 目录已有 09 号任务产出的 q1–q5 与 baby，待确认后再填入。",
+    "视频（09-11 实装）": "视频来源 video/manifest.json，处理记录见 video/README.txt。已填 q1–q5 题面与 c1 宝贝页（image 保留作退回）；c2 video-face（地铁照片）无成片，不填，维持 Ken Burns。"
   },
   "meta": {
     "title": "结情",
@@ -158,7 +159,12 @@
             "babble": [
               "mma 妈 |",
               "bba 爸 |"
-            ]
+            ],
+            "video": {
+              "mp4": "video/baby.mp4",
+              "webm": "video/baby.webm",
+              "poster": "video/baby.jpg"
+            }
           }
         ]
       },
@@ -509,7 +515,12 @@
           ]
         }
       ],
-      "closing": "同一个红包，五岁的手和五十岁的手，接法不一样。"
+      "closing": "同一个红包，五岁的手和五十岁的手，接法不一样。",
+      "video": {
+        "mp4": "video/q1.mp4",
+        "webm": "video/q1.webm",
+        "poster": "video/q1.jpg"
+      }
     },
     {
       "id": "q2",
@@ -649,7 +660,12 @@
           ]
         }
       ],
-      "closing": "“千万别买”这四个字，每个人听到的意思都不同。"
+      "closing": "“千万别买”这四个字，每个人听到的意思都不同。",
+      "video": {
+        "mp4": "video/q2.mp4",
+        "webm": "video/q2.webm",
+        "poster": "video/q2.jpg"
+      }
     },
     {
       "id": "q3",
@@ -741,7 +757,12 @@
           ]
         }
       ],
-      "closing": "不熟的人，最难办。你把绳子递过去了吗？"
+      "closing": "不熟的人，最难办。你把绳子递过去了吗？",
+      "video": {
+        "mp4": "video/q3.mp4",
+        "webm": "video/q3.webm",
+        "poster": "video/q3.jpg"
+      }
     },
     {
       "id": "q4",
@@ -835,7 +856,12 @@
           }
         }
       ],
-      "closing": "你的六十岁，是谁说了算？"
+      "closing": "你的六十岁，是谁说了算？",
+      "video": {
+        "mp4": "video/q4.mp4",
+        "webm": "video/q4.webm",
+        "poster": "video/q4.jpg"
+      }
     },
     {
       "id": "q5",
@@ -896,7 +922,12 @@
             }
           ]
         }
-      ]
+      ],
+      "video": {
+        "mp4": "video/q5.mp4",
+        "webm": "video/q5.webm",
+        "poster": "video/q5.jpg"
+      }
     }
   ],
   "knots": [

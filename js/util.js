@@ -205,6 +205,24 @@ export function media(src, video, cls = '', { autoplay = true } = {}) {
 }
 
 /**
+ * 10 号任务：iOS 低电量模式等会拒绝静音 autoplay → 先显示封面帧（poster）；观众在本屏第一次按下时补一次 play()。
+ * pointerdown 先试；iOS 上 pointerdown 不一定算用户手势，失败了 touchend 再补一次。成功 / 已在播 / 已退回照片后即撤掉监听。
+ * skip：按在这些元素上时不补（交给它自己，例如宝贝页的暂停 / 继续三角）。
+ */
+export function playOnFirstTap(root, ph, { skip = '' } = {}) {
+  const vid = ph?.video;
+  if (!root || !vid) return;
+  const evs = ['pointerdown', 'touchend'];
+  const stop = () => evs.forEach((t) => root.removeEventListener(t, kick));
+  function kick(e) {
+    if (skip && e.target?.closest?.(skip)) { stop(); return; }
+    if (!vid.isConnected || !vid.paused) { stop(); return; }
+    vid.play().then(stop).catch(() => {});
+  }
+  evs.forEach((t) => root.addEventListener(t, kick, { passive: true }));
+}
+
+/**
  * v3（08 2.4 / F07）：小KONT 可点——点一下在其上方弹出像素字小气泡，轮播 host.kontLines（app.kontLineIdx 全站累计），
  * 2.5 秒后淡出；再点立刻换下一句。data-first-line 有值时（目录页"我是你的助手～"）作为第一句先弹。
  */
