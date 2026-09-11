@@ -67,7 +67,10 @@
 .toc-item .en { font-family: var(--font-serif); font-size: var(--fs-h3); letter-spacing: 1px; color: var(--grey); margin-left: 20px; }
 .toc-item[disabled] { cursor: default; }
 .toc-track { position: absolute; right: 16px; top: 88px; bottom: 120px; z-index: 2; width: 56px; border-radius: 28px; background: var(--mint); display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
-.toc-track .knob { width: 48px; height: 48px; border-radius: 50%; background: var(--paper); flex: 0 0 auto; transition: transform 300ms var(--ease); }
+.toc-track { touch-action: none; cursor: grab; user-select: none; }
+.toc-track.dragging { cursor: grabbing; }
+.toc-track .knob { width: 48px; height: 48px; border-radius: 50%; background: var(--paper); flex: 0 0 auto; transition: transform 300ms var(--ease); box-shadow: 0 1px 0 rgba(0,0,0,.15); }
+.toc-track.dragging .knob { transition: none; }
 .toc-track .hint { flex: 1; display: flex; align-items: center; writing-mode: vertical-rl; font-family: var(--font-sans); font-size: var(--fs-h3); letter-spacing: 2px; color: var(--ink); }
 .toc-kont { position: absolute; right: 60px; bottom: 24px; display: flex; align-items: flex-end; gap: 4px; z-index: 3; }
 .toc-tip { position: relative; animation: pop 240ms var(--ease); font-family: var(--font-pixel); font-size: 8px; padding: 6px 8px; border: 1.5px solid var(--line-ink); background: var(--paper); margin-bottom: 30px; white-space: nowrap; -webkit-font-smoothing: none; }
@@ -395,6 +398,7 @@ body[data-chapter-color="black"] .chapter-en span { color: var(--mint); }
 .ending-text { writing-mode: vertical-rl; font-family: var(--font-serif); font-size: var(--fs-h2); line-height: 2; letter-spacing: 2px; max-height: 60vh; min-height: 40vh; }
 .ending-text p { margin: 0; }
 .ending-text .caret { display: inline-block; width: 16px; height: 8px; background: var(--paper); animation: blink 1s steps(1) infinite; }
+.ending-text p.done .caret { display: none; }
 .ending-credits { padding: 16px 24px 32px; font-size: var(--fs-note); line-height: var(--lh-body); opacity: .95; }
 .ending-credits p { margin: 0 0 4px; }
 .ending-restart { display: block; margin: 16px auto 0; font-family: var(--font-pixel); font-size: 24px; color: var(--paper); text-decoration: underline; -webkit-font-smoothing: none; }

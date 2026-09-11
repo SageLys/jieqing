@@ -2,7 +2,8 @@
 import { DATA } from './util.js';
 
 export async function loadContent() {
-  const file = DATA === 'dev' ? 'content/content.dev.json' : 'content/content.json';
+  // 2026-09-11 起只有一份 content.json（占位数据已并入正式版）；?data=dev 仍可用，指向同一份
+  const file = 'content/content.json';
   const res = await fetch(file, { cache: 'no-cache' });
   if (!res.ok) throw new Error(`加载 ${file} 失败：${res.status}`);
   const c = await res.json();

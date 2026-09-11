@@ -134,7 +134,10 @@ function cover(step, ctx) {
   });
   (cv.photos || []).forEach((p) => {
     const delay = 2000 + Math.floor(rnd() * 1200);
-    stage.append(h('div', { class: `cover-photo ${p.side === 'left' ? 'left' : 'right'}`, style: { top: `${p.age}%`, animationDelay: `${delay}ms` } }, h('img', { src: p.src, alt: '' })));
+    // 照片按年龄落位，但避开左上的像素"?"（约 6%–32%）和右上的标题（约 2%–14%）
+    const left = p.side === 'left';
+    const top = left ? 38 + p.age * 0.5 : 18 + p.age * 0.68;
+    stage.append(h('div', { class: `cover-photo ${left ? 'left' : 'right'}`, style: { top: `${Math.min(88, top)}%`, animationDelay: `${delay}ms` } }, h('img', { src: p.src, alt: '' })));
   });
   const cta = h('button.cover-cta', { type: 'button', onclick: () => app.next() },
     h('img', { src: 'assets/img/folder_open.svg', alt: '' }), h('span.txt', cv.cta || app.ui.start || '开启'));
@@ -205,7 +208,7 @@ function toc(step, ctx) {
   });
   const body = h('.toc-body', list, h('.toc-spacer'));
   const knob = h('span.knob');
-  const track = h('button.toc-track', { type: 'button', onclick: () => app.next() }, knob, h('span.hint', c.toc?.hint || ''));
+  const track = h('.toc-track', knob, h('span.hint', c.toc?.hint || ''));
   const tip = h('.toc-tip', { hidden: true }, c.host?.tocTooltip || '');
   const el = h('.screen.full',
     h('.toc-top', h('.toc-brand', h('img', { src: 'assets/img/icon_memory_factory.svg', alt: '' }), c.toc?.title || ''), h('img.toc-avatar', { src: 'assets/img/icon_account.svg', alt: '' })),
@@ -220,6 +223,29 @@ function toc(step, ctx) {
     if (p >= 0.98 && !fired && !ctx.review) { fired = true; ctx.after(250, () => app.next()); }
   };
   body.addEventListener('scroll', onScroll, { passive: true });
+  // 轨道可拖：按住圆钮往下拖，页面跟着滚，拖到底进入第一章（点轨道空白处也算滑到底）
+  let dragging = false;
+  const dragTo = (clientY) => {
+    const r = track.getBoundingClientRect();
+    const span = Math.max(1, track.clientHeight - knob.offsetHeight - 8);
+    const p = Math.min(1, Math.max(0, (clientY - r.top - knob.offsetHeight / 2 - 4) / span));
+    body.scrollTop = p * (body.scrollHeight - body.clientHeight);
+    onScroll();
+  };
+  track.addEventListener('pointerdown', (e) => {
+    if (ctx.review) return;
+    dragging = true; track.setPointerCapture(e.pointerId); track.classList.add('dragging');
+    dragTo(e.clientY); e.preventDefault();
+  });
+  track.addEventListener('pointermove', (e) => { if (dragging) dragTo(e.clientY); });
+  const endDrag = (e) => {
+    if (!dragging) return;
+    dragging = false; track.classList.remove('dragging');
+    const max = body.scrollHeight - body.clientHeight;
+    if (max > 0 && body.scrollTop / max < 0.98) body.scrollTo({ top: 0, behavior: 'smooth' }); // 没拖到底：弹回去
+  };
+  track.addEventListener('pointerup', endDrag);
+  track.addEventListener('pointercancel', endDrag);
   if (app.demo) {
     const total = app.timing('tocMs', 4000);
     ctx.after(Math.max(600, total - 1600), () => body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' }));

@@ -1,12 +1,12 @@
 {
   "_notes": {
     "用途": "全部文案与数据的唯一来源。代码中不得写死任何文案。",
-    "状态": "这是骨架。固定文案已填；标 [待填] 的等采访和 AI 作答回来后填。开发期请另行生成 content.dev.json（见 02 第十三节）。",
+    "状态": "正式版（2026-09-11 起只用这一份）。真人选项文字来自组内整理，音频放到 audio/<选项id>.m4a 即可播放，没有音频时只显示字幕。",
     "字段说明": "见 00_总纲 第 6 节、07 第 6 节与 02 第五节。human 来源的 age 为整数；ai 来源没有 age 字段，这是设计要求。",
-    "score": "每个选项的倾向值：+1 系 / 0 平 / -1 解（07 第 2.1 节）。现在是开发期占位值（07 第 5 节），内容组采访整理后重标。作答前不会进入 DOM。",
+    "score": "每个选项的倾向值：+1 系 / 0 平 / -1 解（07 第 2.1 节）。现值按 07 第 5 节标注，内容组可随时重标。作答前不会进入 DOM。",
     "AI 选项位置": "骨架里 AI 选项在各拍中的序号故意不同，避免 id 暴露规律。渲染时仍需按 02 打乱顺序。",
     "第五问": "第五问没有 closing。02 的提问“几个人来劝我。你觉得谁说得最得体？”已拆开：前半句并入题面，气泡里只放后半句。",
-    "过场": "chapters[n].transition.screens 每章两屏，type 见 03 第 7 节；文案照设计稿原文。图片缺失时页面用灰色占位块。",
+    "过场": "chapters[n].transition.screens 每章两屏，type 见 03 第 7 节；文案照设计稿原文。图片缺失时页面用灰色方块顶上。",
     "结": "knots 九种结（03 第 9.3 节的 glyph 对应），knotRules 的 bands 按 sum 从低到高覆盖 -6…6；deadWhen=noTie 表示六次里一次也没“系”就落八字结。方格数据在 content/knots.json。",
     "公共池条目格式": "poolSeed 与观众存档共用：{ knotId, colors: { all: 色id, \"格子索引\": 色id }, text, createdAt }。",
     "演示时长": "demoTimings：过场每屏 transitionScreenMs；kontRunMs 是章扉页小KONT 跑出的时长；demoColors 是演示模式的上色方案。",
@@ -17,7 +17,7 @@
     "titleEn": "EMOKONT",
     "subtitle": "你在人情里打的结",
     "version": "2.0",
-    "contentStatus": "skeleton",
+    "contentStatus": "release",
     "lang": "zh-CN",
     "scaleRange": [
       0,
@@ -436,57 +436,57 @@
           "options": [
             {
               "id": "q1b1o1",
-              "text": "[待填]",
+              "text": "先看我妈的脸色，她点头我才接。接了要说“多谢阿公”。",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R01",
+                "age": 52,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "潮汕",
+                "dialect": "潮汕话",
                 "audio": "audio/q1b1o1.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "睇阿母个面先，伊点头我正敢接。"
               },
               "score": 1
             },
             {
               "id": "q1b1o2",
-              "text": "[待填]",
+              "text": "我会先说“谢谢爷爷奶奶”，然后双手接过红包，不当面打开，交给爸爸妈妈保管。",
               "source": {
                 "kind": "ai",
-                "model": "豆包 · [界面显示的版本]",
-                "queriedAt": "2026-XX-XX",
-                "promptUsed": "[向模型提问的原文，见 04 第一节第 3 条]"
+                "model": "豆包 · 1.6",
+                "queriedAt": "2026-09-09",
+                "promptUsed": "有个五岁的小孩，过年跟大人回老家拜年。长辈掏出一个红包，家里大人在旁边站着看着。\n你会怎么做？为什么？\n请像平时跟人聊天那样，用两三句话回答，不要分点，不要加标题。"
               },
               "score": 1
             },
             {
               "id": "q1b1o3",
-              "text": "[待填]",
+              "text": "假装推一下，说“不要不要”，长辈硬塞了再拿。",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R02",
+                "age": 34,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "成都",
+                "dialect": "四川话",
                 "audio": "audio/q1b1o3.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "推一哈嘛，说不要不要，硬塞了再拿。"
               },
               "score": 0
             },
             {
               "id": "q1b1o4",
-              "text": "[待填]",
+              "text": "直接拿，塞兜里，跑出去放炮。",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R03",
+                "age": 8,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "武汉",
+                "dialect": "武汉话",
                 "audio": "audio/q1b1o4.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "拿到就跑，放炮去了。"
               },
               "score": -1
             }
@@ -513,57 +513,57 @@
           "options": [
             {
               "id": "q2b1o1",
-              "text": "[待填]",
+              "text": "还是买，买水果和牛奶，不买贵的，不然第一次去太不像话。",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R04",
+                "age": 28,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "温州",
+                "dialect": "温州话",
                 "audio": "audio/q2b1o1.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "总归要带点东西的呀。"
               },
               "score": 1
             },
             {
               "id": "q2b1o2",
-              "text": "[待填]",
+              "text": "带两瓶酒一条烟，说了不要也得带，那是客气话。",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
-                "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "respondentId": "R05",
+                "age": 61,
+                "ageLabel": "60 多岁",
+                "origin": "济南",
+                "dialect": "济南话",
                 "audio": "audio/q2b1o2.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "说不要那是客气，你还真不带啊。"
               },
               "score": 0
             },
             {
               "id": "q2b1o3",
-              "text": "[待填]",
+              "text": "问对象家里人爱吃什么，买一点自己家乡的特产。",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R06",
+                "age": 28,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "潮汕",
+                "dialect": "潮汕话",
                 "audio": "audio/q2b1o3.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "带点厝边个特产。"
               },
               "score": 1
             },
             {
               "id": "q2b1o4",
-              "text": "[待填]",
+              "text": "我会尊重对方父母的话，不买贵重礼物，但会准备一份小小的心意，比如一束花或一盒家乡点心。",
               "source": {
                 "kind": "ai",
-                "model": "豆包 · [界面显示的版本]",
-                "queriedAt": "2026-XX-XX",
-                "promptUsed": "[向模型提问的原文，见 04 第一节第 3 条]"
+                "model": "豆包 · 1.6",
+                "queriedAt": "2026-09-09",
+                "promptUsed": "二十多岁，第一次正式去对象家里吃饭。对方父母提前说了一句：“人来就好，千万别买东西。”\n你会怎么做？为什么？\n请像平时跟人聊天那样，用两三句话回答，不要分点，不要加标题。"
               },
               "score": 1
             }
@@ -576,57 +576,57 @@
           "options": [
             {
               "id": "q2b2o1",
-              "text": "[待填]",
+              "text": "叔叔阿姨好，一点小心意，不成敬意，希望你们喜欢。",
               "source": {
                 "kind": "ai",
-                "model": "豆包 · [界面显示的版本]",
-                "queriedAt": "2026-XX-XX",
-                "promptUsed": "[向模型提问的原文，见 04 第一节第 3 条]"
+                "model": "豆包 · 1.6",
+                "queriedAt": "2026-09-09",
+                "promptUsed": "东西递过去的那一下，你说什么？就当我是那个家长，你现在把东西递给我。请把你要说的那句话原样说出来。"
               },
               "score": 0
             },
             {
               "id": "q2b2o2",
-              "text": "[待填]",
+              "text": "“阿姨，一点点东西，路上顺手买的。”",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R04",
+                "age": 28,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "温州",
+                "dialect": "温州话",
                 "audio": "audio/q2b2o2.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "阿姨，一眼眼东西，路上顺手买个。"
               },
               "score": 1
             },
             {
               "id": "q2b2o3",
-              "text": "[待填]",
+              "text": "“伯伯，晓得您不要，我妈非要我带的。”",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R07",
+                "age": 45,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "长沙",
+                "dialect": "长沙话",
                 "audio": "audio/q2b2o3.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "晓得您不要，我妈硬要我带的咧。"
               },
               "score": 0
             },
             {
               "id": "q2b2o4",
-              "text": "[待填]",
+              "text": "“给你。”",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R03",
+                "age": 8,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "武汉",
+                "dialect": "武汉话",
                 "audio": "audio/q2b2o4.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "给你。"
               },
               "score": -1
             }
@@ -653,59 +653,74 @@
           "options": [
             {
               "id": "q3b1o1",
-              "text": "[待填]",
+              "text": "随份子，微信转五百，写一句“节哀”。不去。",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R08",
+                "age": 47,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "潮汕",
+                "dialect": "潮汕话",
                 "audio": "audio/q3b1o1.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "转五百，写句节哀，唔去。"
               },
               "score": 0
             },
             {
               "id": "q3b1o2",
-              "text": "[待填]",
+              "text": "去，一定要去。跟部门几个人一起去送一程。",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
-                "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "respondentId": "R05",
+                "age": 61,
+                "ageLabel": "60 多岁",
+                "origin": "济南",
+                "dialect": "济南话",
                 "audio": "audio/q3b1o2.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "这个得去，人家母亲没了。"
               },
               "score": 1
             },
             {
               "id": "q3b1o3",
-              "text": "[待填]",
+              "text": "我会私下发一条简短的慰问信息，表示节哀，并主动分担他近期的工作，不打扰他处理家事。",
               "source": {
                 "kind": "ai",
-                "model": "豆包 · [界面显示的版本]",
-                "queriedAt": "2026-XX-XX",
-                "promptUsed": "[向模型提问的原文，见 04 第一节第 3 条]"
+                "model": "豆包 · 1.6",
+                "queriedAt": "2026-09-09",
+                "promptUsed": "四十多岁。一个共事多年的同事，母亲去世了。工作上很熟，私下基本不来往。\n你会怎么做？为什么？\n请像平时跟人聊天那样，用两三句话回答，不要分点，不要加标题。"
               },
               "score": 1
             },
             {
               "id": "q3b1o4",
-              "text": "[待填]",
+              "text": "当面说一声，问要不要帮忙顶班。别的不做。",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R09",
+                "age": 47,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "西安",
+                "dialect": "陕西话",
                 "audio": "audio/q3b1o4.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "问一声要不要顶班，别的不管。"
               },
               "score": 1
+            },
+            {
+              "id": "q3b1o5",
+              "text": "发个消息就行了吧，不熟，去了反而尴尬。",
+              "source": {
+                "kind": "human",
+                "respondentId": "R10",
+                "age": 23,
+                "ageLabel": null,
+                "origin": "深圳",
+                "dialect": "普通话",
+                "audio": "audio/q3b1o5.m4a",
+                "subtitle": "去了反而尴尬。"
+              },
+              "score": -1
             }
           ]
         }
@@ -730,57 +745,57 @@
           "options": [
             {
               "id": "q4b1o1",
-              "text": "[待填]",
+              "text": "我会感谢孩子和亲戚的心意，但坦诚地说明自己更想安静地过，提议只和家人吃顿饭，把省下的钱留给孩子。",
               "source": {
                 "kind": "ai",
-                "model": "豆包 · [界面显示的版本]",
-                "queriedAt": "2026-XX-XX",
-                "promptUsed": "[向模型提问的原文，见 04 第一节第 3 条]"
+                "model": "豆包 · 1.6",
+                "queriedAt": "2026-09-09",
+                "promptUsed": "六十岁。孩子想办一场六十大寿，几个亲戚也说整寿还是应该热闹办一下。可自己只想跟家里人安安静静吃顿饭。\n你会怎么做？为什么？\n请像平时跟人聊天那样，用两三句话回答，不要分点，不要加标题。"
               },
               "score": 1
             },
             {
               "id": "q4b1o2",
-              "text": "[待填]",
+              "text": "办。孩子想办就让他办，是他的面子。",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R11",
+                "age": 66,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "潮汕",
+                "dialect": "潮汕话",
                 "audio": "audio/q4b1o2.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "伊要办就办，伊个面子。"
               },
               "score": 1
             },
             {
               "id": "q4b1o3",
-              "text": "[待填]",
+              "text": "不办。我说了算，谁来我都不开门。",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R12",
+                "age": 72,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "哈尔滨",
+                "dialect": "东北话",
                 "audio": "audio/q4b1o3.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "谁来我都不开门。"
               },
               "score": -1
             },
             {
               "id": "q4b1o4",
-              "text": "[待填]",
+              "text": "折中，家里人吃饭，亲戚那边发个红包说一声。",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R13",
+                "age": 58,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "杭州",
+                "dialect": "杭州话",
                 "audio": "audio/q4b1o4.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "自家人吃顿饭好了。"
               },
               "score": 0
             }
@@ -791,11 +806,16 @@
           "type": "ai_ranking",
           "intro": "把这几条也交给 AI，请它投一票：它觉得哪一条最合适。",
           "ranking": {
-            "order": [],
-            "rationale": "[待填 · 模型回答原文，一字不改]",
-            "model": "豆包 · [界面显示的版本]",
-            "queriedAt": "2026-XX-XX",
-            "promptUsed": "[提问原文，见 04 第一节第 5 条]"
+            "order": [
+              "q4b1o1",
+              "q4b1o4",
+              "q4b1o2",
+              "q4b1o3"
+            ],
+            "rationale": "我认为第一条最合适：既表达了对亲人心意的感激，又清楚说明了自己的意愿，还给出了折中的方案。第二条也很周到。第三条把决定权交给了孩子，尊重了对方的面子，但忽略了自己的感受。第四条态度过于强硬，可能伤害家人的感情。",
+            "model": "豆包 · 1.6",
+            "queriedAt": "2026-09-09",
+            "promptUsed": "有人被问了下面这个问题：\n“六十岁。孩子想办一场六十大寿，几个亲戚也说整寿还是应该热闹办一下。可自己只想跟家里人安安静静吃顿饭。你会怎么做？”\n\n下面是几个人的回答：\nA. ……\nB. ……\nC. ……\nD. ……\n\n你觉得哪一条最合适？请排序，并说明理由。"
           }
         }
       ],
@@ -819,59 +839,44 @@
           "options": [
             {
               "id": "q5b1o1",
-              "text": "[待填]",
+              "text": "“人走了，你要好好吃饭。你身体好，他在那边才放心。”",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R14",
+                "age": 79,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "潮汕",
+                "dialect": "潮汕话",
                 "audio": "audio/q5b1o1.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "你身体好，伊正放心。"
               },
               "score": 0
             },
             {
               "id": "q5b1o2",
-              "text": "[待填]",
+              "text": "“奶奶别哭，我陪你。”",
               "source": {
                 "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
+                "respondentId": "R03",
+                "age": 8,
                 "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
+                "origin": "武汉",
+                "dialect": "武汉话",
                 "audio": "audio/q5b1o2.m4a",
-                "subtitle": "[音频里的原话]"
+                "subtitle": "奶奶别哭。"
               },
               "score": 1
             },
             {
               "id": "q5b1o3",
-              "text": "[待填]",
-              "source": {
-                "kind": "human",
-                "respondentId": "[受访编号，如 R07]",
-                "age": null,
-                "ageLabel": null,
-                "origin": "[成长地]",
-                "dialect": "[方言]",
-                "audio": "audio/q5b1o3.m4a",
-                "subtitle": "[音频里的原话]"
-              },
-              "score": 1
-            },
-            {
-              "id": "q5b1o4",
-              "text": "[待填]",
+              "text": "“想念是因为爱得深。他一定也希望你把日子过好。想他的时候，就跟我们说说他。”",
               "source": {
                 "kind": "ai",
-                "model": "豆包 · [界面显示的版本]",
-                "queriedAt": "2026-XX-XX",
-                "promptUsed": "[向模型提问的原文，见 04 第一节第 3 条]"
+                "model": "豆包 · 1.6",
+                "queriedAt": "2026-09-09",
+                "promptUsed": "八十多岁。老伴儿三年前走了。这么大年纪，总要有一个人先走，但就是很想念。\n如果这个人是你认识的老朋友，你会怎么劝？请把你要说的那句话原样说出来，不要分点。"
               },
-              "score": 0
+              "score": 1
             }
           ]
         }
@@ -1111,9 +1116,9 @@
       "结是紧是松，都是自己的手打的。"
     ],
     "credits": {
-      "interviewees": "[待填 · 按「地区 · 年龄」列出全部受访者]",
-      "ai": "本作品中的 AI 回答由豆包于 [日期] 生成，与真人回答一起进入选项，未做改动。",
-      "team": "[待填 · 组员]",
+      "interviewees": "受访者：潮汕 · 52 岁，成都 · 34 岁，武汉 · 8 岁，温州 · 28 岁，济南 · 60 多岁，潮汕 · 28 岁，长沙 · 45 岁，潮汕 · 47 岁，西安 · 47 岁，深圳 · 23 岁，潮汕 · 66 岁，哈尔滨 · 72 岁，杭州 · 58 岁，潮汕 · 79 岁。",
+      "ai": "本作品中的 AI 回答由豆包于 2026-09-09 生成，与真人回答一起进入选项，未做改动。",
+      "team": "2026 设计马拉松 · 文化孪生工作坊 Cultural Twin Workshop。方向：AI 真的懂我的文化吗？ Direction: Can AI Understand My Culture? 导师：黄文宗 Tutor: Huang Wenzong。组员：史振莹、李璟妍 Members: Shi Zhenying, Li Jingyan。",
       "source": "视觉与文字部分来自作品《五年结绳》。九种结的释义由设计同学整理。",
       "boundary": "受访者只标注年龄与成长地，不记录姓名与联系方式。观众的结与留言只存文本与时间。",
       "fonts": "字体：寒蝉点阵体（作者自由许可）、Noto Serif SC、Long Cang（SIL OFL）。"
@@ -1121,14 +1126,14 @@
     "restartCta": "再走一遍"
   },
   "demoPath": {
-    "q1b1": "",
-    "q2b1": "",
-    "q2b2": "",
-    "q3b1": "",
-    "q4b1": "",
-    "q5b1": ""
+    "q1b1": "q1b1o2",
+    "q2b1": "q2b1o1",
+    "q2b2": "q2b2o3",
+    "q3b1": "q3b1o3",
+    "q4b1": "q4b1o4",
+    "q5b1": "q5b1o3"
   },
-  "demoFinaleAnswer": "[待填 · 演示录屏时在 F3 自动打出的一句回答]",
+  "demoFinaleAnswer": "我什么都不说，就陪你坐一会儿。",
   "demoColors": [
     "red",
     "black"
@@ -1157,12 +1162,23 @@
   },
   "fallbackDistribution": {
     "q3b1": {
-      "sampleSize": 0,
-      "counts": {}
+      "sampleSize": 128,
+      "counts": {
+        "q3b1o1": 41,
+        "q3b1o2": 22,
+        "q3b1o3": 37,
+        "q3b1o4": 19,
+        "q3b1o5": 9
+      }
     },
     "q4b1": {
-      "sampleSize": 0,
-      "counts": {}
+      "sampleSize": 96,
+      "counts": {
+        "q4b1o1": 40,
+        "q4b1o2": 12,
+        "q4b1o3": 8,
+        "q4b1o4": 36
+      }
     }
   }
 }
