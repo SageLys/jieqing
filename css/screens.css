@@ -1,24 +1,59 @@
 /* ================= S0 封面（03 5.15，参考 ui-03） ================= */
 .s-cover { background: var(--paper); }
 .cover-stage { position: relative; flex: 1; overflow: hidden; }
-.cover-ruler { position: absolute; top: 24px; bottom: 24px; width: 24px; font-family: var(--font-sans); font-size: 10px; color: var(--text-2); }
+/* 两侧刻度尺：两份列表首尾相接，上下无限循环（V2-001） */
+.cover-ruler { position: absolute; top: 0; bottom: 0; width: 24px; overflow: hidden; font-family: var(--font-sans); font-size: 10px; color: var(--text-2); opacity: 0; animation: fade 600ms var(--ease) 900ms forwards; }
 .cover-ruler.l { left: 8px; } .cover-ruler.r { right: 8px; }
-.cover-ruler span { position: absolute; left: 0; width: 100%; text-align: center; transform: translateY(-50%); }
-.cover-title { position: absolute; right: 44px; top: 2%; text-align: right; z-index: 2; }
+.cover-ruler-list { display: flex; flex-direction: column; height: 100%; flex: 0 0 100%; justify-content: space-between; padding: 12px 0; }
+.cover-ruler-list span { display: block; text-align: center; line-height: 1; }
+.cover-ruler.l .cover-ruler-list { animation: ruler-up 40s linear 1.2s infinite; }
+.cover-ruler.r .cover-ruler-list { animation: ruler-down 40s linear 1.2s infinite; }
+@keyframes ruler-up { from { transform: translateY(0); } to { transform: translateY(-100%); } }
+@keyframes ruler-down { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+.cover-title { position: absolute; right: 44px; top: 2%; text-align: right; z-index: 2; opacity: 0; animation: fade 700ms var(--ease) 1700ms forwards; }
 .cover-title .zh { font-family: var(--font-pixel); font-size: 40px; line-height: 1; -webkit-font-smoothing: none; }
 .cover-title .en { font-family: var(--font-pixel); font-size: 24px; line-height: 1; margin-top: 8px; -webkit-font-smoothing: none; }
-.cover-photo { position: absolute; width: 30%; max-height: 16%; transform: translateY(-50%); overflow: hidden; }
+/* 照片随机掉落（V1-001）：各自延时由 JS 给 */
+.cover-photo { position: absolute; width: 30%; max-height: 16%; overflow: hidden; opacity: 0; transform: translateY(calc(-50% - 60px)); animation: photo-drop 700ms var(--ease) forwards; }
+@keyframes photo-drop { to { opacity: 1; transform: translateY(-50%); } }
 .cover-photo.left { left: 12%; } .cover-photo.right { right: 12%; }
 /* 正式版照片已自带黑白处理和薄荷色块/边框（设计原稿），这里不再叠加灰度、色块和描边 */
 .cover-photo img { width: 100%; height: auto; }
 .cover-blocks { position: absolute; left: 12%; top: 6%; width: 120px; height: 200px; }
-.cover-blocks .blk { position: absolute; width: 32px; height: 32px; background: var(--ink); }
+.cover-blocks .blk { position: absolute; width: 32px; height: 32px; background: var(--ink); opacity: 0; animation: blk-in 1ms steps(1) forwards; }
+@keyframes blk-in { to { opacity: 1; } }
 .cover-blocks .blur { position: absolute; width: 40px; height: 40px; background: var(--pink); opacity: .55; filter: blur(8px); }
-.cover-line { position: absolute; width: 3px; background: var(--mint); }
-.cover-cta { position: absolute; left: 24px; bottom: 11%; display: flex; align-items: center; gap: 16px; }
+/* 雨（V2-002）：长条与 RAIN 字样持续落下 */
+.cover-line { position: absolute; width: 3px; background: var(--mint); animation: rain-fall 5s linear infinite; }
+@keyframes rain-fall { 0% { transform: translateY(-140px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(160px); opacity: 0; } }
+.cover-cta { position: absolute; left: 24px; bottom: 11%; display: flex; align-items: center; gap: 16px; z-index: 3; opacity: 0; animation: fade 600ms var(--ease) 3200ms forwards; }
 .cover-cta img { width: 88px; }
 .cover-cta .txt { font-family: var(--font-pixel); font-size: 32px; -webkit-font-smoothing: none; }
-.cover-rain { position: absolute; font-family: var(--font-serif); font-size: 9px; letter-spacing: 3px; color: var(--grey); }
+.cover-rain { position: absolute; font-family: var(--font-serif); font-size: 9px; letter-spacing: 3px; color: var(--grey); animation: rain-text 10s linear infinite; }
+@keyframes rain-text { 0% { transform: translateY(-40px); opacity: 0; } 10% { opacity: .9; } 90% { opacity: .9; } 100% { transform: translateY(120px); opacity: 0; } }
+
+/* ================= L 加载页（参考 ui-07） ================= */
+.load-stage { position: relative; flex: 1; overflow: hidden; }
+.load-thumb { position: absolute; left: 24px; top: 32px; width: 88px; height: 100px; border: 1.5px solid var(--ink); background: var(--paper); overflow: hidden; }
+.load-avatar { position: absolute; right: 20px; top: 28px; width: 36px; }
+.load-main { position: absolute; left: 40px; right: 24px; top: 150px; height: 46%; overflow: hidden; }
+/* V2-004：只做放大缩小，不越出框 */
+.load-zoom { position: absolute; inset: 0; transform-origin: 50% 55%; animation: load-zoom 6s ease-in-out infinite alternate; }
+@keyframes load-zoom { from { transform: scale(1); } to { transform: scale(1.14); } }
+.load-zoom .lb { position: absolute; background: var(--ink); }
+.load-zoom .lw { position: absolute; left: 50%; top: 27%; width: 48%; height: 15%; border: 1.5px solid var(--ink); background: var(--paper); }
+.load-zoom .load-folder { position: absolute; left: 0; top: 34%; width: 96%; }
+.load-thumb .load-folder { top: 44%; width: 82%; left: 8%; }
+.load-bar { position: absolute; left: 44px; right: 44px; top: calc(150px + 46% + 28px); display: flex; gap: 4px; }
+.load-bar i { flex: 1; height: 8px; background: var(--ink); opacity: 0; animation: blk-in 1ms steps(1) forwards; }
+.load-text { position: absolute; left: 0; right: 0; top: calc(150px + 46% + 48px); text-align: center; font-family: var(--font-pixel); font-size: 24px; -webkit-font-smoothing: none; }
+.load-pose { position: absolute; width: 72px; height: 72px; bottom: 16px; }
+.load-pose.p1 { left: 24px; } .load-pose.p2 { left: 42%; bottom: 96px; } .load-pose.p3 { right: 24px; }
+/* V2-003 / V1-002：一只小KONT 沿山丘曲线奔跑、跳起、落下 */
+.kont.load-runner { position: absolute; width: 56px; height: 56px; left: 0; top: 0;
+  offset-path: path('M -60 640 C 40 640, 60 520, 130 560 S 220 640, 260 560 S 360 520, 460 620');
+  offset-rotate: 0deg; animation: run-path 3.4s cubic-bezier(.4,0,.6,1) 200ms forwards; }
+@keyframes run-path { from { offset-distance: 0%; } to { offset-distance: 100%; } }
 
 /* ================= S1 小KONT 开场（03 5.16，参考 ui-04） ================= */
 .intro-top { flex: 0 0 auto; display: grid; grid-template-columns: 72px 1fr 72px; align-items: start; gap: 8px; padding: 12px 16px 4px; }
@@ -36,17 +71,18 @@
 .toc-brand { display: flex; align-items: center; gap: 8px; font-family: var(--font-pixel); font-size: 24px; -webkit-font-smoothing: none; }
 .toc-brand img { width: 40px; }
 .toc-avatar { width: 36px; height: 36px; }
-.toc-body { position: relative; flex: 1; overflow-y: auto; padding: 24px 80px 120px 24px; }
+.toc-body { position: relative; flex: 1; overflow-y: auto; padding: 24px 80px 0 24px; overscroll-behavior: contain; }
+.toc-spacer { height: 60vh; } /* 让页面一定能向下滑（V2-005）；滑到底进入第一章 */
 .toc-item { display: block; text-align: left; margin-bottom: 64px; opacity: 1; }
 .toc-item .zh { display: flex; align-items: center; gap: 10px; font-family: var(--font-pixel); font-size: 24px; -webkit-font-smoothing: none; }
 .toc-item .zh::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--pink); }
 .toc-item .en { font-family: var(--font-serif); font-size: 20px; letter-spacing: 1px; color: var(--grey); margin-left: 20px; }
 .toc-item[disabled] { cursor: default; }
-.toc-track { position: absolute; right: 16px; top: 88px; bottom: 120px; width: 56px; border-radius: 28px; background: var(--mint); display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
+.toc-track { position: absolute; right: 16px; top: 88px; bottom: 120px; z-index: 2; width: 56px; border-radius: 28px; background: var(--mint); display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
 .toc-track .knob { width: 48px; height: 48px; border-radius: 50%; background: var(--paper); flex: 0 0 auto; transition: transform 300ms var(--ease); }
 .toc-track .hint { flex: 1; display: flex; align-items: center; writing-mode: vertical-rl; font-family: var(--font-sans); font-size: 20px; letter-spacing: 2px; color: var(--ink); }
-.toc-kont { position: absolute; right: 60px; bottom: 24px; display: flex; align-items: flex-end; gap: 4px; }
-.toc-tip { position: relative; font-family: var(--font-pixel); font-size: 8px; padding: 6px 8px; border: 1.5px solid var(--ink); background: var(--paper); margin-bottom: 30px; white-space: nowrap; -webkit-font-smoothing: none; }
+.toc-kont { position: absolute; right: 60px; bottom: 24px; display: flex; align-items: flex-end; gap: 4px; z-index: 3; }
+.toc-tip { position: relative; animation: pop 240ms var(--ease); font-family: var(--font-pixel); font-size: 8px; padding: 6px 8px; border: 1.5px solid var(--ink); background: var(--paper); margin-bottom: 30px; white-space: nowrap; -webkit-font-smoothing: none; }
 .toc-kont .kont { width: 72px; height: 72px; }
 
 /* ================= 章扉页（03 5.14，参考 ui-01） ================= */
@@ -62,7 +98,23 @@
 .trans-stage { position: relative; flex: 1; overflow: hidden; }
 .t-line { opacity: 0; animation: fade 600ms var(--ease) forwards; }
 
-/* T1 键盘·宝贝（参考 ui-05） */
+/* T1 键盘·宝贝（参考 ui-05、ui-02） */
+.t1-wrap { position: absolute; inset: 0; overflow: hidden; }
+.t1-wrap .t1 { opacity: 0; animation: fade 600ms var(--ease) forwards; }
+.kb { position: absolute; left: 0; right: 0; bottom: 0; padding: 16px 8px 28px calc(var(--ruler-w) + 8px); background: var(--paper);
+  transform: translateY(100%); animation: kb-rise 400ms var(--ease) forwards, kb-drop 500ms var(--ease) calc(var(--kb-ms, 3000ms) - 600ms) forwards; }
+@keyframes kb-rise { to { transform: translateY(0); } }
+@keyframes kb-drop { from { transform: translateY(0); } to { transform: translateY(110%); } }
+.kb-blanks { display: flex; justify-content: center; gap: 14px; margin: 0 0 40px; }
+.kb-blanks span { width: 44px; border-bottom: 1.5px solid var(--ink); text-align: center; font-family: var(--font-pixel); font-size: 24px; line-height: 1.2; color: var(--mint); -webkit-font-smoothing: none; }
+.kb-blanks span { color: transparent; animation: blank-fill 1ms steps(1) forwards; }
+@keyframes blank-fill { to { color: var(--mint); } }
+.kb-row { display: flex; justify-content: center; gap: 5px; margin-bottom: 8px; }
+.key { width: 30px; height: 40px; border: 1px solid var(--pink); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--font-sans); font-size: 14px; color: var(--ink); background: var(--paper); }
+.key.wide { width: 120px; }
+.key.lit { animation: key-lit 1ms steps(1) forwards; }
+@keyframes key-lit { to { color: var(--mint); border-color: var(--mint); background: rgba(150,255,208,.18); } }
+
 .t1 { padding: 32px 24px 0 calc(var(--ruler-w) + 16px); font-family: var(--font-sans); font-size: 12px; color: var(--text-2); }
 .t1 .word { font-family: var(--font-pixel); font-size: 24px; letter-spacing: 12px; color: var(--mint); margin-bottom: 8px; -webkit-font-smoothing: none; }
 .t1 .word b { color: var(--mint); font-weight: 400; }
@@ -93,7 +145,9 @@
 
 /* T3 关系网（参考 book-p20） */
 .t3 { position: absolute; inset: 0; padding-left: var(--ruler-w); }
-.t3 svg { width: 100%; height: 100%; }
+.t3 svg { position: relative; width: 100%; height: 100%; }
+.t3 .bg { position: absolute; left: var(--ruler-w); right: 0; top: 0; height: 100%; width: calc(100% - var(--ruler-w)); object-fit: cover; opacity: 0; animation: fade-bg 1200ms var(--ease) forwards; filter: grayscale(1); }
+@keyframes fade-bg { to { opacity: .2; } }
 .t3 .node { fill: var(--mint); opacity: 0; animation: fade 400ms var(--ease) forwards; }
 .t3 .edge { stroke: var(--grey); stroke-width: 1; stroke-dasharray: 400; stroke-dashoffset: 400; animation: draw 800ms var(--ease) forwards; }
 .t3 .lbl { font-family: var(--font-serif); font-size: 16px; fill: var(--ink); opacity: 0; animation: fade 400ms var(--ease) forwards; }
@@ -103,10 +157,11 @@
 
 /* T4 病例单（参考 book-p26 / p29） */
 .t4 { position: absolute; inset: 0; padding: 24px 24px 0 calc(var(--ruler-w) + 16px); }
-.t4 .grid { position: relative; width: 100%; height: 62%; background-image: linear-gradient(var(--mint) 1px, transparent 1px), linear-gradient(90deg, var(--mint) 1px, transparent 1px); background-size: 48px 48px; border: 1px solid var(--mint); }
-.t4 .stamp { position: absolute; padding: 2px 6px; background: var(--mint); font-family: var(--font-serif); font-size: 18px; opacity: 0; animation: stamp 200ms steps(2) forwards; }
+.t4 .grid .bg { position: absolute; left: 12%; top: 6%; width: 76%; height: 88%; object-fit: cover; filter: grayscale(1); opacity: 0; animation: fade-bg 1200ms var(--ease) forwards; }
+.t4 .grid { position: relative; width: 100%; height: 62%; overflow: hidden; background-image: linear-gradient(var(--mint) 1px, transparent 1px), linear-gradient(90deg, var(--mint) 1px, transparent 1px); background-size: 48px 48px; border: 1px solid var(--mint); }
+.t4 .stamp { position: absolute; z-index: 1; padding: 2px 6px; background: var(--mint); font-family: var(--font-serif); font-size: 18px; opacity: 0; animation: stamp 200ms steps(2) forwards; }
 @keyframes stamp { from { opacity: 0; transform: scale(1.3); } to { opacity: 1; transform: none; } }
-.t4 .xs { position: absolute; left: 4px; right: 4px; bottom: 30%; font-family: var(--font-pixel); font-size: 24px; color: var(--pink); white-space: nowrap; overflow: hidden; width: 0; animation: wipe 900ms steps(12) forwards; -webkit-font-smoothing: none; }
+.t4 .xs { position: absolute; z-index: 1; left: 4px; right: 4px; bottom: 30%; font-family: var(--font-pixel); font-size: 24px; color: var(--pink); white-space: nowrap; overflow: hidden; width: 0; animation: wipe 900ms steps(12) forwards; -webkit-font-smoothing: none; }
 @keyframes wipe { to { width: 100%; } }
 .t4 .line { font-family: var(--font-serif); font-size: 20px; margin-top: 24px; }
 
@@ -127,13 +182,13 @@
 
 /* ================= F1 点破（03 5.18） ================= */
 .f1-stage { position: relative; flex: 1; }
-.f1-ruler { position: absolute; left: 40%; top: 16px; bottom: 96px; width: 60px; transform: translateX(-50%); }
-.f1-ruler .tick { position: absolute; left: 0; width: 24px; transform: translateY(-50%); font-family: var(--font-sans); font-size: 12px; color: var(--text-2); text-align: right; }
+.f1-ruler { position: absolute; left: 44%; top: 16px; bottom: 96px; width: 100px; transform: translateX(-50%); }
+.f1-ruler .tick { position: absolute; left: 36px; width: 24px; transform: translateY(-50%); font-family: var(--font-sans); font-size: 12px; color: var(--text-2); text-align: left; }
 .f1-ruler .axis { position: absolute; left: 30px; top: 0; bottom: 0; width: 1px; background: var(--line); }
-.f1-ruler .knot { position: absolute; left: 34px; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 0 1px var(--paper); transform: translateY(-50%) scale(0); animation: knot-in-f 200ms var(--ease) forwards; }
+.f1-ruler .knot { position: absolute; left: 62px; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 0 1px var(--paper); transform: translateY(-50%) scale(0); animation: knot-in-f 200ms var(--ease) forwards; }
 @keyframes knot-in-f { to { transform: translateY(-50%) scale(1); } }
-.f1-ruler .lbl { position: absolute; right: 40px; white-space: nowrap; font-family: var(--font-hand); font-size: 14px; color: var(--ink); transform: translateY(-50%); opacity: 0; animation: fade 300ms var(--ease) forwards; }
-.f1-lines { position: absolute; left: 58%; right: 16px; top: 30%; display: flex; flex-direction: column; gap: 20px; }
+.f1-ruler .lbl { position: absolute; right: 78px; white-space: nowrap; font-family: var(--font-sans); font-size: 12px; color: var(--ink); transform: translateY(-50%); opacity: 0; animation: fade 300ms var(--ease) forwards; }
+.f1-lines { position: absolute; left: 62%; right: 16px; top: 30%; display: flex; flex-direction: column; gap: 20px; }
 .f1-lines p { margin: 0; font-family: var(--font-serif); font-size: 16px; line-height: 1.8; }
 .f1-cta { position: absolute; left: 0; right: 0; bottom: 16px; display: flex; justify-content: center; }
 
@@ -165,8 +220,11 @@
 /* ================= E 结束页（03 5.20，参考 book-p41） ================= */
 .s-ending { background: var(--pink); color: var(--paper); }
 .s-ending .screen-body { display: flex; flex-direction: column; padding: 0; }
-.ending-main { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 0 40px 15%; }
-.ending-text { writing-mode: vertical-rl; font-family: var(--font-serif); font-size: 22px; line-height: 2; letter-spacing: 2px; max-height: 60vh; }
+.ending-main { position: relative; flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 0 40px 15%; cursor: pointer; }
+.ending-hint { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); font-family: var(--font-pixel); font-size: 16px; color: var(--paper); animation: blink 1.2s steps(1) infinite; -webkit-font-smoothing: none; }
+.ending-text { writing-mode: vertical-rl; font-family: var(--font-serif); font-size: 22px; line-height: 2; letter-spacing: 2px; max-height: 60vh; min-height: 40vh; }
+.ending-text p { margin: 0; }
+.ending-text .caret { display: inline-block; width: 16px; height: 8px; background: var(--paper); animation: blink 1s steps(1) infinite; }
 .ending-credits { padding: 16px 24px 32px; font-size: 11px; line-height: 1.7; opacity: .95; }
 .ending-credits p { margin: 0 0 4px; }
 .ending-restart { display: block; margin: 16px auto 0; font-family: var(--font-pixel); font-size: 24px; color: var(--paper); text-decoration: underline; -webkit-font-smoothing: none; }

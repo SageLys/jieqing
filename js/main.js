@@ -6,12 +6,13 @@ import { Ruler } from './ruler.js';
 import { stopAll, unlockAudio } from './audio.js';
 import * as S from './screens.js';
 
-const REVIEWABLE = new Set(['chapter', 'transition', 'prompt', 'revealing', 'ranking', 'closing', 'f1']);
+// 设计意见 V1-009：章扉页要能返回，所以目录也可回看（封面、加载页、开场不回）
+const REVIEWABLE = new Set(['toc', 'chapter', 'transition', 'prompt', 'revealing', 'ranking', 'closing', 'f1']);
 const WITH_RULER = new Set(['transition', 'prompt', 'answering', 'revealing', 'ranking', 'closing']);
 
 /** 把 content 展开成线性的屏幕序列 */
 function buildSteps(c) {
-  const steps = [{ t: 'cover' }, { t: 'intro' }, { t: 'toc' }];
+  const steps = [{ t: 'cover' }, { t: 'loading' }, { t: 'intro' }, { t: 'toc' }];
   const qById = Object.fromEntries((c.questions || []).map((q) => [q.id, q]));
   const last = c.questions[c.questions.length - 1];
   (c.chapters || []).forEach((ch, ci) => {
@@ -113,7 +114,7 @@ class App {
   }
   /** 回看：以屏为单位后退（00 第 6 节第 11 条） */
   prevReviewable() {
-    for (let i = this.idx - 1; i >= 3; i--) if (REVIEWABLE.has(this.steps[i].t)) return i;
+    for (let i = this.idx - 1; i >= 0; i--) if (REVIEWABLE.has(this.steps[i].t)) return i;
     return -1;
   }
   canGoBack() { return !this.demo && this.prevReviewable() >= 0; }

@@ -65,37 +65,66 @@ const askBubble = (text) => {
 };
 
 /* ---------------- S0 封面 ---------------- */
+// 设计意见 V2-001 / V2-002 / V1-001：问号先出现 → 两侧刻度尺上下无限循环 → 标题出现 → 照片随机掉落；青色元素做成雨
 function cover(step, ctx) {
   const app = ctx.app, c = app.c, cv = c.cover || {};
+  const rnd = app.rnd;
   const ticks = (cls) => {
-    const r = h('.cover-ruler', { class: `cover-ruler ${cls}` });
-    for (let v = 0; v <= 100; v += 5) r.append(h('span', { style: { top: `${v}%` } }, v === 0 ? '零' : v === 100 ? '百' : v));
+    const list = h('.cover-ruler-list');
+    for (let v = 0; v <= 100; v += 5) list.append(h('span', v === 0 ? '零' : v === 100 ? '百' : String(v)));
+    const r = h('.cover-ruler', { class: `cover-ruler ${cls}` }, list, list.cloneNode(true));
     return r;
   };
+  // "问号"：黑色像素方块按顺序出现
+  const blocks = h('.cover-blocks',
+    h('.blur', { style: { left: '30px', top: '70px' } }), h('.blur', { style: { left: '70px', top: '150px' } }));
+  [[32, 0], [0, 32], [64, 48], [64, 80], [32, 112], [32, 176]].forEach(([l, t], i) => {
+    blocks.append(h('.blk', { style: { left: `${l}px`, top: `${t}px`, animationDelay: `${i * 120}ms` } }));
+  });
   const stage = h('.cover-stage', ticks('l'), ticks('r'),
     h('.cover-title', h('.zh', cv.title || c.meta?.title || ''), cv.titleEn ? h('.en', cv.titleEn) : null),
-    h('.cover-blocks',
-      h('.blur', { style: { left: '30px', top: '70px' } }), h('.blur', { style: { left: '70px', top: '150px' } }),
-      h('.blk', { style: { left: '32px', top: '0' } }), h('.blk', { style: { left: '0', top: '32px' } }),
-      h('.blk', { style: { left: '64px', top: '48px' } }), h('.blk', { style: { left: '64px', top: '80px' } }),
-      h('.blk', { style: { left: '32px', top: '112px' } }), h('.blk', { style: { left: '32px', top: '176px' } }),
-    ),
-    h('.cover-line', { style: { left: '30%', top: '44%', height: '9%' } }),
-    h('.cover-line', { style: { left: '60%', top: '58%', height: '6%' } }),
-    h('.cover-line', { style: { left: '62%', top: '80%', height: '9%' } }),
-    h('.cover-line', { style: { left: '80%', top: '86%', height: '6%' } }),
-    h('.cover-rain', { style: { left: '12%', top: '15%' } }, 'RAIN'),
-    h('.cover-rain', { style: { right: '18%', top: '60%' } }, 'RAIN'),
-  );
+    blocks);
+  // 雨：薄荷色长条 + RAIN 字样，各自以不同周期落下
+  const drops = [[30, 44, 9], [60, 58, 6], [62, 80, 9], [80, 86, 6], [22, 70, 5], [48, 20, 4], [86, 30, 7]];
+  drops.forEach(([l, t, hgt], i) => {
+    stage.append(h('.cover-line', { style: { left: `${l}%`, top: `${t}%`, height: `${hgt}%`, animationDuration: `${4 + (i % 3) * 1.3}s`, animationDelay: `${-(i * 0.9)}s` } }));
+  });
+  [[12, 15], [70, 60], [40, 92]].forEach(([l, t], i) => {
+    stage.append(h('.cover-rain', { style: { left: `${l}%`, top: `${t}%`, animationDuration: `${9 + i * 2}s`, animationDelay: `${-i * 3}s` } }, 'RAIN'));
+  });
   (cv.photos || []).forEach((p, i) => {
-    const cls = `cover-photo ${p.side === 'left' ? 'left' : 'right'} ${i % 3 === 1 ? 'mint' : ''} ${i === 2 ? 'frame' : ''}`;
-    stage.append(h('div', { class: cls, style: { top: `${p.age}%` } }, h('img', { src: p.src, alt: '' })));
+    const delay = 2000 + Math.floor(rnd() * 1200);
+    stage.append(h('div', { class: `cover-photo ${p.side === 'left' ? 'left' : 'right'}`, style: { top: `${p.age}%`, animationDelay: `${delay}ms` } }, h('img', { src: p.src, alt: '' })));
   });
   const cta = h('button.cover-cta', { type: 'button', onclick: () => app.next() },
     h('img', { src: 'assets/img/folder_open.svg', alt: '' }), h('span.txt', cv.cta || app.ui.start || '开启'));
   stage.append(cta);
   if (app.demo) ctx.after(app.timing('coverMs', 5000), () => app.next());
   return h('.screen.full', stage);
+}
+
+/* ---------------- L 加载页（参考 ui-07；设计意见 V1-002 / V2-003 / V2-004） ---------------- */
+function loading(step, ctx) {
+  const app = ctx.app;
+  const blk = (l, t, w = 60) => h('.lb', { style: { left: `${l}%`, top: `${t}%`, width: `${w}px`, height: `${w}px` } });
+  const main = h('.load-main',
+    h('.load-zoom',
+      blk(44, 8), blk(20, 22), blk(62, 22), h('.lw'), blk(62, 36),
+      h('img.load-folder', { src: 'assets/img/folder_open.svg', alt: '' }),
+      blk(44, 46), blk(44, 72)));
+  const thumb = h('.load-thumb', h('.load-zoom', blk(46, 6, 18), blk(28, 20, 18), blk(60, 30, 18), h('img.load-folder', { src: 'assets/img/folder_open.svg', alt: '' }), blk(46, 62, 18)));
+  const bar = h('.load-bar');
+  for (let i = 0; i < 24; i++) bar.append(h('i', { style: { animationDelay: `${300 + i * 110}ms` } }));
+  const stage = h('.load-stage',
+    thumb, h('img.load-avatar', { src: 'assets/img/icon_account.svg', alt: '' }),
+    main, bar, h('.load-text', app.ui.loading || ''),
+    h('.kont.load-pose.p1'), h('.kont.load-pose.p2'), h('.kont.load-pose.p3'),
+    h('.kont.load-runner'));
+  const el = h('.screen.full', stage);
+  const ms = app.timing('loadingMs', 3600);
+  ctx.after(ms, () => app.next());
+  if (!app.demo) stage.addEventListener('click', () => app.next());
+  return el;
 }
 
 /* ---------------- S1 小KONT 开场 ---------------- */
@@ -124,22 +153,37 @@ function intro(step, ctx) {
 }
 
 /* ---------------- S2 目录 ---------------- */
+// 设计意见 V1-004 / V2-005：小KONT 先弹出提示，页面向下滑动到底进入第一章；点第一章或点轨道仍可进入
 function toc(step, ctx) {
   const app = ctx.app, c = app.c;
-  const body = h('.toc-body');
+  const list = h('.toc-list');
   const indents = [24, 88, 152, 88, 40];
   (c.chapters || []).forEach((ch, i) => {
-    const item = h('button.toc-item', { type: 'button', disabled: i !== 0, style: { marginLeft: `${indents[i % indents.length]}px` }, onclick: () => app.next() },
-      h('span.zh', ch.stage), h('span.en', ch.en));
-    body.append(item);
+    list.append(h('button.toc-item', { type: 'button', disabled: i !== 0, style: { marginLeft: `${indents[i % indents.length]}px` }, onclick: () => app.next() },
+      h('span.zh', ch.stage), h('span.en', ch.en)));
   });
-  const track = h('button.toc-track', { type: 'button', onclick: () => app.next() }, h('span.knob'), h('span.hint', c.toc?.hint || ''));
-  body.append(track);
+  const body = h('.toc-body', list, h('.toc-spacer'));
+  const knob = h('span.knob');
+  const track = h('button.toc-track', { type: 'button', onclick: () => app.next() }, knob, h('span.hint', c.toc?.hint || ''));
+  const tip = h('.toc-tip', { hidden: true }, c.host?.tocTooltip || '');
   const el = h('.screen.full',
     h('.toc-top', h('.toc-brand', h('img', { src: 'assets/img/icon_memory_factory.svg', alt: '' }), c.toc?.title || ''), h('img.toc-avatar', { src: 'assets/img/icon_account.svg', alt: '' })),
-    body,
-    h('.toc-kont', h('.toc-tip', c.host?.tocTooltip || ''), h('.kont')));
-  if (app.demo) ctx.after(app.timing('tocMs', 4000), () => app.next());
+    body, track,
+    h('.toc-kont', tip, h('.kont')));
+  ctx.after(700, () => { tip.hidden = false; });
+  let fired = false;
+  const onScroll = () => {
+    const max = body.scrollHeight - body.clientHeight;
+    const p = max > 0 ? Math.min(1, body.scrollTop / max) : 0;
+    knob.style.transform = `translateY(${p * Math.max(0, track.clientHeight - knob.offsetHeight - 8)}px)`;
+    if (p >= 0.98 && !fired && !ctx.review) { fired = true; ctx.after(250, () => app.next()); }
+  };
+  body.addEventListener('scroll', onScroll, { passive: true });
+  if (app.demo) {
+    const total = app.timing('tocMs', 4000);
+    ctx.after(Math.max(600, total - 1600), () => body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' }));
+    ctx.after(total, () => { if (!fired) app.next(); });
+  }
   return el;
 }
 
@@ -423,10 +467,10 @@ function f1(step, ctx) {
   r.groups().forEach((g) => {
     const top = `${r.pct(g.age)}%`;
     g.items.slice(0, 3).forEach((m, i) => {
-      big.append(h('span.knot', { style: { top, left: `${34 + i * 9}px`, animationDelay: ctx.review ? '0ms' : `${delay}ms` } }));
+      big.append(h('span.knot', { style: { top, left: `${62 + i * 9}px`, animationDelay: ctx.review ? '0ms' : `${delay}ms` } }));
       delay += 80;
     });
-    if (g.items.length > 3) big.append(h('span.knot-n', { style: { top, left: '62px' } }, `×${g.items.length}`));
+    if (g.items.length > 3) big.append(h('span.knot-n', { style: { top, left: '92px' } }, `×${g.items.length}`));
     // 左侧手写标签：同一位受访者只标一次
     const labels = [];
     g.items.forEach((m) => {
@@ -440,6 +484,16 @@ function f1(step, ctx) {
   const ctaRow = h('.f1-cta', { hidden: true }, nextBtn(ctx));
   const stage = h('.f1-stage', big, lines, ctaRow);
   const el = h('.screen', topbar(ctx), stage);
+  // 标签防重叠：按年龄顺序排，和上一条至少隔 15px（设计意见 V1-012 截图里标签叠在一起）
+  requestAnimationFrame(() => {
+    const H = big.clientHeight; if (!H) return;
+    let last = -Infinity;
+    [...big.querySelectorAll('.lbl')].forEach((lb) => {
+      let y = (parseFloat(lb.style.top) / 100) * H;
+      if (y < last + 15) y = last + 15;
+      lb.style.top = `${y}px`; last = y;
+    });
+  });
   const texts = Array.isArray(app.c.finale?.revealText) ? app.c.finale.revealText : [String(app.c.finale?.revealText || '')];
   let i = 0, pending = null;
   const showLine = () => {
@@ -546,17 +600,38 @@ function f4(step, ctx) {
 }
 
 /* ---------------- E 结束页 ---------------- */
+// 设计意见 V1-014：文字点击后从上到下逐字打出，再点击出现下一段，像翻 PPT；全部出现后再显示致谢
 function ending(step, ctx) {
   const app = ctx.app, e = app.c.ending || {}, cr = e.credits || {};
-  const body = h('.screen-body',
-    h('.ending-main', h('.ending-text', (e.lines || []).map((l) => h('p', { style: { margin: 0 } }, l)))),
-    h('.ending-credits',
-      ['interviewees', 'team', 'ai', 'source', 'boundary', 'fonts'].map((k) => cr[k] ? h('p', cr[k]) : null),
-      h('button.ending-restart', { type: 'button', onclick: () => location.reload() }, e.restartCta || '')));
-  return h('.screen.full', body);
+  const lines = e.lines || [];
+  const textBox = h('.ending-text');
+  const hint = h('.ending-hint', '▼');
+  const credits = h('.ending-credits', { hidden: true },
+    ['interviewees', 'team', 'ai', 'source', 'boundary', 'fonts'].map((k) => cr[k] ? h('p', cr[k]) : null),
+    h('button.ending-restart', { type: 'button', onclick: (ev) => { ev.stopPropagation(); location.reload(); } }, e.restartCta || ''));
+  const main = h('.ending-main', textBox, hint);
+  const body = h('.screen-body', main, credits);
+  const el = h('.screen.full', body);
+  let i = 0, typing = null;
+  const advance = () => {
+    if (typing) { typing.finish(); return; }
+    if (i >= lines.length) { credits.hidden = false; hint.hidden = true; return; }
+    const pEl = h('p');
+    textBox.append(pEl);
+    typing = typewriter(pEl, lines[i++], { perChar: 90, immediate: ctx.review });
+    hint.hidden = true;
+    typing.then(() => { typing = null; if (ctx.alive) hint.hidden = false; });
+  };
+  body.addEventListener('click', advance);
+  ctx.after(600, advance);
+  if (app.demo) {
+    const per = Math.max(2500, (app.timing('endingMs', 8000) - 600) / (lines.length + 1));
+    for (let k = 1; k <= lines.length; k++) ctx.after(600 + k * per, () => { if (typing) typing.finish(); ctx.after(300, advance); });
+  }
+  return el;
 }
 
-const RENDERERS = { cover, intro, toc, chapter, transition, prompt, answering, revealing, ranking, closing, f1, f2, f3, f4, ending };
+const RENDERERS = { cover, loading, intro, toc, chapter, transition, prompt, answering, revealing, ranking, closing, f1, f2, f3, f4, ending };
 
 export function render(step, ctx) {
   const fn = RENDERERS[step.t];

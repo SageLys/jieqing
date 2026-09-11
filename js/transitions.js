@@ -5,16 +5,34 @@ import { h } from './util.js';
 
 const delayStyle = (ms, finished) => ({ animationDelay: finished ? '0ms' : `${ms}ms`, animationDuration: finished ? '1ms' : undefined });
 
+// 完整版（03 第 6 节 T1；设计意见 V2-006）：键盘从底部升起，B O R N 依次亮成薄荷绿并填进空格，键盘落下后"宝贝"页淡入
+const KB_ROWS = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
+function keyboardStage(word, ctx) {
+  const blanks = h('.kb-blanks', word.map((ch, i) => h('span', { style: delayStyle(900 + i * 250, ctx.finished) }, ch)));
+  const kb = h('.kb', { style: ctx.finished ? { display: 'none' } : {} }, blanks);
+  KB_ROWS.forEach((row) => {
+    const r = h('.kb-row');
+    row.split('').forEach((k) => {
+      const idx = word.indexOf(k);
+      r.append(h('span.key', { class: idx >= 0 ? 'key lit' : 'key', style: idx >= 0 ? delayStyle(900 + idx * 250, ctx.finished) : {} }, k));
+    });
+    kb.append(r);
+  });
+  kb.append(h('.kb-row', h('span.key.wide', '　'), h('span.key', '↵')));
+  return kb;
+}
+
 function keyboard(t, ctx) {
-  const word = (t.typeWord || '').split('');
-  const el = h('.t1',
-    h('.word', word.map((ch, i) => h('b.t-line', { style: delayStyle(300 + i * 250, ctx.finished) }, ch))),
+  const word = (t.typeWord || '').toUpperCase().split('');
+  const KB_MS = ctx.finished ? 0 : 900 + word.length * 250 + 900; // 键盘阶段总时长
+  const el = h('.t1', { style: { animationDelay: `${KB_MS}ms` } },
+    h('.word', word.map((ch, i) => h('b.t-line', { style: delayStyle(KB_MS + 200 + i * 120, ctx.finished) }, ch))),
     h('.photo',
       h('img', { src: t.image, alt: '' }),
     ),
   );
   const lines = t.lines || [];
-  let at = 1600;
+  let at = KB_MS + 1200;
   if (lines[0]) el.append(h('p.l1.t-line', { style: delayStyle(at, ctx.finished) }, lines[0]));
   at += 1000;
   if (lines[1]) el.append(h('p.l2.t-line', { style: delayStyle(at, ctx.finished) }, lines[1]));
@@ -30,7 +48,9 @@ function keyboard(t, ctx) {
     lines[3] ? h('span.t-line', { style: delayStyle(at, ctx.finished) }, lines[3]) : null,
     (t.babble || [])[1] ? h('span.babble.t-line', { style: delayStyle(at + 800, ctx.finished) }, t.babble[1]) : null,
   ));
-  return { el, total: at + 1400 };
+  const wrap = h('.t1-wrap', el, keyboardStage(word, ctx));
+  if (!ctx.finished) wrap.style.setProperty('--kb-ms', `${KB_MS}ms`);
+  return { el: wrap, total: at + 1400 };
 }
 
 function table(t, ctx) {
@@ -85,14 +105,16 @@ function network(t, ctx) {
     svg.append(ns('circle', { class: 'node', cx: x, cy: y, r: 18, style: dl(at + 300) }));
     svg.append(ns('text', { class: 'lbl', x, y: y + 40, 'text-anchor': 'middle', style: dl(at + 500) }, nodes[i]));
   });
-  const el = h('.t3', svg);
+  // 设计意见 V1-010 / V1-011：几何图形太单薄，底下垫一张手的黑白照片
+  const el = h('.t3', h('img.bg.t-line', { src: t.image || 'assets/img/photo_hands_link.jpg', alt: '', style: delayStyle(0, ctx.finished) }), svg);
   at += 900;
   (t.lines || []).forEach((l, i) => el.append(h('p.line.t-line', { style: delayStyle(at + i * 800, ctx.finished) }, l)));
   return { el, total: at + (t.lines || []).length * 800 + 600 };
 }
 
 function chart(t, ctx) {
-  const grid = h('.grid');
+  // 设计意见 V1-011：表格底下垫照片（参考 book-p26）
+  const grid = h('.grid', h('img.bg.t-line', { src: t.image || 'assets/img/photo_elder_hand.jpg', alt: '', style: delayStyle(0, ctx.finished) }));
   const pos = [[6, 8], [52, 20], [18, 42], [58, 56], [10, 72], [46, 84]];
   (t.stamps || []).forEach((s, i) => {
     const [l, tp] = pos[i % pos.length];
