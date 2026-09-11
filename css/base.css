@@ -44,7 +44,7 @@ img { display: block; max-width: 100%; }
 .pixel-16 { font-size: 16px; }
 .pixel-24 { font-size: 24px; }
 .pixel-32 { font-size: 32px; }
-.serif { font-family: var(--font-serif); }
+.serif { font-family: var(--font-sans); }
 .hand { font-family: var(--font-hand); }
 
 /* ---------- 屏幕容器 ---------- */
@@ -90,6 +90,7 @@ img { display: block; max-width: 100%; }
 .chat-top-left { position: relative; display: flex; flex-direction: column; align-items: center; }
 .chat-top-left .btn-back { position: absolute; left: -6px; top: -26px; width: 40px; height: 22px; }
 .chat-icon { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 72px; }
+.chat-top-right { width: 72px; } /* v3 F12：右侧只留占位，保持 what 居中 */
 .chat-icon img { width: 36px; height: 36px; object-fit: contain; }
 .chat-icon span { font-size: 16px; }
 .chat-what { justify-self: center; border: 1.5px solid var(--line); border-radius: 48px; padding: 14px 24px; font-size: 32px; }
@@ -110,7 +111,15 @@ img { display: block; max-width: 100%; }
   color: var(--paper); font-family: var(--font-sans); font-size: 16px; line-height: 20px;
 }
 .inputbar textarea::placeholder { font-family: var(--font-pixel); color: var(--paper); font-size: 16px; -webkit-font-smoothing: none; opacity: 1; }
-.inputbar.deco textarea::placeholder { color: var(--grey); }
+/* v3 F15：问答期间的"输入中…"状态条——像素字灰色，三个点逐个跳；点它抖一下 */
+.inputbar.deco { cursor: var(--cur-arrow); user-select: none; }
+.inputbar .typing { flex: 1; font-family: var(--font-pixel); font-size: 16px; line-height: 20px; color: var(--grey); -webkit-font-smoothing: none; }
+.inputbar .typing i { display: inline-block; font-style: normal; animation: dot-bounce 1.2s steps(1) infinite; }
+.inputbar .typing i:nth-child(2) { animation-delay: .2s; }
+.inputbar .typing i:nth-child(3) { animation-delay: .4s; }
+@keyframes dot-bounce { 0%, 60% { transform: translateY(0); } 20% { transform: translateY(-4px); } 40% { transform: translateY(-2px); } }
+.inputbar .send.deco { background: var(--grey); }
+.inputbar .send.deco::before { border-bottom-color: var(--line-ink); opacity: .6; }
 .inputbar .send { width: 32px; height: 32px; border-radius: 50%; background: var(--paper); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
 .inputbar .send::before { content: ""; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 10px solid var(--line-ink); }
 .inputbar .send.save { width: auto; padding: 0 12px; border-radius: 16px; font-family: var(--font-pixel); font-size: 16px; color: var(--line-ink); -webkit-font-smoothing: none; }
@@ -156,14 +165,18 @@ img { display: block; max-width: 100%; }
   0%, 49% { transform: translate(0, 0); }
   50%, 100% { transform: translate(1px, 1px); }
 }
-/* 过场第一屏：小KONT 从左下角"弹"进来（三次 steps 的 Y 位移） */
-.kont.bounce-in { animation: kont-bounce 360ms steps(1, end) 1; }
-@keyframes kont-bounce {
-  0% { transform: translate(-60px, 60px); }
-  33% { transform: translate(0, -12px); }
-  66% { transform: translate(0, -6px); }
-  100% { transform: translate(0, 0); }
-}
+/* v3（08 2.4 / F07）：小KONT 台词气泡——像素字 8px、1.5px 黑边、白底（同 .toc-tip），弹在小KONT 上方 */
+.kont[data-talk] { cursor: var(--cur-hand); pointer-events: auto; }
+.kont[data-talk]:not(.corner-left):not(.patrol) { position: relative; }
+.kont-say { position: absolute; left: 50%; bottom: calc(100% + 6px); transform: translateX(-50%); z-index: 6; white-space: nowrap; padding: 6px 8px; border: 1.5px solid var(--line-ink); background: var(--paper); color: var(--ink); font-family: var(--font-pixel); font-size: 8px; line-height: 1; -webkit-font-smoothing: none; animation: pop 240ms var(--ease); pointer-events: none; }
+.kont-say.out { opacity: 0; transition: opacity 240ms var(--ease); }
+.kont.inline .kont-say { overflow: visible; }
+/* v3（08 2.2 / 2.3）：小KONT 横向来回巡逻——只在容器宽内（--patrol 由 JS 按容器宽写入），跑到头就往回 */
+.kont.patrol { position: absolute; left: 16px; bottom: 8px; z-index: 3; animation: kont-patrol 6s steps(24) infinite alternate; }
+@keyframes kont-patrol { from { transform: translateX(0); } to { transform: translateX(var(--patrol, 240px)); } }
+/* 章扉页 → 过场 a：从框下左侧跑入，再开始巡逻 */
+.kont.patrol.enter { animation: kont-enter 400ms steps(4) 1, kont-patrol 6s steps(24) 400ms infinite alternate; }
+@keyframes kont-enter { from { transform: translateX(-60px); } to { transform: translateX(0); } }
 
 /* ---------- 气泡（03 5.4） ---------- */
 .bubble-stack { display: flex; flex-direction: column; align-items: stretch; }
@@ -247,14 +260,19 @@ img { display: block; max-width: 100%; }
 .opt.ranked { margin-left: 28px; width: calc(100% - 28px); }
 
 /* ---------- 题面、落点 ---------- */
-.prompt-text { font-family: var(--font-serif); font-size: var(--fs-h2); line-height: 1.7; margin: 8px 0 20px; text-align: left; }
+/* v3 F14：题面上方的 16:9 短片（黑线框，静音循环） */
+.prompt-video { width: 100%; aspect-ratio: 16 / 9; border: 1.5px solid var(--line-ink); overflow: hidden; margin: 4px 0 12px; background: var(--grey-light); }
+.prompt-video .ph { width: 100%; height: 100%; }
+.prompt-video video, .prompt-video img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.prompt-text { font-family: var(--font-sans); font-size: var(--fs-h2); line-height: 1.7; margin: 8px 0 20px; text-align: left; }
 .closing-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 16px; text-align: center; }
-.closing-text { font-family: var(--font-serif); font-size: var(--fs-h2); line-height: 1.7; }
+.closing-text { font-family: var(--font-sans); font-size: var(--fs-h2); line-height: 1.7; }
 .closing-wrap .knot-mini { margin: 28px auto; }
 
 /* ---------- 像素结（03 5.10） ---------- */
-.knot { --size: 240px; --grid: 24; width: var(--size); height: var(--size); display: grid; grid-template-columns: repeat(var(--grid), 1fr); grid-template-rows: repeat(var(--grid), 1fr); image-rendering: pixelated; flex: 0 0 auto; }
-.knot .cell { display: block; background: var(--line-ink); }
+/* v3（08 3.13）：结 = 设计稿 SVG 内联，只缩放不变形；rect.cell 按 fill 上色，默认 currentColor */
+.knot { --size: 240px; width: var(--size); height: var(--size); color: var(--line-ink); flex: 0 0 auto; }
+.knot svg { width: 100%; height: 100%; display: block; overflow: visible; shape-rendering: crispEdges; }
 .knot.paintable .cell { cursor: var(--cur-hand); }
 .knot.placeholder { display: block; background: var(--grey-light); }
 .knot.placeholder .knot-missing { width: 100%; height: 100%; }

@@ -159,3 +159,77 @@ export function photo(src, cls = '') {
   wrap.append(img);
   return wrap;
 }
+
+/** v3（08 2.2）：小KONT 横向来回的距离 = 容器宽 - 自身 48 - 左右 16：写进 --patrol，keyframes 用它 */
+export function setPatrol(kontEl) {
+  const host = kontEl.offsetParent || kontEl.parentElement;
+  if (!host) return;
+  const w = host.clientWidth || 0;
+  kontEl.style.setProperty('--patrol', `${Math.max(0, w - kontEl.offsetWidth - 32)}px`);
+}
+/** 元素进入文档后先量一次，之后尺寸变了再量（ResizeObserver；元素移出文档后自然停） */
+export function fitOnResize(el, fn) {
+  requestAnimationFrame(fn);
+  if (typeof ResizeObserver === 'function') new ResizeObserver(() => fn()).observe(el);
+  else window.addEventListener('resize', fn);
+}
+
+/**
+ * v3（08 F14）：图片 / 视频二选一的媒体块。video 有值 → <video muted autoplay loop playsinline poster>（出错退回照片）；
+ * 没有 → 同 photo()。video 可以是 { mp4, webm, poster } 或字符串路径。
+ * 返回 .ph 元素，附带 el.video（有视频时）与 el.fallback()（退回照片，调用方也可主动调）。
+ */
+export function media(src, video, cls = '', { autoplay = true } = {}) {
+  if (!video) return photo(src, cls);
+  const v = typeof video === 'string' ? { mp4: video } : video;
+  const wrap = h('.ph', { class: `ph has-video ${cls}`.trim() });
+  const vid = h('video', { muted: true, loop: true, playsinline: true, autoplay, preload: 'auto', poster: v.poster || src || null, 'aria-hidden': 'true' });
+  vid.muted = true; // 属性 + 属性值都设，保证移动端静音自动播
+  if (v.webm) vid.append(h('source', { src: v.webm, type: 'video/webm' }));
+  if (v.mp4) vid.append(h('source', { src: v.mp4, type: 'video/mp4' }));
+  if (!v.webm && !v.mp4 && typeof video === 'string') vid.src = video;
+  let fell = false;
+  const fallback = () => {
+    if (fell) return; fell = true;
+    vid.remove(); wrap.classList.remove('has-video'); wrap.classList.add('video-failed');
+    const p = photo(src || v.poster || null); // 没有照片就退到封面图
+    wrap.append(...p.childNodes); if (p.classList.contains('missing')) wrap.classList.add('missing');
+    wrap.dispatchEvent(new CustomEvent('mediafallback'));
+  };
+  vid.addEventListener('error', fallback);
+  const lastSource = vid.querySelector('source:last-child');
+  if (lastSource) lastSource.addEventListener('error', fallback); // 全部 source 都失败时最后一个 source 报错
+  wrap.append(vid);
+  wrap.video = vid; wrap.fallback = fallback;
+  return wrap;
+}
+
+/**
+ * v3（08 2.4 / F07）：小KONT 可点——点一下在其上方弹出像素字小气泡，轮播 host.kontLines（app.kontLineIdx 全站累计），
+ * 2.5 秒后淡出；再点立刻换下一句。data-first-line 有值时（目录页"我是你的助手～"）作为第一句先弹。
+ */
+export function kontTalk(app, kontEl, { lines = [] } = {}) {
+  if (!lines.length || kontEl.dataset.talk) return;
+  kontEl.dataset.talk = '1';
+  kontEl.setAttribute('role', 'button');
+  kontEl.setAttribute('tabindex', '0');
+  let say = null, timer = null, usedFirst = !kontEl.dataset.firstLine;
+  const speak = (e) => {
+    e?.stopPropagation?.();
+    const text = usedFirst ? lines[(app.kontLineIdx = ((app.kontLineIdx || 0) % lines.length))] : kontEl.dataset.firstLine;
+    if (usedFirst) app.kontLineIdx = (app.kontLineIdx || 0) + 1; else usedFirst = true;
+    clearTimeout(timer);
+    if (say) say.remove();
+    say = h('.kont-say', text);
+    kontEl.append(say);
+    // 气泡不要越出屏幕左右
+    const kr = kontEl.getBoundingClientRect(), W = document.documentElement.clientWidth, w = say.offsetWidth;
+    const cx = kr.left + kr.width / 2;
+    let shift = 0;
+    if (cx - w / 2 < 8) shift = 8 - (cx - w / 2); else if (cx + w / 2 > W - 8) shift = (W - 8) - (cx + w / 2);
+    if (shift) say.style.marginLeft = `${Math.round(shift)}px`;
+    timer = setTimeout(() => { say?.classList.add('out'); setTimeout(() => { say?.remove(); say = null; }, 240); }, 2500);
+  };
+  kontEl.addEventListener('click', speak);
+  kontEl.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); speak(e); } });
+}

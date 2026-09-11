@@ -12,12 +12,15 @@ export function walk(sc, rt) {
   });
   const imgs = sc.images || [];
   const photoPos = [[8, 16, 48, 10], [42, 27, 36, 8], [68, 37, 32, 8]];
+  // v3 F17：四张照片与大"走"慢速上下浮动 ±3px（错相位）；sc.floatImages === false 时不加
+  const float = sc.floatImages !== false;
+  const fl = (el, i) => { if (float) { el.classList.add('float-3'); el.style.animationDelay = `${-i * 0.75}s`; } return el; };
   const photos = imgs.slice(0, 3).map((src, i) => {
     const [l, t, w, hgt] = photoPos[i];
-    return h('.walk-photo.a-pop', { style: { left: `${l}%`, top: `${t}%`, width: `${w}%`, height: `${hgt}%` } }, photo(src));
+    return h('.walk-photo.a-pop', { style: { left: `${l}%`, top: `${t}%`, width: `${w}%`, height: `${hgt}%` } }, fl(h('.walk-in', photo(src)), i));
   });
-  const last = imgs[3] ? h('.walk-photo.tall.a-pop', { style: { left: '64%', top: '72%', width: '26%', height: '24%' } }, photo(imgs[3]), h('i.gbar')) : null;
-  const big = h('.walk-big.a-pop', h('i.frame'), h('span', sc.bigChar || '走'));
+  const last = imgs[3] ? h('.walk-photo.tall.a-pop', { style: { left: '64%', top: '72%', width: '26%', height: '24%' } }, fl(h('.walk-in', photo(imgs[3]), h('i.gbar')), 3)) : null;
+  const big = h('.walk-big.a-pop', fl(h('.walk-in', h('i.frame'), h('span', sc.bigChar || '走')), 4));
   const caption = h('p.walk-cap.a-pop', sc.caption || '');
   const el = h('.t3a', ...chips, ...photos, last, big, caption);
   async function run() {

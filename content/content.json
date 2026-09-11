@@ -7,10 +7,12 @@
     "AI 选项位置": "骨架里 AI 选项在各拍中的序号故意不同，避免 id 暴露规律。渲染时仍需按 02 打乱顺序。",
     "第五问": "第五问没有 closing。02 的提问“几个人来劝我。你觉得谁说得最得体？”已拆开：前半句并入题面，气泡里只放后半句。",
     "过场": "chapters[n].transition.screens 每章两屏，type 见 03 第 7 节；文案照设计稿原文。图片缺失时页面用灰色方块顶上。",
-    "结": "knots 九种结（03 第 9.3 节的 glyph 对应），knotRules 的 bands 按 sum 从低到高覆盖 -6…6；deadWhen=noTie 表示六次里一次也没“系”就落八字结。方格数据在 content/knots.json。",
-    "公共池条目格式": "poolSeed 与观众存档共用：{ knotId, colors: { all: 色id, \"格子索引\": 色id }, text, createdAt }。",
-    "演示时长": "demoTimings：过场每屏 transitionScreenMs；kontRunMs 是章扉页小KONT 跑出的时长；demoColors 是演示模式的上色方案。",
-    "已定（09-11）": "主题改为“你在人情里打的结”，AI 与真人一视同仁；英文名 EMOKONT；蓝 = #0000FF；小KONT 灰；结束页黑底。"
+    "结": "knots 九种结（03 第 9.3 节的 glyph 对应），knotRules 的 bands 按 sum 从低到高覆盖 -6…6；deadWhen=noTie 表示六次里一次也没“系”就落八字结。v3 起结的图形直接内联 assets/img/knots/knot_XX.svg（content/knots.json 已退役到 archive/knots_grid_v2/）。",
+    "公共池条目格式": "poolSeed 与观众存档共用：{ knotId, colors: { all: 色id, \"方块序号\": 色id }, text, createdAt }。v3 起“方块序号”= 该结 SVG 里 <rect> 的文档顺序（从 0 起）。",
+    "演示时长": "demoTimings：过场每屏 transitionScreenMs；kontRunMs 是章扉页点 action 后小KONT 原地加速跳的时长（v3 改 600）；demoColors 是演示模式的上色方案。",
+    "已定（09-11）": "主题改为“你在人情里打的结”，AI 与真人一视同仁；英文名 EMOKONT；蓝 = #0000FF；小KONT 灰；结束页黑底。",
+    "v3 变更（09-11）": "按 08_v3设计反馈修改说明：cover.photos[] 改为 { src, x, y, w }（%），删 age/side；host.kontLines[] 小KONT 点击台词；过场 baby / video-face 与 questions[] 新增可选 video（{ mp4, webm, poster } 或字符串路径，无值退回照片）；walk 新增可选 floatImages（默认 true）。",
+    "待设计同学补充": "① 末页提示词（ending.lines 现用 v2 两句，是否竖排待定）；② 最终字体家族（现用 等线 / 苹方 / 微软雅黑 无衬线栈）；③ 泪海（T5a）灰块留不留；④ 黄框竖排短语的断句是否合意（现按标点自动切）；⑤ video 字段：video/ 目录已有 09 号任务产出的 q1–q5 与 baby，待确认后再填入。"
   },
   "meta": {
     "title": "结情",
@@ -61,33 +63,39 @@
     "photos": [
       {
         "src": "assets/img/photo_baby_cover.jpg",
-        "age": 12,
-        "side": "right"
+        "x": 56,
+        "y": 13,
+        "w": 32
       },
       {
         "src": "assets/img/photo_kid_drawing.jpg",
-        "age": 30,
-        "side": "left"
+        "x": 38,
+        "y": 27,
+        "w": 20
       },
       {
         "src": "assets/img/photo_running_kid.jpg",
-        "age": 30,
-        "side": "right"
+        "x": 60,
+        "y": 28,
+        "w": 14
       },
       {
         "src": "assets/img/photo_eyes_teen.jpg",
-        "age": 47,
-        "side": "right"
+        "x": 56,
+        "y": 44,
+        "w": 30
       },
       {
         "src": "assets/img/photo_hands.jpg",
-        "age": 58,
-        "side": "left"
+        "x": 13,
+        "y": 56,
+        "w": 38
       },
       {
         "src": "assets/img/photo_elder.jpg",
-        "age": 75,
-        "side": "right"
+        "x": 52,
+        "y": 68,
+        "w": 38
       }
     ]
   },
@@ -101,7 +109,15 @@
       "走到最后，你会拿到一个属于你自己的结。开始吧～"
     ],
     "introCta": "好呀",
-    "tocTooltip": "我是你的助手～"
+    "tocTooltip": "我是你的助手～",
+    "kontLines": [
+      "今天也在下雨吗？不要紧，我陪你走一段。",
+      "人情这件事没有标准答案，只有你自己的手。",
+      "你打的每一个结，我都替你记着。",
+      "慢一点没关系，绳子不会跑。",
+      "想回头看看？点左上角的历史档案。",
+      "我是小KONT。你的绳子，我帮你拿着。"
+    ]
   },
   "toc": {
     "title": "记忆工厂",
@@ -1121,7 +1137,7 @@
       "team": "2026 设计马拉松 · 文化孪生工作坊 Cultural Twin Workshop。方向：AI 真的懂我的文化吗？ Direction: Can AI Understand My Culture? 导师：黄文宗 Tutor: Huang Wenzong。组员：史振莹、李璟妍 Members: Shi Zhenying, Li Jingyan。",
       "source": "视觉与文字部分来自作品《五年结绳》。九种结的释义由设计同学整理。",
       "boundary": "受访者只标注年龄与成长地，不记录姓名与联系方式。观众的结与留言只存文本与时间。",
-      "fonts": "字体：寒蝉点阵体（作者自由许可）、Noto Serif SC、Long Cang（SIL OFL）。"
+      "fonts": "字体：寒蝉点阵体（作者自由许可）、Long Cang（SIL OFL）。"
     },
     "restartCta": "再走一遍"
   },
@@ -1144,7 +1160,7 @@
     "introLineMs": 2000,
     "tocMs": 4000,
     "chapterMs": 3000,
-    "kontRunMs": 1200,
+    "kontRunMs": 600,
     "transitionScreenMs": 5000,
     "promptMs": 4000,
     "answeringMs": 6000,

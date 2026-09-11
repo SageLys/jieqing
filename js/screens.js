@@ -1,9 +1,9 @@
 // 各屏渲染（v2）。每个函数接收 (step, ctx)，返回一个 .screen 元素。
 // ctx.app 是 App；ctx.review 表示回看（只读）；ctx.after / ctx.wait 是会随屏幕销毁而作废的定时器。
-import { h, fmt, typewriter, relTime, REDUCED } from './util.js';
+import { h, fmt, typewriter, relTime, REDUCED, setPatrol, fitOnResize, media } from './util.js';
 import { buildTransition, makeRuntime } from './transitions.js';
 import { createPlaybar } from './audio.js';
-import { renderKnot, paintKnot, miniKnot, tendencyOf, cellsOf } from './knots.js';
+import { renderKnot, paintKnot, miniKnot, tendencyOf, rectsOf } from './knots.js';
 
 /* ---------------- 公共组件 ---------------- */
 const tailSvg = () => {
@@ -24,7 +24,7 @@ function topbar(ctx) {
   return h('.topbar', backBtn(ctx.app));
 }
 
-/** 聊天框架的顶栏（03 第 4 节，ui-04）：历史档案 / what / 相关社区；返回键在历史档案上方 */
+/** 聊天框架的顶栏（03 第 4 节，ui-04）：历史档案 / what；右侧是空占位（v3 F12 删掉了"相关社区"，ui.community 保留不再引用） */
 function chatTop(ctx) {
   const app = ctx.app, ui = app.ui;
   const archive = h('button.chat-icon', { type: 'button', onclick: () => { if (app.canGoBack()) app.back(); } },
@@ -32,14 +32,22 @@ function chatTop(ctx) {
   return h('.chat-top',
     h('.chat-top-left', backBtn(app), archive),
     h('.chat-what', ui.what || 'what'),
-    h('.chat-icon', h('img', { src: 'assets/img/icon_community.png', alt: '' }), h('span', ui.community || '')));
+    h('.chat-top-right', { 'aria-hidden': 'true' }));
 }
-/** 装饰输入栏（问答期间 disabled）；F4 时 enabled */
+/** 输入栏：问答期间是"输入中…"状态提示条（v3 F15，点它抖一下不响应）；F4 时 enabled 才是真输入框 */
 function inputBar(app, { enabled = false, placeholder = null, onSubmit = null, maxLength = 200, submitLabel = '' } = {}) {
-  const ta = h('textarea', { placeholder: placeholder ?? (app.ui.inputPlaceholder || ''), maxlength: maxLength, rows: 1, disabled: !enabled, 'aria-label': placeholder || '' });
+  if (!enabled) {
+    const label = String(placeholder ?? (app.ui.inputPlaceholder || '')).replace(/[….]+$/, '');
+    const typing = h('.typing', label, h('i', '.'), h('i', '.'), h('i', '.'));
+    const send = h('span.send.deco', { 'aria-hidden': 'true' });
+    const bar = h('.inputbar.deco', { role: 'status', 'aria-label': app.ui.inputPlaceholder || '' }, typing, send);
+    bar.addEventListener('click', (e) => { e.stopPropagation(); bar.classList.remove('shake'); void bar.offsetWidth; bar.classList.add('shake'); });
+    return { bar, ta: null, send };
+  }
+  const ta = h('textarea', { placeholder: placeholder ?? (app.ui.inputPlaceholder || ''), maxlength: maxLength, rows: 1, 'aria-label': placeholder || '' });
   const send = h('button.send', { type: 'button', disabled: true, 'aria-label': submitLabel || 'send' });
-  const bar = h('.inputbar', { class: enabled ? 'inputbar' : 'inputbar deco' }, ta, send);
-  if (enabled && onSubmit) {
+  const bar = h('.inputbar', ta, send);
+  if (onSubmit) {
     ta.addEventListener('input', () => { send.disabled = ta.value.trim().length === 0; });
     ta.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (!send.disabled) onSubmit(); } });
     send.addEventListener('click', onSubmit);
@@ -103,7 +111,8 @@ const askBubble = (text) => {
 };
 
 /* ---------------- S0 封面（ui-03） ---------------- */
-// 入场顺序沿用 v1：像素"?" 逐块出现 → 两侧刻度尺循环 → 标题 → 照片掉落 → 雨。粉色模糊块换成四色条 + 黑方块。
+// v3（08 3.1）：所有位置是相对 .cover-stage 的百分比，照 ui-03 落位。照片位置来自 content.cover.photos[].{x,y,w}（不再按年龄算）；
+// "?" 永远最上层（z-index 4），照片都不进 "?" 区（x<34% 且 y<34%）和标题区。入场顺序沿用 v1：? 逐块 → 刻度尺 → 标题 → 照片掉落 → 雨。
 function cover(step, ctx) {
   const app = ctx.app, c = app.c, cv = c.cover || {};
   const rnd = app.rnd;
@@ -113,32 +122,36 @@ function cover(step, ctx) {
     return h('.cover-ruler', { class: `cover-ruler ${cls}` }, list, list.cloneNode(true));
   };
   const blocks = h('.cover-blocks');
-  [[32, 0], [0, 32], [64, 48], [64, 80], [32, 112], [32, 176]].forEach(([l, t], i) => {
+  [[28, 0], [0, 28], [56, 42], [56, 70], [28, 98], [28, 154]].forEach(([l, t], i) => {
     blocks.append(h('.blk', { style: { left: `${l}px`, top: `${t}px`, animationDelay: `${i * 120}ms` } }));
   });
-  // 四条色条（红 / 黄 / 绿 / 青，横竖各有）与三块黑方块，位置照 ui-03
+  // 五条色条（宽 4–6px、长 40–70px）与三块黑方块（8–12px）：相对分布照 ui-03，避开照片
   const bars = [
-    ['red', 84, 8, 4, 60], ['yellow', 14, 34, 4, 46], ['green', 7, 52, 10, 4], ['cyan', 52, 40, 18, 4],
-    ['red', 36, 92, 12, 3],
-  ].map(([col, l, t, w, hgt], i) => h('.cover-bar', { class: `cover-bar ${col}`, style: { left: `${l}%`, top: `${t}%`, width: `${w}%`, height: `${hgt}%`, animationDelay: `${1400 + i * 160}ms` } }));
-  const blacks = [[24, 46, 3], [58, 66, 2.6], [70, 22, 2]].map(([l, t, s], i) => h('.cover-black', { style: { left: `${l}%`, top: `${t}%`, width: `${s * 4}px`, height: `${s * 4}px`, animationDelay: `${2000 + i * 200}ms` } }));
+    ['red', 90, 14, 5, 60, true], ['yellow', 26, 46, 5, 60, true], ['green', 36, 84, 6, 50, true],
+    ['cyan', 34, 41, 60, 5, false], ['red', 40, 93, 50, 4, false],
+  ].map(([col, l, t, a, b, vert], i) => h('.cover-bar', { class: `cover-bar ${col}`, style: { left: `${l}%`, top: `${t}%`, width: `${a}px`, height: `${b}px`, animationDelay: `${1400 + i * 160}ms` } }));
+  const blacks = [[24, 40, 12], [52, 60, 8], [70, 60, 10]].map(([l, t, s], i) => h('.cover-black', { style: { left: `${l}%`, top: `${t}%`, width: `${s}px`, height: `${s}px`, animationDelay: `${2000 + i * 200}ms` } }));
   const stage = h('.cover-stage', ticks('l'), ticks('r'),
     h('.cover-title', h('.zh', cv.title || c.meta?.title || ''), (cv.titleEn || c.meta?.titleEn) ? h('.en', cv.titleEn || c.meta?.titleEn) : null),
-    blocks, ...bars, ...blacks);
-  const drops = [[30, 44, 9], [60, 58, 6], [62, 80, 9], [80, 86, 6], [22, 70, 5], [48, 20, 4], [86, 30, 7]];
+    ...bars, ...blacks);
+  // 雨线：1.5px 宽、5–9% 高，七条
+  const drops = [[30, 44, 9], [60, 58, 6], [62, 80, 9], [80, 86, 6], [22, 70, 5], [48, 20, 5], [86, 30, 7]];
   drops.forEach(([l, t, hgt], i) => {
     stage.append(h('.cover-line', { style: { left: `${l}%`, top: `${t}%`, height: `${hgt}%`, animationDuration: `${4 + (i % 3) * 1.3}s`, animationDelay: `${-(i * 0.9)}s` } }));
   });
-  [[12, 15], [70, 60], [40, 92]].forEach(([l, t], i) => {
-    stage.append(h('.cover-rain', { style: { left: `${l}%`, top: `${t}%`, animationDuration: `${9 + i * 2}s`, animationDelay: `${-i * 3}s` } }, 'RAIN'));
+  // RAIN（F02）：六个 44×12 的小容器，字母在容器内横向循环跑（第四处竖排纵向跑），容器裁切不越界
+  const rainWord = String(cv.rain || 'RAIN');
+  const period = `${rainWord} ${rainWord} `;
+  [[14, 15, false], [25, 34, false], [76, 63, false], [82, 73, true], [52, 80, false], [60, 90, false]].forEach(([l, t, vert], i) => {
+    stage.append(h('.cover-rain', { class: `cover-rain${vert ? ' vert' : ''}`, style: { left: `${l}%`, top: `${t}%`, animationDelay: `${-i * 0.15}s` } },
+      h('span.run', { style: { animationDuration: `${5 + (i % 3)}s`, animationDelay: `${-i * 1.1}s` } }, period + period)));
   });
   (cv.photos || []).forEach((p) => {
     const delay = 2000 + Math.floor(rnd() * 1200);
-    // 照片按年龄落位，但避开左上的像素"?"（约 6%–32%）和右上的标题（约 2%–14%）
-    const left = p.side === 'left';
-    const top = left ? 38 + p.age * 0.5 : 18 + p.age * 0.68;
-    stage.append(h('div', { class: `cover-photo ${left ? 'left' : 'right'}`, style: { top: `${Math.min(88, top)}%`, animationDelay: `${delay}ms` } }, h('img', { src: p.src, alt: '' })));
+    const x = Number(p.x) || 0, y = Number(p.y) || 0, w = Number(p.w) || 0;
+    stage.append(h('.cover-photo', { style: { left: `${x}%`, top: `${y}%`, width: `${w}%`, animationDelay: `${delay}ms` } }, h('img', { src: p.src, alt: '', draggable: 'false' })));
   });
+  stage.append(blocks); // 最后追加 + z-index 4：任何照片不得盖住 "?"
   const cta = h('button.cover-cta', { type: 'button', onclick: () => app.next() },
     h('img', { src: 'assets/img/folder_open.svg', alt: '' }), h('span.txt', cv.cta || app.ui.start || '开启'));
   stage.append(cta);
@@ -157,19 +170,19 @@ function loading(step, ctx) {
     h('.lc.green', { style: { left: '14%', top: '52%', width: '8px', height: '90px' } }),
     h('.lc.cyan', { style: { left: '70%', top: '70%', width: '44px', height: '44px' } }),
   ];
+  // v3（08 3.2）："?" 方块组包成 .load-q 上下摆；文件夹与色条不动；进度条填满后按相位波动；三只小KONT 底部上跳回落
   const main = h('.load-main',
-    h('.load-zoom',
-      blk(44, 8), blk(20, 22), blk(62, 22), h('.lw'), blk(62, 36),
+    h('.load-fig',
+      h('.load-q', blk(44, 8), blk(20, 22), blk(62, 22), h('.lw'), blk(62, 36), blk(44, 46), blk(44, 72)),
       h('img.load-folder', { src: 'assets/img/folder_open.svg', alt: '' }),
-      blk(44, 46), blk(44, 72), ...bars));
-  const thumb = h('.load-thumb', h('.load-zoom', blk(46, 6, 18), blk(28, 20, 18), blk(60, 30, 18), h('img.load-folder', { src: 'assets/img/folder_open.svg', alt: '' }), blk(46, 62, 18)));
+      ...bars));
+  const thumb = h('.load-thumb', h('.load-fig', h('.load-q', blk(46, 6, 18), blk(28, 20, 18), blk(60, 30, 18), blk(46, 62, 18)), h('img.load-folder', { src: 'assets/img/folder_open.svg', alt: '' })));
   const bar = h('.load-bar');
-  for (let i = 0; i < 24; i++) bar.append(h('i', { style: { animationDelay: `${300 + i * 110}ms` } }));
+  for (let i = 0; i < 24; i++) bar.append(h('i', { style: { '--d': `${300 + i * 110}ms` } }));
   const stage = h('.load-stage',
     thumb, h('img.load-avatar', { src: 'assets/img/icon_account.svg', alt: '' }),
     main, bar, h('.load-text', app.ui.loading || ''),
-    h('.kont.load-pose.p1'), h('.kont.load-pose.p2'), h('.kont.load-pose.p3'),
-    h('.kont.load-runner'));
+    h('.kont.load-pose.p1'), h('.kont.load-pose.p2'), h('.kont.load-pose.p3'));
   const el = h('.screen.full', stage);
   ctx.after(app.timing('loadingMs', 3600), () => app.next());
   if (!app.demo) stage.addEventListener('click', () => app.next());
@@ -213,8 +226,10 @@ function toc(step, ctx) {
   const el = h('.screen.full',
     h('.toc-top', h('.toc-brand', h('img', { src: 'assets/img/icon_memory_factory.svg', alt: '' }), c.toc?.title || ''), h('img.toc-avatar', { src: 'assets/img/icon_account.svg', alt: '' })),
     body, track,
-    h('.toc-kont', tip, h('.kont')));
+    h('.toc-kont', tip, h('.kont', { dataset: { firstLine: c.host?.tocTooltip || '' } })));
   ctx.after(700, () => { tip.hidden = false; });
+  // 点小KONT 出台词后，"我是你的助手～"的提示收起（台词由 main.js 统一挂的 kontTalk 负责）
+  el.querySelector('.toc-kont .kont').addEventListener('click', () => { tip.hidden = true; });
   let fired = false;
   const onScroll = () => {
     const max = body.scrollHeight - body.clientHeight;
@@ -246,6 +261,25 @@ function toc(step, ctx) {
   };
   track.addEventListener('pointerup', endDrag);
   track.addEventListener('pointercancel', endDrag);
+  // v3（08 3.3 / F06）：整屏纵向滑动手势——位移 ≥ 60px（上滑下滑都算）→ 圆钮平滑滑到底 → 250ms 后进第一章；滚轮累计 ≥ 120 同样触发
+  const SWIPE = 60, WHEEL = 120;
+  let y0 = null, wheelAcc = 0, swiped = false;
+  const trigger = () => {
+    if (swiped || fired || ctx.review) return;
+    swiped = true; fired = true;
+    body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
+    ctx.after(250, () => app.next());
+  };
+  el.addEventListener('pointerdown', (e) => { if (e.target.closest('.toc-track, .toc-kont, .btn-action')) { y0 = null; return; } y0 = e.clientY; });
+  el.addEventListener('pointermove', (e) => { if (y0 == null) return; if (Math.abs(e.clientY - y0) >= SWIPE) { y0 = null; trigger(); } });
+  el.addEventListener('pointerup', () => { y0 = null; });
+  el.addEventListener('pointercancel', () => { y0 = null; });
+  // 触摸：原生滚动一开始浏览器就会 pointercancel，所以另听 touch 事件（passive，不拦滚动）
+  let ty0 = null;
+  el.addEventListener('touchstart', (e) => { ty0 = e.target.closest('.toc-track, .toc-kont, .btn-action') ? null : e.touches[0]?.clientY ?? null; }, { passive: true });
+  el.addEventListener('touchmove', (e) => { if (ty0 == null) return; const y = e.touches[0]?.clientY; if (y != null && Math.abs(y - ty0) >= SWIPE) { ty0 = null; trigger(); } }, { passive: true });
+  el.addEventListener('touchend', () => { ty0 = null; }, { passive: true });
+  el.addEventListener('wheel', (e) => { wheelAcc += Math.abs(e.deltaY); if (wheelAcc >= WHEEL) trigger(); }, { passive: true });
   if (app.demo) {
     const total = app.timing('tocMs', 4000);
     ctx.after(Math.max(600, total - 1600), () => body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' }));
@@ -265,15 +299,16 @@ function chapter(step, ctx) {
     const ang = t * spread, R = 340;
     const x = Math.sin((ang * Math.PI) / 180) * R;
     const y = (1 - Math.cos((ang * Math.PI) / 180)) * R;
-    en.append(h('span', { style: { transform: `translate(calc(${x}px - 50%), ${y}px) rotate(${ang}deg)` } }, L));
+    // v3：弧线定位在外层 span，上下摆动在内层 b（错相位）
+    en.append(h('span', { style: { transform: `translate(calc(${x}px - 50%), ${y}px) rotate(${ang}deg)` } }, h('b', { style: { animationDelay: `${-i * 0.25}s` } }, L)));
   });
   const kont = h('.kont.lg.chapter-kont');
   let going = false;
   const go = () => {
     if (going) return; going = true;
-    // 小KONT 沿弧线跑出画面（03 5.3），跑完进过场 a
-    kont.classList.add('run');
-    ctx.after(REDUCED ? 200 : app.timing('kontRunMs', 1200), () => app.next());
+    // v3（08 3.4）：小KONT 原地加速跳 600ms 再进过场 a（不再跑出画面）
+    kont.classList.add('go');
+    ctx.after(REDUCED ? 200 : app.timing('kontRunMs', 600), () => app.next());
   };
   const stage = h('.chapter-stage',
     h('.chapter-title', ch.stage),
@@ -286,16 +321,30 @@ function chapter(step, ctx) {
 }
 
 /* ---------------- T 过场（每章两屏） ---------------- */
+// v3（08 2.2）：十屏统一"黑线外框 + 390×700 画布缩放 + 框下小KONT 横向来回"。
+export const CANVAS_W = 390, CANVAS_H = 700;
 function transition(step, ctx) {
   const app = ctx.app;
   const stage = h('.trans-stage');
-  const rt = makeRuntime(ctx, stage);
+  const canvas = h('.trans-canvas', stage);
+  const frame = h('.trans-frame', canvas);
+  const rt = makeRuntime(ctx, stage, frame);
   const { el: inner, play } = buildTransition(step.screen, rt);
   stage.append(inner);
   if (rt.finished) stage.classList.add('finished');
-  const kont = h('.kont.corner-left');
-  if (step.si === 0 && !ctx.review) kont.classList.add('bounce-in'); // 从左下角"弹"进来
-  const el = h('.screen.trans', topbar(ctx), stage, kont);
+  const kont = h('.kont.patrol');
+  if (step.si === 0 && !ctx.review) kont.classList.add('enter'); // 章扉页 → 过场 a：从框下左侧跑入
+  const foot = h('.trans-foot', kont);
+  const el = h('.screen.trans', topbar(ctx), frame, foot);
+  // 画布按框的尺寸等比缩放并居中；框下的巡逻距离按 foot 宽度算（永远在框宽内）
+  const fit = () => {
+    const w = frame.clientWidth, hgt = frame.clientHeight;
+    if (!w || !hgt) return;
+    const sc = Math.min(w / CANVAS_W, hgt / CANVAS_H);
+    canvas.style.transform = `translate(${Math.round((w - CANVAS_W * sc) / 2)}px, ${Math.round((hgt - CANVAS_H * sc) / 2)}px) scale(${sc})`;
+    setPatrol(kont);
+  };
+  fitOnResize(frame, fit);
   if (ctx.review) { play().catch(() => {}); return el; }
   const t0 = Date.now();
   (async () => {
@@ -317,6 +366,8 @@ function transition(step, ctx) {
 function prompt(step, ctx) {
   const app = ctx.app, q = step.q;
   const { el, body } = chatFrame(ctx);
+  // v3 F14：questions[n].video 有值 → 题面上方 16:9 静音循环短片（黑线框）；无值不插
+  if (q.video) body.append(h('.prompt-video.fade-in', media(q.image || null, q.video, 'video-16x9')));
   body.append(h('p.prompt-text.fade-in', q.prompt));
   if (!ctx.review) {
     body.addEventListener('click', () => app.next());
@@ -554,7 +605,7 @@ function f1(step, ctx) {
   const name = h('.knot-name.pixel-24', { hidden: true }, knot?.name || '');
   const ctaRow = h('.cta-row', { hidden: true }, nextBtn(ctx));
   const stage = h('.f1-stage', stack, drop, name, ctaRow);
-  const el = h('.screen', topbar(ctx), stage, h('.kont.corner-left'));
+  const el = h('.screen', topbar(ctx), stage, h('.kont.patrol'));
   const others = (app.c.knots || []).filter((k) => k !== knot);
   const lines = dead ? (fin.knotIntroDead || []) : (fin.knotIntro || []);
   (async () => {
@@ -593,7 +644,7 @@ function f2(step, ctx) {
     h('.knot-card-name.pixel-24', knot?.name || ''), h('.knot-card-short.pixel-16', knot?.short || ''), h('p.knot-card-detail', knot?.detail || ''));
   const ctaRow = h('.cta-row', { hidden: true }, nextBtn(ctx));
   const body = h('.f2-body', h('.f2-head', renderKnot(app.c, knot, app.colors, 120), h('.f2-bubbles', stack)), card, ctaRow);
-  const el = h('.screen', topbar(ctx), body, h('.kont.corner-left'));
+  const el = h('.screen', topbar(ctx), body, h('.kont.patrol'));
   (async () => {
     await bubbleSeq(ctx, stack, lines, { gapMs: app.demo ? Math.max(300, app.timing('explainLineMs', 2500) - 40 * 20) : 600, immediate: ctx.review });
     if (!ctx.alive) return;
@@ -637,11 +688,11 @@ function f3(step, ctx) {
     const total = app.timing('colorMs', 6000);
     if (cols[0]) ctx.after(Math.min(1500, total * 0.3), () => { cur = cols[0]; app.colors = { all: cols[0] }; paintKnot(app.c, knotEl, app.colors); });
     if (cols[1]) ctx.after(Math.min(3200, total * 0.6), () => {
-      const data = cellsOf(knot);
+      const data = rectsOf(knot);
       if (!data) return;
-      const c = data.grid / 2;
+      const cx = data.viewBox.x + data.viewBox.w / 2, cy = data.viewBox.y + data.viewBox.h / 2;
       let best = 0, bd = Infinity;
-      data.cells.forEach(([x, y], i) => { const d = (x - c) ** 2 + (y - c) ** 2; if (d < bd) { bd = d; best = i; } });
+      data.rects.forEach((r) => { const d = (r.cx - cx) ** 2 + (r.cy - cy) ** 2; if (d < bd) { bd = d; best = r.i; } });
       app.colors[String(best)] = cols[1];
       paintKnot(app.c, knotEl, app.colors);
     });
@@ -728,7 +779,8 @@ function ending(step, ctx) {
     ['interviewees', 'team', 'ai', 'source', 'boundary', 'fonts'].map((k) => cr[k] ? h('p', cr[k]) : null),
     h('button.ending-restart', { type: 'button', onclick: (ev) => { ev.stopPropagation(); location.reload(); } }, e.restartCta || ''));
   const title = h('.ending-title.pixel-24', h('span', app.c.meta?.title || ''), h('span', app.c.meta?.titleEn || ''));
-  const main = h('.ending-main', knot ? h('.ending-knot', renderKnot(app.c, knot, app.colors, 120)) : null, textBox, hint);
+  // v3（08 3.14）：纵向居中——结 160px → 横排居中正文 → ▼ → 致谢
+  const main = h('.ending-main', knot ? h('.ending-knot', renderKnot(app.c, knot, app.colors, 160)) : null, textBox, hint);
   const body = h('.screen-body', title, main, credits);
   const el = h('.screen.full', body);
   let i = 0, typing = null;

@@ -5,7 +5,7 @@ import { h, photo } from '../util.js';
 export function tears(sc, rt) {
   const rnd = rt.rnd || Math.random;
   const eyes = h('.tear-eyes.a-pop', photo(sc.image), h('i.blink'));
-  const block = h('.tear-block.a-pop', h('i.col.l'), h('i.col.r'));
+  const block = h('.tear-block.a-pop'); // v3 F18：干净矩形，不再有两根承接柱
   const sea = h('.tear-sea');
   const n = Math.max(1, Math.min(300, sc.count || 120));
   const ch = sc.char || '海';
@@ -13,7 +13,7 @@ export function tears(sc, rt) {
   for (let i = 0; i < n; i++) {
     const size = 12 + Math.floor(rnd() * 20);
     const x = 4 + rnd() * 90;              // 落点横向
-    const y = 56 + Math.sqrt(rnd()) * 40;  // 落进灰块（越往下越密）
+    const y = 62 + Math.sqrt(rnd()) * 30;  // 落进灰块 62–92%（越往下越密）
     const sx = (0.6 + rnd() * 1.0).toFixed(2), sy = (0.6 + rnd() * 1.0).toFixed(2);
     const dx = ((rnd() - 0.5) * 12).toFixed(1), dy = ((rnd() - 0.5) * 12).toFixed(1);
     const sway = ((rnd() - 0.5) * 30).toFixed(1);

@@ -1,9 +1,9 @@
 // 入口：加载内容 → 校验 → 状态机（00 第 4 节的线性流程，v2）
-import { h, DEMO, DEBUG, mulberry32, shuffle, wait, loadKont, mountKont } from './util.js';
+import { h, DEMO, DEBUG, mulberry32, shuffle, wait, loadKont, mountKont, setPatrol, kontTalk } from './util.js';
 import { loadContent, validateContent, checkAudio } from './content.js';
 import { createStore } from './store.js';
 import { stopAll, unlockAudio } from './audio.js';
-import { loadKnotCells, computeStats, pickKnot } from './knots.js';
+import { loadKnotSvgs, computeStats, pickKnot } from './knots.js';
 import * as S from './screens.js';
 
 // 可回看的屏（00 第 4 节）：目录、章扉、过场 a / b 的最后一帧、题面、揭晓、AI 的一票、落点、F1、F2
@@ -51,6 +51,7 @@ class App {
     this.result = null; // { stats, knot, dead } 在 F1 落成时算一次
     this.colors = {};  // 观众给结上的色：{ all, "i" }
     this.myPool = [];  // 本机刚存档的公共池条目
+    this.kontLineIdx = 0; // v3：小KONT 台词轮播到第几句（全站累计）
     this.screenEl = document.getElementById('screen');
     this.ctx = null;
     this.timings = content.demoTimings || {};
@@ -113,6 +114,10 @@ class App {
     el.id = 'screen';
     this.screenEl.replaceWith(el);
     this.screenEl = el;
+    el.querySelectorAll('.kont.patrol').forEach(setPatrol); // v3：巡逻距离按容器宽（过场屏自己还会随框重算）
+    // v3 F07：全站装饰小KONT 可点出台词（加载页三只除外）；演示模式不自动点、不影响计时
+    const lines = this.c.host?.kontLines || [];
+    el.querySelectorAll('.kont:not(.load-pose)').forEach((k) => kontTalk(this, k, { lines }));
     if (DEBUG) this.renderDebug();
   }
 
@@ -169,9 +174,10 @@ class App {
   const log = (it) => (it.level === 'error' ? console.error : console.warn)(`[content] ${it.msg}`);
   issues.forEach(log);
   console.info(`[content] ${content.__file} 校验完成：${issues.filter((i) => i.level === 'error').length} 个错误，${issues.filter((i) => i.level === 'warn').length} 个提示`);
-  await Promise.all([loadKont(), loadKnotCells()]);
+  await Promise.all([loadKont(), loadKnotSvgs(content)]);
   const app = new App(content, issues);
   window.__app = app;
   checkAudio(content, (it) => { issues.push(it); log(it); if (DEBUG) app.renderDebug(); });
+  window.addEventListener('resize', () => document.querySelectorAll('.kont.patrol').forEach(setPatrol));
   app.start();
 })();

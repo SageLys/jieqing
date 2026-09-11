@@ -1,5 +1,5 @@
 // 第一章过场：T1a 键盘（ui-02）、T1b 宝贝（ui-05）。03 第 7 节。
-import { h, photo, REDUCED } from '../util.js';
+import { h, photo, media, REDUCED } from '../util.js';
 
 const KB_ROWS = [
   ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
@@ -91,8 +91,19 @@ export function keyboard(sc, rt) {
 export function baby(sc, rt) {
   const lines = sc.lines || [];
   const lineEls = lines.map((t, i) => h('p.line', { class: `line l${i + 1} ${i % 2 ? 'from-r' : 'from-l'}` }, t));
-  const ph = photo(sc.image, 'a-pop');
+  // v3 F14：sc.video 有值 → 静音循环播（封面 = 照片），Ken Burns 不再缩放；出错退回照片 + Ken Burns
+  const ph = media(sc.image, sc.video, 'a-pop');
   const kb = h('.kenburns', ph);
+  let playTri = null;
+  if (ph.video) {
+    kb.classList.add('has-video');
+    playTri = h('button.play-tri.pink.video-toggle', { type: 'button', 'aria-label': 'play' });
+    playTri.addEventListener('click', (e) => { e.stopPropagation(); const v = ph.video; if (!v) return; if (v.paused) v.play().catch(() => {}); else v.pause(); });
+    ph.video.addEventListener('play', () => playTri.classList.add('playing'));
+    ph.video.addEventListener('pause', () => playTri.classList.remove('playing'));
+    kb.append(playTri);
+    ph.addEventListener('mediafallback', () => { kb.classList.remove('has-video'); playTri.remove(); if (kb.classList.contains('armed')) kb.classList.add('play'); });
+  }
   const redBig = [
     h('.red-blk.soft.a-pop', { style: { left: '6%', top: '-4%', width: '40%', height: '30%' } }),
     h('.red-blk.soft.a-pop', { style: { right: '-14%', bottom: '18%', width: '40%', height: '30%' } }),
@@ -112,7 +123,8 @@ export function baby(sc, rt) {
     // 2. 照片出现，停 800ms 后 Ken Burns（6 秒 1.0→1.06 + 上移 6px）
     rt.on(ph);
     await rt.wait(800);
-    kb.classList.add('play');
+    kb.classList.add('armed');
+    if (ph.video) ph.video.play().catch(() => {}); else kb.classList.add('play');
     // 3. 3 秒后红色半透明方块
     await rt.wait(3000);
     for (const b of redBig) { rt.on(b); await rt.wait(250); }

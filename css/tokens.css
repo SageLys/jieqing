@@ -26,8 +26,7 @@
   --chapter-soft: rgba(153, 153, 153, .08);
 
   --font-pixel: "ChillBitmap", monospace;
-  --font-serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
-  --font-sans:  "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-sans:  "DengXian", "等线", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;  /* v3（08 2.1）：全站无衬线，宋体退出 */
   --font-hand:  "Long Cang", "KaiTi", "STKaiti", cursive;
 
   /* 字号阶梯：大标题 32 / 页面标题 24 / 正文标题 18 / 正文 16 / 辅助 14 / 注释 12；像素字只用 8 的倍数 */
@@ -37,7 +36,7 @@
   --fs-body: 16px;
   --fs-small: 14px;
   --fs-note: 12px;
-  --fs-display: 64px;     /* 过场里的宋体大字（03 第 3 节） */
+  --fs-display: 64px;     /* 过场里的大字（v3 起黑体，08 2.1） */
   --fs-display-lg: 96px;
   --lh-title: 1.25;
   --lh-body: 1.55;

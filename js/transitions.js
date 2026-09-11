@@ -24,9 +24,11 @@ const BUILDERS = {
 };
 
 /** 建运行时（screens.js 调用） */
-export function makeRuntime(ctx, stage) {
+export function makeRuntime(ctx, stage, host = null) {
   const app = ctx.app;
   const finished = !!ctx.review;
+  // host：接收"点一下继续"的容器（v3 是 .trans-frame，提示放框内底部、不参与画布缩放）；没给就用 stage
+  const tapHost = () => host || stage;
   const rt = {
     app, ui: app.ui, finished, demo: app.demo, rnd: app.rnd, stage,
     alive: () => ctx.alive,
@@ -37,10 +39,11 @@ export function makeRuntime(ctx, stage) {
       if (finished) return resolve();
       if (app.demo) { ctx.after(demoMs, resolve); return; }
       const hint = h('.hint-tap', app.ui.tapToContinue || '');
-      stage.append(hint);
-      const f = () => { stage.removeEventListener('click', f); hint.remove(); resolve(); };
-      stage.addEventListener('click', f);
-      ctx.waits.push({ cancel: () => stage.removeEventListener('click', f) });
+      const hostEl = tapHost();
+      hostEl.append(hint);
+      const f = () => { hostEl.removeEventListener('click', f); hint.remove(); resolve(); };
+      hostEl.addEventListener('click', f);
+      ctx.waits.push({ cancel: () => hostEl.removeEventListener('click', f) });
     }),
     /** 观众点某个元素。demo 模式 demoMs 后自动；回看立即 */
     tapOn: (el, demoMs = 900) => new Promise((resolve) => {

@@ -29,6 +29,22 @@ export function validateContent(c) {
   const COLORS = new Set(['red', 'yellow', 'green', 'cyan', 'black']);
   const SCREEN_TYPES = new Set(['keyboard', 'baby', 'balloon', 'video-face', 'walk', 'scribble', 'typewriter', 'forget', 'tears', 'whoami']);
   const imageRefs = [];
+  const videoRefs = [];
+  // v3 4.2 / 4.3：video 可为 { mp4, webm, poster } 或字符串；只 warn 不 error
+  const checkVideo = (v, where) => {
+    if (v == null) return;
+    if (typeof v === 'string') { videoRefs.push({ src: v, where }); return; }
+    if (typeof v !== 'object') { warn(`${where} 的 video 应为字符串或 { mp4, webm, poster }`); return; }
+    if (!v.mp4 && !v.webm) warn(`${where} 的 video 既没有 mp4 也没有 webm（将退回照片）`);
+    ['mp4', 'webm', 'poster'].forEach((k) => { if (v[k]) videoRefs.push({ src: v[k], where }); });
+  };
+  // v3 4.1：cover.photos[] 需要 src / x / y / w（缺 x/y/w 只 warn，按 0 处理）
+  (c.cover?.photos || []).forEach((p, i) => {
+    if (!p?.src) err(`cover.photos[${i}] 缺 src`);
+    else imageRefs.push({ src: p.src, where: `cover.photos[${i}]` });
+    ['x', 'y', 'w'].forEach((k) => { if (!Number.isFinite(p?.[k])) warn(`cover.photos[${i}] 缺 ${k}（按 0 处理）`); });
+    if ('age' in (p || {}) || 'side' in (p || {})) warn(`cover.photos[${i}] 的 age/side 字段 v3 起不再使用`);
+  });
   chapters.forEach((ch) => {
     if (!qById[ch.questionId]) err(`章 ${ch.id} 引用的 questionId=${ch.questionId} 不存在`);
     if (!COLORS.has(ch.color)) err(`章 ${ch.id} 的 color=${ch.color} 不合法（red / yellow / green / cyan / black）`);
@@ -37,10 +53,15 @@ export function validateContent(c) {
     (screens || []).forEach((sc, k) => {
       if (!SCREEN_TYPES.has(sc.type)) err(`章 ${ch.id} 过场第 ${k + 1} 屏 type=${sc.type} 未知`);
       [sc.image, sc.handwriting, ...(sc.images || [])].filter(Boolean).forEach((src) => imageRefs.push({ src, where: `${ch.id} 过场 ${k + 1}` }));
+      if ('video' in sc && !['baby', 'video-face'].includes(sc.type)) warn(`${ch.id} 过场第 ${k + 1} 屏（${sc.type}）的 video 字段不会被使用（只有 baby / video-face 支持）`);
+      if (['baby', 'video-face'].includes(sc.type)) checkVideo(sc.video, `${ch.id} 过场 ${k + 1}`);
+      if (sc.type === 'walk' && 'floatImages' in sc && typeof sc.floatImages !== 'boolean') warn(`${ch.id} 过场第 ${k + 1} 屏 floatImages 应为布尔值`);
     });
     (ch.bookImages || []).forEach((src) => imageRefs.push({ src, where: `${ch.id} bookImages` }));
   });
+  questions.forEach((q) => checkVideo(q.video, `${q.id} 题面`));
   c.__imageRefs = imageRefs;
+  c.__videoRefs = videoRefs;
 
   const allBeatIds = new Set();
   const optById = {};
@@ -94,6 +115,7 @@ export function validateContent(c) {
     if (!allBeatIds.has(beatId)) err(`fallbackDistribution 的拍 ${beatId} 不存在`);
   });
   if (!Array.isArray(c.host?.intro)) err('host.intro 应为字符串数组');
+  if (!Array.isArray(c.host?.kontLines) || !c.host.kontLines.length) warn('host.kontLines 缺失：小KONT 点击将没有台词');
 
   // 结绳系统（07 第 2、6 节）
   const knots = c.knots || [];
@@ -135,6 +157,11 @@ export async function checkAudio(c, onIssue) {
     tasks.push(fetch(src, { method: 'HEAD', cache: 'no-cache' }).then((r) => {
       if (!r.ok) onIssue({ level: 'warn', msg: `图片缺失：${src}（${where}，将显示灰色占位块）` });
     }).catch(() => onIssue({ level: 'warn', msg: `图片不可达：${src}（${where}）` })));
+  }
+  for (const { src, where } of c.__videoRefs || []) {
+    tasks.push(fetch(src, { method: 'HEAD', cache: 'no-cache' }).then((r) => {
+      if (!r.ok) onIssue({ level: 'warn', msg: `视频素材缺失：${src}（${where}，将退回照片）` });
+    }).catch(() => onIssue({ level: 'warn', msg: `视频素材不可达：${src}（${where}）` })));
   }
   for (const k of c.knots || []) {
     const src = `assets/img/knots/${k.glyph}.svg`;

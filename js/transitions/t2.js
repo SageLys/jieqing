@@ -1,5 +1,16 @@
 // 第二章过场：T2a 气球（ui-15）、T2b 记挂的是什么（ui-16）。03 第 7 节。
-import { h, photo } from '../util.js';
+import { h, media } from '../util.js';
+
+/** 把一句话切成 3–5 段：先按中文标点 / 空格切，再把超过 8 字的段对半切，最多 5 段 */
+export function splitPhrases(text) {
+  let parts = String(text).split(/[，,。；;、\s]+/).map((t) => t.trim()).filter(Boolean);
+  const MAX = 8;
+  for (let guard = 0; guard < 6 && parts.length < 5 && parts.some((p) => p.length > MAX); guard++) {
+    parts = parts.flatMap((p) => (p.length > MAX && parts.length < 5 ? [p.slice(0, Math.ceil(p.length / 2)), p.slice(Math.ceil(p.length / 2))] : [p]));
+  }
+  if (parts.length > 5) parts = [...parts.slice(0, 4), parts.slice(4).join('')];
+  return parts;
+}
 
 const playBtn = (cls) => h('button.play-tri', { type: 'button', class: `play-tri ${cls || ''}`.trim(), 'aria-label': 'play' });
 
@@ -15,15 +26,17 @@ export function balloon(sc, rt) {
       p.style.setProperty('--len', String(len));
     });
   }).catch(() => {});
-  // 上半部的字：家 48 / 工作 40 / 其余 24（宋体），位置照 ui-15
-  // 位置 = ui-15 的坐标换算成 balloon-box 的百分比（box 对应画板 x 0–221、y 36–251）
-  const wordPos = [[35, 3, 48, 5], [34, 19, 40, 38], [45, 18, 24, -30], [32, 20, 24, 0], [47, 25, 24, 0]];
+  // v3（08 3.8）：五个词按 F13-2 设计稿重排（balloon-box 百分比 / 字号 / 旋转），两两不相交
+  // 按 content 里 words 的顺序：家 / 工作 / 孩子 / 交际 / 晋升
+  // 08 3.8 给的是 (40,4) (30,30) (60,14) (24,18) (56,26)；气球轮廓只占 box 的 32%–58%，按设计稿把五个词收进气球内、两两不相交
+  const wordPos = { '家': [40, 4, 48, 0], '工作': [30, 33, 40, -12], '孩子': [55, 17, 24, -30], '交际': [33, 18, 24, 0], '晋升': [52, 27, 24, 0] };
+  const wordFallback = [[40, 4, 48, 0], [30, 33, 40, -12], [55, 17, 24, -30], [33, 18, 24, 0], [52, 27, 24, 0]];
   const words = (sc.words || []).map((w, i) => {
-    const [l, t, fs, rot] = wordPos[i % wordPos.length];
+    const [l, t, fs, rot] = wordPos[w] || wordFallback[i % wordFallback.length];
     return h('span.bw.a-jump', { style: { left: `${l}%`, top: `${t}%`, fontSize: `${fs}px`, '--rot': `${rot}deg` } }, w);
   });
-  // 薄荷标签沿气球下半部
-  const tagPos = [[33, 61, 26], [34, 72, -82], [44, 46, -63], [34, 40, 39], [32, 47, 0], [37, 53, 0]];
+  // 薄荷标签沿气球下半部左右交错，间距拉大到不重叠
+  const tagPos = [[24, 49, 30], [44, 53, 0], [26, 60, 0], [44, 66, -63], [28, 74, 20], [44, 81, -82]];
   const tags = (sc.tags || []).map((t, i) => {
     const [l, tp, rot] = tagPos[i % tagPos.length];
     return h('span.tag.a-pop', { style: { left: `${l}%`, top: `${tp}%`, '--rot': `${rot}deg` } }, t);
@@ -34,11 +47,13 @@ export function balloon(sc, rt) {
     h('p.cap1.a-pop', cap[0] || ''),
     h('p.cap2.a-pop', ...(cap[1] || '').split('').map((ch) => (ch === '头' ? h('b.big', ch) : ch === '大' ? h('span.sm', ch) : ch))),
   ];
+  // 黄框：第一句切成 3–5 段竖排短语（按标点 / 空格切，过长的段再对半切），横向排一行、各段小角度错落；不再逐字散落
   const yb = sc.yellowBox || [];
-  const scatter = h('.yb-scatter');
-  (yb[0] || '').split('').forEach((ch, i) => {
-    const l = 8 + ((i * 37) % 70), t = 10 + ((i * 53) % 50), rot = ((i * 29) % 40) - 20;
-    scatter.append(h('span.a-pop', { style: { left: `${l}%`, top: `${t}%`, '--rot': `${rot}deg`, fontSize: `${12 + (i % 3) * 4}px` } }, ch));
+  const phrases = splitPhrases(yb[0] || '');
+  const scatter = h('.yb-phrases');
+  phrases.forEach((txt, i) => {
+    const rot = [-6, 4, -3, 6, -5][i % 5], dy = [0, 14, 6, 20, 10][i % 5];
+    scatter.append(h('span.a-pop', { style: { '--rot': `${rot}deg`, marginTop: `${dy}px`, fontSize: `${[16, 14, 18, 15, 16][i % 5]}px` } }, txt));
   });
   const play = playBtn('pink');
   const yellow = h('.yellow-box.a-rise', scatter, h('p.yb-last.a-pop', yb[1] || ''), play);
@@ -56,7 +71,7 @@ export function balloon(sc, rt) {
     await rt.tapOn(play, 1200);
     play.classList.add('done');
     const chars = scatter.querySelectorAll('span');
-    for (const c of chars) { rt.on(c); await rt.wait(rt.finished ? 0 : 60); }
+    for (const c of chars) { rt.on(c); await rt.wait(rt.finished ? 0 : 160); }
     await rt.wait(300);
     rt.on(yellow.querySelector('.yb-last'));
     return false; // 点一下进入 T2b
@@ -68,7 +83,8 @@ export function balloon(sc, rt) {
 export function videoFace(sc, rt) {
   const play = playBtn('yellow');
   const title = h('h2.t2b-title', sc.title || '');
-  const ph = photo(sc.image);
+  // v3 F14：sc.video 有值 → 点播放直接播视频（静音）；没有 → Ken Burns + 抖动 + 漂移方块
+  const ph = media(sc.image, sc.video, '', { autoplay: false });
   const boxes = (sc.boxes || []).map((b, i) => h('i.face-box.a-pop', {
     class: `face-box a-pop ${b.color === 'mint' ? 'mint' : 'yellow'}`,
     style: { left: `${b.x}%`, top: `${b.y}%`, width: `${b.w}%`, height: `${b.h}%`, '--i': String(i % 4) },
@@ -81,10 +97,11 @@ export function videoFace(sc, rt) {
     play.classList.add('done');
     rt.on(frame);
     await rt.wait(400);
-    frame.querySelector('.kenburns').classList.add('play');
+    if (ph.video) ph.video.play().catch(() => {}); else frame.querySelector('.kenburns').classList.add('play');
+    ph.addEventListener('mediafallback', () => frame.querySelector('.kenburns').classList.add('play'));
     await rt.wait(800);
     for (const b of boxes) { rt.on(b); await rt.wait(150); }
-    frame.classList.add('drift');
+    if (!ph.video) frame.classList.add('drift');
     return false; // 点一下进入 Q2
   }
   return { el, play: run };
