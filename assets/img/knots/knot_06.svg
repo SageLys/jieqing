@@ -1,16 +1,109 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="112.50 175.62 75.01 75.01" shape-rendering="crispEdges">
-  <rect x="148.46" y="178.62" width="2.82" height="21.12" fill="currentColor"/>
-  <rect x="151.28" y="198.34" width="9.86" height="4.22" fill="currentColor"/>
-  <rect x="149.87" y="202.56" width="4.22" height="4.22" fill="currentColor"/>
-  <rect x="154.09" y="206.79" width="2.82" height="2.82" fill="currentColor"/>
-  <rect x="152.69" y="208.2" width="2.82" height="5.63" fill="currentColor"/>
-  <rect x="146.59" y="216.68" width="1.93" height="5.63" fill="currentColor"/>
-  <rect x="140.8" y="213.87" width="11.57" height="1.69" fill="currentColor"/>
-  <rect x="156.24" y="212.46" width="3.86" height="5.63" fill="currentColor"/>
-  <rect x="155.51" y="213.03" width="3.38" height="13.5" transform="translate(376.98 62.58) rotate(90)" fill="currentColor"/>
-  <rect x="144.66" y="227.95" width="1.93" height="5.63" fill="currentColor"/>
-  <rect x="138.87" y="224.85" width="11.57" height="1.69" fill="currentColor"/>
-  <rect x="154.31" y="223.72" width="3.86" height="5.63" fill="currentColor"/>
-  <rect x="153.58" y="226.55" width="3.38" height="13.5" transform="translate(388.57 78.03) rotate(90)" fill="currentColor"/>
-  <rect x="142.83" y="236.36" width="15.49" height="11.27" fill="currentColor"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-74.49 -2.66 354.17 354.17" shape-rendering="crispEdges" data-design="新版结/8-04.svg" data-design-version="2026-09-12">
+  <rect x="36.88" y="142.32" width="11.37" height="12.01" transform="translate(85.14 296.65) rotate(-180)" fill="currentColor"/>
+  <rect x="29.73" y="149.47" width="11.37" height="12.01" transform="translate(70.83 310.96) rotate(-180)" fill="currentColor"/>
+  <rect x="29.73" y="156.63" width="11.37" height="12.01" transform="translate(70.83 325.26) rotate(-180)" fill="currentColor"/>
+  <rect x="29.73" y="163.78" width="11.37" height="12.01" transform="translate(70.83 339.57) rotate(-180)" fill="currentColor"/>
+  <rect x="36.88" y="170.93" width="11.37" height="12.01" transform="translate(85.14 353.87) rotate(-180)" fill="currentColor"/>
+  <rect x="44.03" y="178.08" width="11.37" height="12.01" transform="translate(99.44 368.18) rotate(-180)" fill="currentColor"/>
+  <rect x="51.19" y="185.24" width="11.37" height="12.01" transform="translate(113.74 382.48) rotate(-180)" fill="currentColor"/>
+  <rect x="58.34" y="185.24" width="11.37" height="12.01" transform="translate(128.05 382.48) rotate(-180)" fill="currentColor"/>
+  <rect x="65.49" y="192.39" width="11.37" height="12.01" transform="translate(142.35 396.79) rotate(-180)" fill="currentColor"/>
+  <rect x="72.64" y="192.39" width="11.37" height="12.01" transform="translate(156.66 396.79) rotate(-180)" fill="currentColor"/>
+  <rect x="79.8" y="185.24" width="11.37" height="12.01" transform="translate(170.96 382.48) rotate(-180)" fill="currentColor"/>
+  <rect x="86.95" y="185.24" width="11.37" height="12.01" transform="translate(185.27 382.48) rotate(-180)" fill="currentColor"/>
+  <rect x="111.04" y="121.06" width="11.37" height="12.01" transform="translate(-44.79 187.77) rotate(-68.03)" fill="currentColor"/>
+  <rect x="107.08" y="111.75" width="11.37" height="12.01" transform="translate(-38.63 178.27) rotate(-68.03)" fill="currentColor"/>
+  <rect x="100.45" y="109.08" width="11.37" height="12.01" transform="translate(-40.3 170.45) rotate(-68.03)" fill="currentColor"/>
+  <rect x="93.82" y="106.4" width="11.37" height="12.01" transform="translate(-41.97 162.62) rotate(-68.03)" fill="currentColor"/>
+  <rect x="84.51" y="110.36" width="11.37" height="12.01" transform="translate(-51.46 156.46) rotate(-68.03)" fill="currentColor"/>
+  <rect x="75.2" y="114.31" width="11.37" height="12.01" transform="translate(-60.96 150.31) rotate(-68.03)" fill="currentColor"/>
+  <rect x="65.89" y="118.27" width="11.37" height="12.01" transform="translate(-70.45 144.15) rotate(-68.03)" fill="currentColor"/>
+  <rect x="63.21" y="124.9" width="11.37" height="12.01" transform="translate(-78.28 145.82) rotate(-68.03)" fill="currentColor"/>
+  <rect x="53.9" y="128.86" width="11.37" height="12.01" transform="translate(-87.77 139.66) rotate(-68.03)" fill="currentColor"/>
+  <rect x="51.23" y="135.49" width="11.37" height="12.01" transform="translate(-95.6 141.33) rotate(-68.03)" fill="currentColor"/>
+  <rect x="55.18" y="144.8" width="11.37" height="12.01" transform="translate(-101.76 150.83) rotate(-68.03)" fill="currentColor"/>
+  <rect x="59.66" y="151.43" width="11.37" height="12.01" transform="translate(-105.11 159.13) rotate(-68.03)" fill="currentColor"/>
+  <rect x="134.69" y="189.74" width="11.37" height="12.01" transform="translate(12.27 -8.24) rotate(3.52)" fill="currentColor"/>
+  <rect x="142.27" y="183.04" width="11.37" height="12.01" transform="translate(11.88 -8.72) rotate(3.52)" fill="currentColor"/>
+  <rect x="142.71" y="175.9" width="11.37" height="12.01" transform="translate(11.44 -8.76) rotate(3.52)" fill="currentColor"/>
+  <rect x="143.15" y="168.76" width="11.37" height="12.01" transform="translate(11 -8.8) rotate(3.52)" fill="currentColor"/>
+  <rect x="136.45" y="161.19" width="11.37" height="12.01" transform="translate(10.53 -8.41) rotate(3.52)" fill="currentColor"/>
+  <rect x="129.75" y="153.61" width="11.37" height="12.01" transform="translate(10.05 -8.01) rotate(3.52)" fill="currentColor"/>
+  <rect x="123.05" y="146.03" width="11.37" height="12.01" transform="translate(9.57 -7.61) rotate(3.52)" fill="currentColor"/>
+  <rect x="115.91" y="145.59" width="11.37" height="12.01" transform="translate(9.53 -7.17) rotate(3.52)" fill="currentColor"/>
+  <rect x="109.21" y="138.01" width="11.37" height="12.01" transform="translate(9.05 -6.78) rotate(3.52)" fill="currentColor"/>
+  <rect x="102.07" y="137.58" width="11.37" height="12.01" transform="translate(9.01 -6.34) rotate(3.52)" fill="currentColor"/>
+  <rect x="94.49" y="144.28" width="11.37" height="12.01" transform="translate(9.41 -5.86) rotate(3.52)" fill="currentColor"/>
+  <rect x="87.35" y="143.84" width="11.37" height="12.01" transform="translate(9.37 -5.43) rotate(3.52)" fill="currentColor"/>
+  <rect x="79.5" y="221.97" width="11.37" height="12.01" transform="translate(257.13 55.74) rotate(65.44)" fill="currentColor"/>
+  <rect x="88.98" y="225.5" width="11.37" height="12.01" transform="translate(265.88 49.18) rotate(65.44)" fill="currentColor"/>
+  <rect x="95.49" y="222.53" width="11.37" height="12.01" transform="translate(266.98 41.53) rotate(65.44)" fill="currentColor"/>
+  <rect x="101.99" y="219.56" width="11.37" height="12.01" transform="translate(268.08 33.87) rotate(65.44)" fill="currentColor"/>
+  <rect x="105.52" y="210.08" width="11.37" height="12.01" transform="translate(261.52 25.12) rotate(65.44)" fill="currentColor"/>
+  <rect x="109.06" y="200.6" width="11.37" height="12.01" transform="translate(254.96 16.37) rotate(65.44)" fill="currentColor"/>
+  <rect x="112.59" y="191.12" width="11.37" height="12.01" transform="translate(248.41 7.62) rotate(65.44)" fill="currentColor"/>
+  <rect x="109.62" y="184.62" width="11.37" height="12.01" transform="translate(240.75 6.52) rotate(65.44)" fill="currentColor"/>
+  <rect x="113.15" y="175.14" width="11.37" height="12.01" transform="translate(234.2 -2.23) rotate(65.44)" fill="currentColor"/>
+  <rect x="110.17" y="168.63" width="11.37" height="12.01" transform="translate(226.54 -3.33) rotate(65.44)" fill="currentColor"/>
+  <rect x="100.7" y="165.1" width="11.37" height="12.01" transform="translate(217.79 3.23) rotate(65.44)" fill="currentColor"/>
+  <rect x="97.72" y="158.6" width="11.37" height="12.01" transform="translate(210.14 2.13) rotate(65.44)" fill="currentColor"/>
+  <rect x="121.95" y="243.52" width="11.37" height="12.01" transform="translate(15.55 -7.36) rotate(3.52)" fill="currentColor"/>
+  <rect x="129.1" y="250.67" width="11.37" height="12.01" transform="translate(16 -7.79) rotate(3.52)" fill="currentColor"/>
+  <rect x="136.25" y="257.83" width="11.37" height="12.01" transform="translate(16.45 -8.21) rotate(3.52)" fill="currentColor"/>
+  <rect x="143.41" y="264.98" width="11.37" height="12.01" transform="translate(16.91 -8.64) rotate(3.52)" fill="currentColor"/>
+  <rect x="150.56" y="272.13" width="11.37" height="12.01" transform="translate(17.36 -9.06) rotate(3.52)" fill="currentColor"/>
+  <rect x="157.71" y="279.28" width="11.37" height="12.01" transform="translate(17.81 -9.49) rotate(3.52)" fill="currentColor"/>
+  <rect x="164.86" y="286.44" width="11.37" height="12.01" transform="translate(18.26 -9.91) rotate(3.52)" fill="currentColor"/>
+  <rect x="172.02" y="293.59" width="11.37" height="12.01" transform="translate(18.72 -10.34) rotate(3.52)" fill="currentColor"/>
+  <rect x="172.02" y="300.74" width="11.37" height="12.01" transform="translate(19.15 -10.32) rotate(3.52)" fill="currentColor"/>
+  <rect x="179.17" y="307.89" width="11.37" height="12.01" transform="translate(19.61 -10.75) rotate(3.52)" fill="currentColor"/>
+  <rect x="186.32" y="315.04" width="11.37" height="12.01" transform="translate(20.06 -11.18) rotate(3.52)" fill="currentColor"/>
+  <rect x="193.47" y="322.2" width="11.37" height="12.01" transform="translate(20.51 -11.6) rotate(3.52)" fill="currentColor"/>
+  <rect x="193.47" y="329.35" width="11.37" height="12.01" transform="translate(20.95 -11.59) rotate(3.52)" fill="currentColor"/>
+  <rect x="186.32" y="336.5" width="11.37" height="12.01" transform="translate(21.38 -11.14) rotate(3.52)" fill="currentColor"/>
+  <rect x="63.62" y="228.38" width="11.37" height="12.01" transform="translate(-48.23 20.08) rotate(-12.27)" fill="currentColor"/>
+  <rect x="58.69" y="237.21" width="11.37" height="12.01" transform="translate(-50.21 19.23) rotate(-12.27)" fill="currentColor"/>
+  <rect x="50.42" y="243.52" width="11.37" height="12.01" transform="translate(15.42 -2.97) rotate(3.52)" fill="currentColor"/>
+  <rect x="43.27" y="250.67" width="11.37" height="12.01" transform="translate(15.84 -2.52) rotate(3.52)" fill="currentColor"/>
+  <rect x="50.42" y="257.83" width="11.37" height="12.01" transform="translate(16.29 -2.95) rotate(3.52)" fill="currentColor"/>
+  <rect x="43.27" y="264.98" width="11.37" height="12.01" transform="translate(16.72 -2.49) rotate(3.52)" fill="currentColor"/>
+  <rect x="43.27" y="272.13" width="11.37" height="12.01" transform="translate(17.16 -2.48) rotate(3.52)" fill="currentColor"/>
+  <rect x="43.27" y="279.28" width="11.37" height="12.01" transform="translate(17.6 -2.47) rotate(3.52)" fill="currentColor"/>
+  <rect x="36.12" y="286.44" width="11.37" height="12.01" transform="translate(18.02 -2.01) rotate(3.52)" fill="currentColor"/>
+  <rect x="43.27" y="293.59" width="11.37" height="12.01" transform="translate(18.47 -2.44) rotate(3.52)" fill="currentColor"/>
+  <rect x="36.12" y="300.74" width="11.37" height="12.01" transform="translate(18.9 -1.99) rotate(3.52)" fill="currentColor"/>
+  <rect x="36.12" y="307.89" width="11.37" height="12.01" transform="translate(19.34 -1.97) rotate(3.52)" fill="currentColor"/>
+  <rect x="28.97" y="315.04" width="11.37" height="12.01" transform="translate(19.76 -1.52) rotate(3.52)" fill="currentColor"/>
+  <rect x="36.12" y="322.2" width="11.37" height="12.01" transform="translate(20.22 -1.95) rotate(3.52)" fill="currentColor"/>
+  <rect x="28.97" y="329.35" width="11.37" height="12.01" transform="translate(20.64 -1.49) rotate(3.52)" fill="currentColor"/>
+  <rect x="121.95" y="107.62" width="11.37" height="12.01" transform="translate(7.21 -7.62) rotate(3.52)" fill="currentColor"/>
+  <rect x="129.1" y="100.47" width="11.37" height="12.01" transform="translate(6.79 -8.07) rotate(3.52)" fill="currentColor"/>
+  <rect x="136.25" y="93.32" width="11.37" height="12.01" transform="translate(6.36 -8.52) rotate(3.52)" fill="currentColor"/>
+  <rect x="143.41" y="86.17" width="11.37" height="12.01" transform="translate(5.94 -8.97) rotate(3.52)" fill="currentColor"/>
+  <rect x="150.56" y="86.17" width="11.37" height="12.01" transform="translate(5.95 -9.41) rotate(3.52)" fill="currentColor"/>
+  <rect x="157.71" y="79.01" width="11.37" height="12.01" transform="translate(5.52 -9.86) rotate(3.52)" fill="currentColor"/>
+  <rect x="164.86" y="71.86" width="11.37" height="12.01" transform="translate(5.1 -10.32) rotate(3.52)" fill="currentColor"/>
+  <rect x="164.86" y="64.71" width="11.37" height="12.01" transform="translate(4.66 -10.33) rotate(3.52)" fill="currentColor"/>
+  <rect x="172.02" y="57.56" width="11.37" height="12.01" transform="translate(4.23 -10.78) rotate(3.52)" fill="currentColor"/>
+  <rect x="179.17" y="50.4" width="11.37" height="12.01" transform="translate(3.81 -11.24) rotate(3.52)" fill="currentColor"/>
+  <rect x="186.32" y="43.25" width="11.37" height="12.01" transform="translate(3.38 -11.69) rotate(3.52)" fill="currentColor"/>
+  <rect x="186.32" y="36.1" width="11.37" height="12.01" transform="translate(2.95 -11.7) rotate(3.52)" fill="currentColor"/>
+  <rect x="193.47" y="28.95" width="11.37" height="12.01" transform="translate(2.52 -12.15) rotate(3.52)" fill="currentColor"/>
+  <rect x="186.32" y="21.79" width="11.37" height="12.01" transform="translate(2.07 -11.73) rotate(3.52)" fill="currentColor"/>
+  <rect x="43.27" y="107.62" width="11.37" height="12.01" transform="translate(7.06 -2.79) rotate(3.52)" fill="currentColor"/>
+  <rect x="36.12" y="100.47" width="11.37" height="12.01" transform="translate(6.61 -2.36) rotate(3.52)" fill="currentColor"/>
+  <rect x="36.12" y="93.32" width="11.37" height="12.01" transform="translate(6.17 -2.38) rotate(3.52)" fill="currentColor"/>
+  <rect x="28.97" y="86.17" width="11.37" height="12.01" transform="translate(5.72 -1.95) rotate(3.52)" fill="currentColor"/>
+  <rect x="28.97" y="79.01" width="11.37" height="12.01" transform="translate(5.28 -1.97) rotate(3.52)" fill="currentColor"/>
+  <rect x="21.82" y="71.86" width="11.37" height="12.01" transform="translate(4.83 -1.54) rotate(3.52)" fill="currentColor"/>
+  <rect x="21.82" y="64.71" width="11.37" height="12.01" transform="translate(4.39 -1.55) rotate(3.52)" fill="currentColor"/>
+  <rect x="21.82" y="57.56" width="11.37" height="12.01" transform="translate(3.95 -1.57) rotate(3.52)" fill="currentColor"/>
+  <rect x="14.66" y="50.4" width="11.37" height="12.01" transform="translate(3.5 -1.14) rotate(3.52)" fill="currentColor"/>
+  <rect x="7.51" y="43.25" width="11.37" height="12.01" transform="translate(3.05 -.72) rotate(3.52)" fill="currentColor"/>
+  <rect x="7.51" y="36.1" width="11.37" height="12.01" transform="translate(2.61 -.73) rotate(3.52)" fill="currentColor"/>
+  <rect x="7.51" y="28.95" width="11.37" height="12.01" transform="translate(2.17 -.74) rotate(3.52)" fill="currentColor"/>
+  <rect x="7.51" y="21.79" width="11.37" height="12.01" transform="translate(1.73 -.76) rotate(3.52)" fill="currentColor"/>
+  <rect x=".36" y="14.64" width="11.37" height="12.01" transform="translate(1.28 -.33) rotate(3.52)" fill="currentColor"/>
+  <rect x=".36" y="7.49" width="11.37" height="12.01" transform="translate(.84 -.35) rotate(3.52)" fill="currentColor"/>
+  <rect x=".36" y=".34" width="11.37" height="12.01" transform="translate(.4 -.36) rotate(3.52)" fill="currentColor"/>
 </svg>
