@@ -467,6 +467,8 @@ function revealing(step, ctx) {
   const app = ctx.app, q = step.q, beats = step.beats;
   const { el, body } = chatFrame(ctx);
   body.append(h('p.prompt-text', q.prompt));
+  // 控件放在揭晓内容顶部并吸顶，手机上无需滚过全部选项才能发现。
+  body.append(app.voice.createControls(q.id, ctx));
   const multi = beats.length > 1;
   const groups = [];
   beats.forEach((beat) => {
@@ -492,7 +494,6 @@ function revealing(step, ctx) {
       body.append(h('.same-source', text));
     }
   });
-  body.append(app.voice.createControls(q.id, ctx));
   let hasDist = false;
   groups.forEach((g) => {
     if (g.beat.showDistribution) {

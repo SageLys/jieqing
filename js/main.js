@@ -2,9 +2,9 @@
 import { h, DEMO, DEBUG, mulberry32, shuffle, wait, loadKont, mountKont, setPatrol, kontTalk } from './util.js';
 import { loadContent, validateContent, checkAudio, loadVoiceManifest, validateVoiceManifest, checkVoiceFiles } from './content.js';
 import { createStore } from './store.js';
-import { createVoicePlayer } from './audio.js';
+import { createVoicePlayer } from './audio.js?v=20260912-audio2';
 import { loadKnotSvgs, computeStats, pickKnot } from './knots.js';
-import * as S from './screens.js';
+import * as S from './screens.js?v=20260912-audio2';
 
 // 可回看的屏（00 第 4 节）：目录、章扉、过场 a / b 的最后一帧、题面、揭晓、AI 的一票、落点、F1、F2
 const REVIEWABLE = new Set(['toc', 'chapter', 'transition', 'prompt', 'revealing', 'ranking', 'closing', 'f1', 'f2']);

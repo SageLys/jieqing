@@ -49,6 +49,7 @@ export class VoicePlayer {
     this.preloads = new Map();
     this.current = null;
     this.controller = null;
+    this.audioContext = null;
     this.autoPlayed = new Set();
     this.listeners = new Set();
     this.muted = false;
@@ -100,15 +101,17 @@ export class VoicePlayer {
     this.setState(this.muted ? 'muted' : 'ready');
   }
 
-  /** 必须由真实用户手势调用；真正可播仍以 audio.play() 结果为准。 */
+  /** 必须由真实用户手势调用；实际片段沿用同一个 AudioContext 播放。 */
   primeFromGesture() {
-    this.primed = true;
     try {
       const AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return;
       if (!this.audioContext) this.audioContext = new AC();
-      this.audioContext.resume().catch(() => {});
-    } catch { /* actual playback will decide */ }
+      const markRunning = () => { this.primed = this.audioContext?.state === 'running'; };
+      const resumed = this.audioContext.resume();
+      markRunning();
+      Promise.resolve(resumed).then(markRunning).catch(() => { this.primed = false; });
+    } catch { this.primed = false; }
   }
 
   getGroup(questionId) {
@@ -197,7 +200,7 @@ export class VoicePlayer {
     if (this.controller) this.controller.abort(reason);
     this.controller = null;
     if (this.current) {
-      try { this.current.pause(); this.current.removeAttribute('src'); this.current.load(); } catch { /* ignore */ }
+      try { this.current.stop(); } catch { /* ignore */ }
       this.current = null;
     }
     if (this.muted) this.setState('muted');
@@ -252,11 +255,72 @@ export class VoicePlayer {
   }
 
   playClip(clip, signal) {
+    if (this.audioContext) return this.playClipWithContext(clip, signal);
+    return this.playClipWithElement(clip, signal);
+  }
+
+  playClipWithContext(clip, signal) {
+    return new Promise((resolve) => {
+      if (signal.aborted) { resolve('cancelled'); return; }
+      const context = this.audioContext;
+      const request = new AbortController();
+      let source = null, settled = false, started = false;
+      const timeoutMs = Math.min(this.config.clipTimeoutMs ?? 20000, Math.max(8000, Number(clip.duration || 0) * 1000 + 6000));
+      const timer = setTimeout(() => finish('failed'), timeoutMs);
+      const cleanup = () => {
+        clearTimeout(timer);
+        signal.removeEventListener('abort', onAbort);
+        if (source) source.onended = null;
+      };
+      const stopSource = () => {
+        request.abort();
+        if (source) { try { source.stop(); } catch { /* already stopped */ } }
+      };
+      const handle = { stop: stopSource };
+      const finish = (result) => {
+        if (settled) return;
+        settled = true; cleanup(); stopSource();
+        if (this.current === handle) this.current = null;
+        resolve(result);
+      };
+      const onAbort = () => finish('cancelled');
+      signal.addEventListener('abort', onAbort, { once: true });
+      this.current = handle;
+      (async () => {
+        try {
+          await context.resume();
+          if (signal.aborted || settled) return;
+          if (context.state !== 'running') { finish('blocked'); return; }
+          this.primed = true;
+          const response = await fetch(clip.src, { signal: request.signal, cache: 'force-cache' });
+          if (!response.ok) throw new Error(`audio ${response.status}`);
+          const encoded = await response.arrayBuffer();
+          const buffer = await context.decodeAudioData(encoded.slice(0));
+          if (signal.aborted || settled) return;
+          source = context.createBufferSource();
+          source.buffer = buffer;
+          source.connect(context.destination);
+          source.onended = () => finish(started ? 'played' : 'failed');
+          source.start(0);
+          started = true;
+          this.actualPlayback = true;
+          this.setState('playing');
+        } catch (error) {
+          if (signal.aborted || request.signal.aborted) finish('cancelled');
+          else if (error?.name === 'NotAllowedError') finish('blocked');
+          else finish('failed');
+        }
+      })();
+    });
+  }
+
+  playClipWithElement(clip, signal) {
     return new Promise((resolve) => {
       if (signal.aborted) { resolve('cancelled'); return; }
       const audio = new Audio(clip.src);
       audio.preload = 'auto';
-      this.current = audio;
+      const handle = { stop: () => { audio.pause(); audio.removeAttribute('src'); audio.load(); } };
+      this.current = handle;
       let settled = false, started = false;
       const timeoutMs = Math.min(this.config.clipTimeoutMs ?? 20000, Math.max(8000, Number(clip.duration || 0) * 1000 + 6000));
       const timer = setTimeout(() => finish('failed'), timeoutMs);
@@ -270,8 +334,8 @@ export class VoicePlayer {
       const finish = (result) => {
         if (settled) return;
         settled = true; cleanup();
-        try { audio.pause(); } catch { /* ignore */ }
-        if (this.current === audio) this.current = null;
+        try { handle.stop(); } catch { /* ignore */ }
+        if (this.current === handle) this.current = null;
         resolve(result);
       };
       const onAbort = () => finish('cancelled');
