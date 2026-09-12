@@ -11,6 +11,71 @@ export async function loadContent() {
   return c;
 }
 
+export async function loadVoiceManifest(src = 'content/voice-manifest.json') {
+  const res = await fetch(src, { cache: 'no-cache' });
+  if (!res.ok) throw new Error(`加载 ${src} 失败：${res.status}`);
+  return res.json();
+}
+
+/** 正式真人录音清单独立校验；不依赖、也不修改选项 source.audio。 */
+export function validateVoiceManifest(manifest, content) {
+  const out = [];
+  const err = (msg) => out.push({ level: 'error', msg: `人声清单：${msg}` });
+  const warn = (msg) => out.push({ level: 'warn', msg: `人声清单：${msg}` });
+  if (manifest?.schemaVersion !== 1) err(`schemaVersion 应为 1，现在是 ${manifest?.schemaVersion ?? '缺失'}`);
+  if (!Array.isArray(manifest?.clips)) { err('clips 应为数组'); return out; }
+  const questionIds = new Set((content?.questions || []).map((q) => q.id));
+  const beatIds = new Set((content?.questions || []).flatMap((q) => (q.beats || []).map((b) => b.id)));
+  const ids = new Set();
+  const languages = new Set(['dialect', 'mandarin', 'mixed', 'unknown']);
+  const styles = new Set(['natural', 'mature', 'older']);
+  manifest.clips.forEach((clip, i) => {
+    const where = clip?.clipId || `clips[${i}]`;
+    ['clipId', 'questionId', 'beatIds', 'speakerId', 'languageType', 'voiceStyle', 'processed', 'src', 'duration', 'topicTags'].forEach((key) => {
+      if (clip?.[key] == null) err(`${where} 缺 ${key}`);
+    });
+    if (ids.has(clip?.clipId)) err(`${where} clipId 重复`);
+    ids.add(clip?.clipId);
+    if (!questionIds.has(clip?.questionId)) err(`${where} questionId=${clip?.questionId} 不存在`);
+    if (!Array.isArray(clip?.beatIds)) err(`${where} beatIds 应为数组`);
+    else clip.beatIds.forEach((id) => { if (!beatIds.has(id)) err(`${where} beatIds 引用不存在的 ${id}`); });
+    if (!languages.has(clip?.languageType)) err(`${where} languageType=${clip?.languageType} 非法`);
+    if (!styles.has(clip?.voiceStyle)) err(`${where} voiceStyle=${clip?.voiceStyle} 非法`);
+    if (typeof clip?.processed !== 'boolean') err(`${where} processed 应为布尔值`);
+    if (!Number.isFinite(clip?.duration) || clip.duration <= 0) err(`${where} duration 应为正数秒`);
+    if (!Array.isArray(clip?.topicTags)) err(`${where} topicTags 应为数组`);
+    if (typeof clip?.src === 'string' && !/^audio\/voices\/q[1-5]\/[^/]+\.m4a$/i.test(clip.src)) warn(`${where} src 不在正式 audio/voices/qN/*.m4a 路径`);
+  });
+  manifest.clips.forEach((clip) => {
+    if (clip.variantOf != null && !ids.has(clip.variantOf)) err(`${clip.clipId} variantOf=${clip.variantOf} 不存在`);
+    if (clip.processed && clip.variantOf == null) err(`${clip.clipId} processed=true 但 variantOf 为空`);
+  });
+  Object.entries(content?.voicePlayback?.demoQueues || {}).forEach(([qid, clipIds]) => {
+    if (!questionIds.has(qid)) err(`demoQueues.${qid} 的题号不存在`);
+    if (!Array.isArray(clipIds)) { err(`demoQueues.${qid} 应为 clipId 数组`); return; }
+    const speakers = new Set(), families = new Set();
+    clipIds.forEach((id) => {
+      const clip = manifest.clips.find((item) => item.clipId === id);
+      if (!clip) { err(`demoQueues.${qid} 引用不存在的 ${id}`); return; }
+      if (clip.questionId !== qid) err(`demoQueues.${qid} 的 ${id} 属于 ${clip.questionId}`);
+      if (speakers.has(clip.speakerId)) err(`demoQueues.${qid} 重复 speakerId=${clip.speakerId}`);
+      speakers.add(clip.speakerId);
+      let family = clip.variantOf || clip.clipId;
+      if (families.has(family)) err(`demoQueues.${qid} 重复素材家族 ${family}`);
+      families.add(family);
+    });
+  });
+  for (const qid of questionIds) if (!manifest.clips.some((clip) => clip.questionId === qid)) warn(`${qid} 没有正式片段`);
+  return out;
+}
+
+export async function checkVoiceFiles(manifest, onIssue) {
+  const tasks = (manifest?.clips || []).map((clip) => fetch(clip.src, { method: 'HEAD', cache: 'no-cache' }).then((res) => {
+    if (!res.ok) onIssue({ level: 'warn', msg: `正式人声缺失：${clip.src}（${clip.clipId}）` });
+  }).catch(() => onIssue({ level: 'warn', msg: `正式人声不可达：${clip.src}（${clip.clipId}）` })));
+  await Promise.all(tasks);
+}
+
 /** 返回 [{level:'error'|'warn', msg}] */
 export function validateContent(c) {
   const out = [];
@@ -100,7 +165,6 @@ export function validateContent(c) {
         } else if (s.kind === 'human') {
           if (!Number.isInteger(s.age)) err(`${o.id} human 的 age 不是整数`);
           if (!s.respondentId || isPlaceholder(s.respondentId)) err(`${o.id} human 缺 respondentId`);
-          if (s.audio && s.audio !== null && !/\.m4a$|\.mp3$|\.aac$|\.wav$/.test(s.audio)) warn(`${o.id} audio 扩展名可疑：${s.audio}`);
         } else err(`${o.id} source.kind=${s.kind} 非法`);
       });
     });
@@ -116,6 +180,13 @@ export function validateContent(c) {
   });
   if (!Array.isArray(c.host?.intro)) err('host.intro 应为字符串数组');
   if (!Array.isArray(c.host?.kontLines) || !c.host.kontLines.length) warn('host.kontLines 缺失：小KONT 点击将没有台词');
+  const voice = c.voicePlayback || {};
+  if (!voice.manifest) warn('voicePlayback.manifest 缺失：题级人声将不可用');
+  ['startDelayMs', 'gapMinMs', 'gapMaxMs', 'clipTimeoutMs'].forEach((key) => {
+    if (!Number.isFinite(voice[key]) || voice[key] < 0) err(`voicePlayback.${key} 应为非负数`);
+  });
+  if (!Number.isInteger(voice.clipsPerGroup) || voice.clipsPerGroup < 1) err('voicePlayback.clipsPerGroup 应为正整数');
+  if (voice.gapMaxMs < voice.gapMinMs) err('voicePlayback.gapMaxMs 不应小于 gapMinMs');
 
   // 结绳系统（07 第 2、6 节）
   const knots = c.knots || [];
@@ -166,13 +237,6 @@ export async function checkAudio(c, onIssue) {
   for (const k of c.knots || []) {
     const src = `assets/img/knots/${k.glyph}.svg`;
     tasks.push(fetch(src, { method: 'HEAD', cache: 'no-cache' }).then((r) => { if (!r.ok) onIssue({ level: 'warn', msg: `结的图形缺失：${src}（${k.id}）` }); }).catch(() => {}));
-  }
-  for (const q of c.questions || []) for (const b of q.beats || []) for (const o of b.options || []) {
-    const a = o.source?.audio;
-    if (o.source?.kind !== 'human' || !a) continue;
-    tasks.push(fetch(a, { method: 'HEAD', cache: 'no-cache' }).then((r) => {
-      if (!r.ok) onIssue({ level: 'warn', msg: `音频缺失：${a}（${o.id}，将只显示字幕）` });
-    }).catch(() => onIssue({ level: 'warn', msg: `音频不可达：${a}（${o.id}）` })));
   }
   await Promise.all(tasks);
 }

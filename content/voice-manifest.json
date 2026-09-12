@@ -1,4 +1,486 @@
 {
   "schemaVersion": 1,
-  "clips": []
+  "clips": [
+    {
+      "clipId": "v001-natural",
+      "questionId": "q1",
+      "beatIds": [],
+      "speakerId": "spk003",
+      "variantOf": null,
+      "languageType": "mandarin",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q1/v001-natural.m4a",
+      "duration": 3.3,
+      "topicTags": [
+        "拜年",
+        "红包"
+      ]
+    },
+    {
+      "clipId": "v002-natural",
+      "questionId": "q1",
+      "beatIds": [],
+      "speakerId": "spk012",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q1/v002-natural.m4a",
+      "duration": 4.5,
+      "topicTags": [
+        "拜年",
+        "红包"
+      ]
+    },
+    {
+      "clipId": "v003-natural",
+      "questionId": "q1",
+      "beatIds": [],
+      "speakerId": "spk019",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q1/v003-natural.m4a",
+      "duration": 2.52,
+      "topicTags": [
+        "拜年",
+        "红包"
+      ]
+    },
+    {
+      "clipId": "v004-natural",
+      "questionId": "q1",
+      "beatIds": [],
+      "speakerId": "spk020",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q1/v004-natural.m4a",
+      "duration": 4.6,
+      "topicTags": [
+        "拜年",
+        "红包"
+      ]
+    },
+    {
+      "clipId": "v005-natural",
+      "questionId": "q1",
+      "beatIds": [],
+      "speakerId": "spk026",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q1/v005-natural.m4a",
+      "duration": 5.3,
+      "topicTags": [
+        "拜年",
+        "红包"
+      ]
+    },
+    {
+      "clipId": "v006-natural",
+      "questionId": "q1",
+      "beatIds": [],
+      "speakerId": "spk031",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q1/v006-natural.m4a",
+      "duration": 5.1,
+      "topicTags": [
+        "拜年",
+        "红包"
+      ]
+    },
+    {
+      "clipId": "v007-natural",
+      "questionId": "q2",
+      "beatIds": [
+        "q2b2"
+      ],
+      "speakerId": "spk004",
+      "variantOf": null,
+      "languageType": "mandarin",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q2/v007-natural.m4a",
+      "duration": 3.4,
+      "topicTags": [
+        "递礼",
+        "措辞"
+      ]
+    },
+    {
+      "clipId": "v008-natural",
+      "questionId": "q2",
+      "beatIds": [
+        "q2b1"
+      ],
+      "speakerId": "spk013",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q2/v008-natural.m4a",
+      "duration": 4.3,
+      "topicTags": [
+        "见家长",
+        "带礼"
+      ]
+    },
+    {
+      "clipId": "v009-natural",
+      "questionId": "q2",
+      "beatIds": [
+        "q2b1"
+      ],
+      "speakerId": "spk014",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q2/v009-natural.m4a",
+      "duration": 5.1,
+      "topicTags": [
+        "见家长",
+        "带礼"
+      ]
+    },
+    {
+      "clipId": "v010-natural",
+      "questionId": "q2",
+      "beatIds": [
+        "q2b1"
+      ],
+      "speakerId": "spk024",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q2/v010-natural.m4a",
+      "duration": 4.3,
+      "topicTags": [
+        "见家长",
+        "带礼"
+      ]
+    },
+    {
+      "clipId": "v011-natural",
+      "questionId": "q2",
+      "beatIds": [
+        "q2b1"
+      ],
+      "speakerId": "spk028",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q2/v011-natural.m4a",
+      "duration": 5.5,
+      "topicTags": [
+        "见家长",
+        "带礼"
+      ]
+    },
+    {
+      "clipId": "v012-natural",
+      "questionId": "q2",
+      "beatIds": [
+        "q2b2"
+      ],
+      "speakerId": "spk032",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q2/v012-natural.m4a",
+      "duration": 2.07,
+      "topicTags": [
+        "递礼",
+        "措辞"
+      ]
+    },
+    {
+      "clipId": "v013-natural",
+      "questionId": "q3",
+      "beatIds": [],
+      "speakerId": "spk005",
+      "variantOf": null,
+      "languageType": "mandarin",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q3/v013-natural.m4a",
+      "duration": 3.8,
+      "topicTags": [
+        "探望",
+        "随礼",
+        "安慰"
+      ]
+    },
+    {
+      "clipId": "v014-natural",
+      "questionId": "q3",
+      "beatIds": [],
+      "speakerId": "spk009",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q3/v014-natural.m4a",
+      "duration": 4.0,
+      "topicTags": [
+        "探望",
+        "随礼",
+        "安慰"
+      ]
+    },
+    {
+      "clipId": "v015-natural",
+      "questionId": "q3",
+      "beatIds": [],
+      "speakerId": "spk015",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q3/v015-natural.m4a",
+      "duration": 2.03,
+      "topicTags": [
+        "探望",
+        "随礼",
+        "安慰"
+      ]
+    },
+    {
+      "clipId": "v016-natural",
+      "questionId": "q3",
+      "beatIds": [],
+      "speakerId": "spk022",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q3/v016-natural.m4a",
+      "duration": 5.1,
+      "topicTags": [
+        "探望",
+        "随礼",
+        "安慰"
+      ]
+    },
+    {
+      "clipId": "v017-natural",
+      "questionId": "q3",
+      "beatIds": [],
+      "speakerId": "spk027",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q3/v017-natural.m4a",
+      "duration": 2.26,
+      "topicTags": [
+        "探望",
+        "随礼",
+        "安慰"
+      ]
+    },
+    {
+      "clipId": "v018-natural",
+      "questionId": "q4",
+      "beatIds": [],
+      "speakerId": "spk006",
+      "variantOf": null,
+      "languageType": "mandarin",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q4/v018-natural.m4a",
+      "duration": 5.1,
+      "topicTags": [
+        "六十大寿",
+        "庆祝方式"
+      ]
+    },
+    {
+      "clipId": "v019-natural",
+      "questionId": "q4",
+      "beatIds": [],
+      "speakerId": "spk010",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q4/v019-natural.m4a",
+      "duration": 3.3,
+      "topicTags": [
+        "六十大寿",
+        "庆祝方式"
+      ]
+    },
+    {
+      "clipId": "v020-natural",
+      "questionId": "q4",
+      "beatIds": [],
+      "speakerId": "spk016",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q4/v020-natural.m4a",
+      "duration": 7.4,
+      "topicTags": [
+        "六十大寿",
+        "庆祝方式"
+      ]
+    },
+    {
+      "clipId": "v021-natural",
+      "questionId": "q4",
+      "beatIds": [],
+      "speakerId": "spk021",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q4/v021-natural.m4a",
+      "duration": 7.5,
+      "topicTags": [
+        "六十大寿",
+        "庆祝方式"
+      ]
+    },
+    {
+      "clipId": "v022-natural",
+      "questionId": "q4",
+      "beatIds": [],
+      "speakerId": "spk030",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q4/v022-natural.m4a",
+      "duration": 4.9,
+      "topicTags": [
+        "六十大寿",
+        "庆祝方式"
+      ]
+    },
+    {
+      "clipId": "v023-natural",
+      "questionId": "q5",
+      "beatIds": [],
+      "speakerId": "spk001",
+      "variantOf": null,
+      "languageType": "mandarin",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q5/v023-natural.m4a",
+      "duration": 6.93,
+      "topicTags": [
+        "思念伴侣",
+        "安慰"
+      ]
+    },
+    {
+      "clipId": "v024-natural",
+      "questionId": "q5",
+      "beatIds": [],
+      "speakerId": "spk007",
+      "variantOf": null,
+      "languageType": "mandarin",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q5/v024-natural.m4a",
+      "duration": 3.4,
+      "topicTags": [
+        "思念伴侣",
+        "安慰"
+      ]
+    },
+    {
+      "clipId": "v025-natural",
+      "questionId": "q5",
+      "beatIds": [],
+      "speakerId": "spk011",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q5/v025-natural.m4a",
+      "duration": 4.0,
+      "topicTags": [
+        "思念伴侣",
+        "安慰"
+      ]
+    },
+    {
+      "clipId": "v026-natural",
+      "questionId": "q5",
+      "beatIds": [],
+      "speakerId": "spk017",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q5/v026-natural.m4a",
+      "duration": 4.0,
+      "topicTags": [
+        "思念伴侣",
+        "安慰"
+      ]
+    },
+    {
+      "clipId": "v027-natural",
+      "questionId": "q5",
+      "beatIds": [],
+      "speakerId": "spk023",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q5/v027-natural.m4a",
+      "duration": 5.5,
+      "topicTags": [
+        "思念伴侣",
+        "安慰"
+      ]
+    },
+    {
+      "clipId": "v028-natural",
+      "questionId": "q5",
+      "beatIds": [],
+      "speakerId": "spk025",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q5/v028-natural.m4a",
+      "duration": 4.2,
+      "topicTags": [
+        "思念伴侣",
+        "安慰"
+      ]
+    },
+    {
+      "clipId": "v029-natural",
+      "questionId": "q5",
+      "beatIds": [],
+      "speakerId": "spk029",
+      "variantOf": null,
+      "languageType": "dialect",
+      "voiceStyle": "natural",
+      "processed": false,
+      "src": "audio/voices/q5/v029-natural.m4a",
+      "duration": 6.42,
+      "topicTags": [
+        "思念伴侣",
+        "安慰"
+      ]
+    }
+  ]
 }

@@ -2,7 +2,6 @@
 // ctx.app 是 App；ctx.review 表示回看（只读）；ctx.after / ctx.wait 是会随屏幕销毁而作废的定时器。
 import { h, fmt, typewriter, relTime, REDUCED, setPatrol, fitOnResize, media, playOnFirstTap } from './util.js';
 import { buildTransition, makeRuntime } from './transitions.js';
-import { createPlaybar } from './audio.js';
 import { renderKnot, paintKnot, miniKnot, tendencyOf, rectsOf } from './knots.js';
 
 /* ---------------- 公共组件 ---------------- */
@@ -152,7 +151,7 @@ function cover(step, ctx) {
     stage.append(h('.cover-photo', { style: { left: `${x}%`, top: `${y}%`, width: `${w}%`, animationDelay: `${delay}ms` } }, h('img', { src: p.src, alt: '', draggable: 'false' })));
   });
   stage.append(blocks); // 最后追加 + z-index 4：任何照片不得盖住 "?"
-  const cta = h('button.cover-cta', { type: 'button', onclick: () => app.next() },
+  const cta = h('button.cover-cta', { type: 'button', onclick: () => { app.activateAudio(); app.next(); } },
     h('img', { src: 'assets/img/folder_open.svg', alt: '' }), h('span.txt', cv.cta || app.ui.start || '开启'));
   stage.append(cta);
   if (app.demo) ctx.after(app.timing('coverMs', 5000), () => app.next());
@@ -422,23 +421,19 @@ function humanTag(app, s) {
   return h('.reveal-tag', `${s.origin || ''} · ${ageText}`, s.dialect ? h('span.dialect', s.dialect) : null);
 }
 
-/** 把一张已作答的卡片变成揭晓态（真人卡与 AI 卡同款，03 5.7）。返回 {playbar} */
+/** 把一张已作答的卡片变成揭晓态（真人卡与 AI 卡同款，03 5.7）。录音不再与卡片或选项绑定。 */
 function revealCard(app, card, o, { selected, immediateAi = false }) {
   const s = o.source || {};
   card.disabled = true;
   card.classList.toggle('selected', !!selected);
-  let playbar = null;
   if (s.kind === 'human') {
     const block = h('.reveal-human', humanTag(app, s));
-    if (s.audio) { playbar = createPlaybar(s.audio); block.append(playbar.el); }
-    if (s.subtitle) block.append(h('.reveal-sub', `「${s.subtitle}」`));
     card.append(block);
   } else if (s.kind === 'ai') {
     const label = h('span.reveal-ai');
     card.append(label);
     typewriter(label, fmt(app.ui.aiLabel || 'AI · {model} · {date}', { model: s.model || 'AI', date: s.queriedAt || '' }), { immediate: immediateAi });
   }
-  return { playbar };
 }
 
 async function addDistribution(app, ctx, beat, cards, container) {
@@ -473,7 +468,6 @@ function revealing(step, ctx) {
   const { el, body } = chatFrame(ctx);
   body.append(h('p.prompt-text', q.prompt));
   const multi = beats.length > 1;
-  const selectedPlaybars = [];
   const groups = [];
   beats.forEach((beat) => {
     const opts = app.optionsOf(beat);
@@ -482,8 +476,7 @@ function revealing(step, ctx) {
     const list = h('.options.revealed');
     const cards = opts.map((o, i) => {
       const card = optionCard(LETTERS[i], o);
-      const { playbar } = revealCard(app, card, o, { selected: o.id === pick, immediateAi: ctx.review });
-      if (o.id === pick && playbar) selectedPlaybars.push(playbar);
+      revealCard(app, card, o, { selected: o.id === pick, immediateAi: ctx.review });
       return card;
     });
     cards.forEach((c) => list.append(c));
@@ -499,6 +492,7 @@ function revealing(step, ctx) {
       body.append(h('.same-source', text));
     }
   });
+  body.append(app.voice.createControls(q.id, ctx));
   let hasDist = false;
   groups.forEach((g) => {
     if (g.beat.showDistribution) {
@@ -523,9 +517,7 @@ function revealing(step, ctx) {
     if (ctx.alive) cta.hidden = false;
   })();
   if (!ctx.review) {
-    (async () => {
-      for (const pb of selectedPlaybars) { if (!ctx.alive) return; await pb.play(); await ctx.wait(300); }
-    })();
+    ctx.after(app.c.voicePlayback?.startDelayMs ?? 600, () => app.voice.playQuestion(q.id));
     if (app.demo) {
       const ms = app.timing('revealMs', 14000) + (beats.length - 1) * app.timing('revealExtraPerBeatMs', 4000) + (hasDist ? app.timing('distributionExtraMs', 3000) : 0);
       ctx.after(ms, () => app.next());

@@ -1,8 +1,8 @@
 // 入口：加载内容 → 校验 → 状态机（00 第 4 节的线性流程，v2）
 import { h, DEMO, DEBUG, mulberry32, shuffle, wait, loadKont, mountKont, setPatrol, kontTalk } from './util.js';
-import { loadContent, validateContent, checkAudio } from './content.js';
+import { loadContent, validateContent, checkAudio, loadVoiceManifest, validateVoiceManifest, checkVoiceFiles } from './content.js';
 import { createStore } from './store.js';
-import { stopAll, unlockAudio } from './audio.js';
+import { createVoicePlayer } from './audio.js';
 import { loadKnotSvgs, computeStats, pickKnot } from './knots.js';
 import * as S from './screens.js';
 
@@ -36,7 +36,7 @@ function buildSteps(c) {
 }
 
 class App {
-  constructor(content, issues) {
+  constructor(content, issues, voice) {
     this.c = content;
     this.ui = content.ui || {};
     this.issues = issues;
@@ -55,6 +55,7 @@ class App {
     this.screenEl = document.getElementById('screen');
     this.ctx = null;
     this.timings = content.demoTimings || {};
+    this.voice = voice;
     document.title = content.meta?.title || document.title;
   }
 
@@ -72,6 +73,11 @@ class App {
     return opts.find((o) => o.id === want) || opts[0];
   }
   timing(key, def) { const v = this.timings[key]; return Number.isFinite(v) ? v : def; }
+  activateAudio() { this.voice.primeFromGesture(); }
+  nextQuestionId(questionId) {
+    const ids = (this.c.questions || []).map((q) => q.id);
+    return ids[ids.indexOf(questionId) + 1] || null;
+  }
 
   /** 结的落成（只算一次；07 2.3） */
   ensureResult() {
@@ -86,18 +92,24 @@ class App {
 
   /** 新建一个步骤上下文；上一个的定时器全部作废 */
   newCtx() {
-    if (this.ctx) { this.ctx.alive = false; this.ctx.timers.forEach(clearTimeout); this.ctx.waits.forEach((w) => w.cancel()); }
+    if (this.ctx) {
+      this.ctx.alive = false;
+      this.ctx.timers.forEach(clearTimeout);
+      this.ctx.waits.forEach((w) => w.cancel());
+      this.ctx.cleanups.forEach((fn) => { try { fn(); } catch { /* ignore */ } });
+    }
     const ctx = {
-      alive: true, timers: [], waits: [], app: this,
+      alive: true, timers: [], waits: [], cleanups: [], app: this,
       after: (ms, fn) => { const t = setTimeout(() => { if (ctx.alive) fn(); }, ms); ctx.timers.push(t); return t; },
       wait: (ms) => { const w = wait(ms); ctx.waits.push(w); return w; },
+      onCleanup: (fn) => { ctx.cleanups.push(fn); return fn; },
     };
     this.ctx = ctx;
     return ctx;
   }
 
   go(i) {
-    stopAll();
+    this.voice.stop('navigation');
     this.idx = Math.max(0, Math.min(this.steps.length - 1, i));
     const step = this.step;
     const ctx = this.newCtx();
@@ -115,6 +127,7 @@ class App {
     this.screenEl.replaceWith(el);
     this.screenEl = el;
     el.querySelectorAll('.kont.patrol').forEach(setPatrol); // v3：巡逻距离按容器宽（过场屏自己还会随框重算）
+    if (step.t === 'prompt' && step.q?.id) this.voice.prepareQuestion(step.q.id, this.nextQuestionId(step.q.id));
     // v3 F07：全站装饰小KONT 可点出台词（加载页三只除外）；演示模式不自动点、不影响计时
     const lines = this.c.host?.kontLines || [];
     el.querySelectorAll('.kont:not(.load-pose)').forEach((k) => kontTalk(this, k, { lines }));
@@ -155,7 +168,7 @@ class App {
       ov.hidden = false;
       ov.replaceChildren(h('div.kont.lg'), h('div', this.ui.start || '开启'));
       mountKont(ov);
-      ov.addEventListener('click', () => { unlockAudio(); ov.hidden = true; this.go(0); }, { once: true });
+      ov.addEventListener('click', () => { this.activateAudio(); ov.hidden = true; this.go(0); }, { once: true });
     } else {
       this.go(0);
     }
@@ -175,9 +188,29 @@ class App {
   issues.forEach(log);
   console.info(`[content] ${content.__file} 校验完成：${issues.filter((i) => i.level === 'error').length} 个错误，${issues.filter((i) => i.level === 'warn').length} 个提示`);
   await Promise.all([loadKont(), loadKnotSvgs(content)]);
-  const app = new App(content, issues);
+  const voice = createVoicePlayer(content.voicePlayback || {}, { demo: DEMO });
+  const app = new App(content, issues, voice);
   window.__app = app;
   checkAudio(content, (it) => { issues.push(it); log(it); if (DEBUG) app.renderDebug(); });
+  loadVoiceManifest(content.voicePlayback?.manifest || 'content/voice-manifest.json').then((manifest) => {
+    const voiceIssues = validateVoiceManifest(manifest, content);
+    voiceIssues.forEach((it) => { issues.push(it); log(it); });
+    if (!voiceIssues.some((it) => it.level === 'error')) {
+      voice.setManifest(manifest);
+      if (app.step?.q?.id) {
+        voice.prepareQuestion(app.step.q.id, app.nextQuestionId(app.step.q.id));
+        if (app.step.t === 'revealing' && !app.reviewing) voice.playQuestion(app.step.q.id);
+      }
+      checkVoiceFiles(manifest, (it) => { issues.push(it); log(it); if (DEBUG) app.renderDebug(); });
+    } else voice.setState('unavailable');
+    if (DEBUG) app.renderDebug();
+  }).catch((error) => {
+    const it = { level: 'warn', msg: `正式人声清单加载失败：${error.message || error}（网页仍可继续）` };
+    issues.push(it); log(it); voice.setState('unavailable'); if (DEBUG) app.renderDebug();
+  });
   window.addEventListener('resize', () => document.querySelectorAll('.kont.patrol').forEach(setPatrol));
+  document.addEventListener('visibilitychange', () => { if (document.hidden) voice.stop('hidden'); });
+  window.addEventListener('pagehide', () => voice.stop('pagehide'));
+  window.addEventListener('beforeunload', () => voice.stop('unload'));
   app.start();
 })();

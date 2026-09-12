@@ -1,7 +1,7 @@
 {
   "_notes": {
     "用途": "全部文案与数据的唯一来源。代码中不得写死任何文案。",
-    "状态": "正式版（2026-09-11 起只用这一份）。真人选项文字来自组内整理，音频放到 audio/<选项id>.m4a 即可播放，没有音频时只显示字幕。",
+    "状态": "正式版（2026-09-11 起只用这一份）。真人选项文字与来源资料保持原样；题级人声只读取 content/voice-manifest.json，不再读取 source.audio 或 subtitle。",
     "字段说明": "见 00_总纲 第 6 节、07 第 6 节与 02 第五节。human 来源的 age 为整数；ai 来源没有 age 字段，这是设计要求。",
     "score": "每个选项的倾向值：+1 系 / 0 平 / -1 解（07 第 2.1 节）。现值按 07 第 5 节标注，内容组可随时重标。作答前不会进入 DOM。",
     "AI 选项位置": "骨架里 AI 选项在各拍中的序号故意不同，避免 id 暴露规律。渲染时仍需按 02 打乱顺序。",
@@ -56,6 +56,38 @@
     "community": "相关社区",
     "what": "what",
     "inputPlaceholder": "输入中…"
+  },
+  "voicePlayback": {
+    "manifest": "content/voice-manifest.json",
+    "startDelayMs": 600,
+    "gapMinMs": 400,
+    "gapMaxMs": 700,
+    "clipsPerGroup": 3,
+    "targetMinSeconds": 10,
+    "targetMaxSeconds": 15,
+    "clipTimeoutMs": 20000,
+    "labels": {
+      "mute": "静音",
+      "unmute": "开启声音",
+      "enable": "开启声音",
+      "replay": "重听人声",
+      "loading": "声音准备中",
+      "starting": "即将播放",
+      "playing": "人声播放中",
+      "complete": "播放完毕",
+      "blocked": "声音被浏览器拦截",
+      "failed": "本组声音暂不可用",
+      "unavailable": "本题暂无声音",
+      "interrupted": "播放已停止",
+      "muted": "已静音"
+    },
+    "demoQueues": {
+      "q1": ["v003-natural", "v002-natural", "v001-natural"],
+      "q2": ["v008-natural", "v012-natural", "v007-natural"],
+      "q3": ["v014-natural", "v017-natural", "v013-natural"],
+      "q4": ["v019-natural", "v022-natural", "v018-natural"],
+      "q5": ["v025-natural", "v028-natural", "v024-natural"]
+    }
   },
   "cover": {
     "title": "结情",
